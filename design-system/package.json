@@ -1,0 +1,40 @@
+{
+  "name": "@lsm/design-system",
+  "version": "0.1.0",
+  "description": "Little Star Media unified design system — design tokens + React components, generated from Figma.",
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "files": [
+    "dist",
+    "tokens"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./styles.css": "./dist/index.css",
+    "./tokens.css": "./dist/tokens.css",
+    "./typography.css": "./dist/typography.css"
+  },
+  "scripts": {
+    "build": "npm run build:tokens && tsup && node scripts/copy-build-assets.mjs",
+    "build:tokens": "node scripts/build-tokens.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.17",
+    "react": "^19.2.7",
+    "tsup": "^8.5.1",
+    "typescript": "^6.0.3"
+  }
+}

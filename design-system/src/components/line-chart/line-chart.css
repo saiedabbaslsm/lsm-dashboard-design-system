@@ -1,0 +1,108 @@
+/* Line Chart — single or multi-series chart for dashboard panels. */
+
+.ds-chart {
+  width: 100%;
+  color: var(--color-on-surface);
+}
+
+.ds-chart__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-bottom: 12px;
+}
+
+.ds-chart__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-on-surface-variant);
+}
+
+.ds-chart__legend-swatch {
+  width: 20px;
+  height: 0;
+  border-top: 2px solid var(--ds-chart-line);
+}
+
+.ds-chart__legend-swatch[data-stroke='dashed'] {
+  border-top-style: dashed;
+}
+
+.ds-chart__plot-wrap {
+  position: relative;
+}
+
+.ds-chart__plot {
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+
+.ds-chart__grid {
+  stroke: var(--color-outline-variant);
+  stroke-width: 1;
+  stroke-opacity: 0.45;
+}
+
+.ds-chart__axis {
+  fill: var(--color-on-surface-variant);
+}
+
+.ds-chart__area {
+  fill: var(--ds-chart-line);
+  fill-opacity: 0.12;
+}
+
+.ds-chart__line {
+  fill: none;
+  stroke: var(--ds-chart-line);
+  stroke-width: 1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ds-chart__line[data-stroke='dashed'] {
+  stroke-dasharray: 7 7;
+}
+
+.ds-chart__guide {
+  stroke: var(--color-outline-variant);
+  stroke-width: 1;
+}
+
+.ds-chart__point {
+  fill: var(--ds-chart-line);
+  stroke: var(--color-surface-container-lowest);
+  stroke-width: 2;
+}
+
+.ds-chart__tooltip {
+  position: absolute;
+  top: 12px;
+  transform: translateX(-50%);
+  min-width: 156px;
+  padding: 8px 10px;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 8px;
+  background: var(--color-inverse-surface);
+  color: var(--color-inverse-on-surface);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.ds-chart__tooltip-label {
+  margin-bottom: 4px;
+  color: var(--color-inverse-on-surface);
+  opacity: 0.72;
+}
+
+.ds-chart__tooltip-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.ds-chart__tooltip-row strong {
+  font-weight: 500;
+}

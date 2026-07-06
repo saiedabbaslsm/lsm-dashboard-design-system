@@ -1,0 +1,73 @@
+/* KPI Card — mirrors the Figma `KPI Card` set (Default/Compact × trend, "vs last month", bottom area chart). */
+
+.ds-kpi {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+  padding: 24px 24px 0;
+  border-radius: 14px;
+  background: var(--color-surface-container-lowest);
+  border: 1px solid var(--color-outline-variant);
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.ds-kpi--compact {
+  padding-bottom: 24px;
+}
+.ds-kpi--selected {
+  border-width: 2px;
+  border-color: var(--color-primary);
+}
+.ds-kpi[role='button'],
+.ds-kpi[tabindex] {
+  cursor: pointer;
+}
+.ds-kpi[role='button']:focus-visible,
+.ds-kpi[tabindex]:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-surface), 0 0 0 4px var(--color-primary);
+}
+
+.ds-kpi[data-trend='up'] { --ds-trend: var(--color-success); }
+.ds-kpi[data-trend='down'] { --ds-trend: var(--color-error); }
+.ds-kpi[data-trend='flat'] { --ds-trend: var(--color-on-surface-variant); }
+
+.ds-kpi__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.ds-kpi__label { color: var(--color-on-surface); }
+.ds-kpi__icon {
+  display: inline-flex;
+  color: var(--color-on-surface-variant);
+  width: 18px;
+  height: 18px;
+}
+.ds-kpi__icon > svg { width: 100%; height: 100%; }
+
+.ds-kpi__value { color: var(--color-on-surface); }
+
+.ds-kpi__delta {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.ds-kpi__delta-icon {
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+  color: var(--ds-trend);
+}
+.ds-kpi__delta-value { color: var(--ds-trend); }
+.ds-kpi__caption { color: var(--color-on-surface-variant); }
+
+.ds-kpi__chart {
+  display: block;
+  width: calc(100% + 48px);
+  margin: 4px -24px 0;
+  color: var(--ds-trend);
+}

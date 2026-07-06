@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@lsm/design-system": ["../design-system/dist/index.d.ts"],
+      "@lsm/design-system/styles.css": ["../design-system/dist/index.css"]
+    },
+    "noEmit": true
+  },
+  "include": ["src"]
+}

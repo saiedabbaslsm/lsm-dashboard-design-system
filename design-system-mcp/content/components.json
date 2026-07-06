@@ -1,0 +1,90 @@
+{
+  "package": "@lsm/design-system",
+  "version": "0.1.0",
+  "install": "npm install @lsm/design-system",
+  "importStyles": "import '@lsm/design-system/styles.css'",
+  "components": [
+    {
+      "name": "Button",
+      "status": "available",
+      "import": "import { Button } from '@lsm/design-system'",
+      "props": "variant: filled | tonal | secondary | outlined | text | destructive; size: sm | md | lg; icon?: ReactNode; + native button attrs",
+      "summary": "Action control. One filled/primary button per view; outlined/text for secondary actions."
+    },
+    {
+      "name": "KpiCard",
+      "status": "available",
+      "import": "import { KpiCard } from '@lsm/design-system'",
+      "props": "label: string; value: string; delta?: string; caption?='vs last month'; trend?: up|down|flat; size?: default|compact; selected?: boolean; icon?: ReactNode; data?: number[] (renders bottom area chart, Default size); + native div attrs",
+      "summary": "Metric card. Responsive/fill-container by default. Default + data renders a chart; compact is the no-chart version. Native div props allow onClick/role/tabIndex/ARIA for interactive cards. Lead dashboards with these."
+    },
+    {
+      "name": "TextField",
+      "status": "available",
+      "import": "import { TextField } from '@lsm/design-system'",
+      "props": "label?: string; helperText?: string; variant?: filled|outlined; error?: boolean; leadingIcon?: ReactNode; + native input attrs (value, onChange, placeholder, disabled)",
+      "summary": "Filled/Outlined input with label, helper text, focus + error states."
+    },
+    {
+      "name": "Chip",
+      "status": "available",
+      "import": "import { Chip } from '@lsm/design-system'",
+      "props": "type?: assist|filter|input|suggestion; selected?: boolean; leadingIcon?: ReactNode; onRemove?: (input chips); children: label; + native button attrs",
+      "summary": "Filter/assist/input/suggestion chips. Selected shows a check + secondary-container fill."
+    },
+    {
+      "name": "Checkbox",
+      "status": "available",
+      "import": "import { Checkbox } from '@lsm/design-system'",
+      "props": "label?: string; checked?; indeterminate?: boolean; disabled?; onChange?; + native input attrs",
+      "summary": "Checkbox with checked / indeterminate / disabled."
+    },
+    {
+      "name": "Switch",
+      "status": "available",
+      "import": "import { Switch } from '@lsm/design-system'",
+      "props": "checked?; disabled?; onChange?; + native input attrs (role=switch)",
+      "summary": "On/off toggle. Compose with your own label for settings rows."
+    },
+    {
+      "name": "DataTable",
+      "status": "available",
+      "import": "import { DataTable, type DataTableColumn } from '@lsm/design-system'",
+      "props": "columns: { key; label; numeric?; tone?: (value,row)=> default|muted|success|error|primary }[]; rows: Record<string, ReactNode>[]; className?",
+      "summary": "Dashboard table with alternating token-surface rows for readability, right-aligned tabular numeric columns, horizontal overflow containment, and semantic tone states."
+    },
+    {
+      "name": "LineChart",
+      "status": "available",
+      "import": "import { LineChart, type LineChartSeries } from '@lsm/design-system'",
+      "props": "series: { id; label; data; tone?: primary|success|error|muted|secondary; stroke?: solid|dashed }[]; labels?: string[]; variant?: single|multi; showLegend?; showArea?; className?",
+      "summary": "Single or multi-series line chart. Single mode keeps the soft area-fill style; multi mode adds legends, dashed forecast/target lines, and a shared tooltip for actual vs predicted vs target."
+    },
+    {
+      "name": "BarChart",
+      "status": "available",
+      "import": "import { BarChart, type BarChartBarSeries, type BarChartLineSeries } from '@lsm/design-system'",
+      "props": "labels: string[]; bars: { id; label; data; tone? }[]; lines?: { id; label; data; tone?; stroke? }[]; referenceLines?: { label?; value; tone? }[]; yFormatter?; showLegend?; className?",
+      "summary": "Grouped vertical bar chart with optional line overlays and dashed reference lines. Use for spend/revenue/comparison charts while staying flat, bordered, and token-colored."
+    },
+    {
+      "name": "ActionInsightList",
+      "status": "available",
+      "import": "import { ActionInsightList, type ActionInsightItem } from '@lsm/design-system'",
+      "props": "items: { id?; title; reason; impact; verb; owner; tone?: danger|watch|good|neutral }[]; variant?: tiles|rail; + native div attrs",
+      "summary": "Prioritized actionable insight pattern. Default variant is ranked impact tiles; use for fix/watch/do-more/absorb decision queues instead of tables. Rail variant is secondary."
+    },
+    {
+      "name": "SourceFlowMap",
+      "status": "available",
+      "import": "import { SourceFlowMap, type SourceFlowItem } from '@lsm/design-system'",
+      "props": "sources: { id?; label; detail?; value; strength: 0-100 }[]; order: { label; value; caption?; lines? }; goal: { label; value; caption?; progress? }; badge?: ReactNode; + native div attrs",
+      "summary": "Curved source-flow map where connector thickness shows contribution strength. Preferred pattern for source-to-order-to-goal flows; easier to understand than rigid node grids."
+    }
+  ],
+  "notes": [
+    "Every color is a CSS variable (var(--color-*)); every text size is a class (.text-*). Never hardcode.",
+    "Icons: pass any icon element (e.g. lucide-react) via the icon/leadingIcon props. The package ships no icon dependency.",
+    "For a component or pattern not here, build it from tokens + type classes per get_design_rules."
+  ]
+}

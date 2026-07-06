@@ -1,0 +1,4 @@
+{
+  "_status": "Phase 1 — per-team KPI governance is NOT enforced yet. Teams pick their own KPIs. This returns presentation guidance only. Approved per-team core KPIs will be added later, once the design system is adopted and signed off.",
+  "_guidance": "Lead the dashboard with the 3–5 core metrics your team actually uses to make decisions — not 10. Present each with the KPI Card component: big value, 'vs last month' delta, trend color (green up / red down), optional sparkline. Put supporting breakdowns below the core row. If one number matters most, make it the hero (gold/Brand card, or Selected)."
+}

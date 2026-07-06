@@ -1,0 +1,42 @@
+/* Checkbox — mirrors the Figma `Checkbox` set (unchecked/checked/indeterminate + disabled). */
+
+.ds-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+.ds-checkbox[data-disabled] { opacity: 0.38; pointer-events: none; }
+
+.ds-checkbox__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  margin: 0;
+}
+
+.ds-checkbox__box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  flex: none;
+  border-radius: 4px;
+  border: 2px solid var(--color-on-surface-variant);
+  background: transparent;
+  box-sizing: border-box;
+  color: var(--color-on-primary);
+}
+.ds-checkbox__input:checked + .ds-checkbox__box,
+.ds-checkbox__input:indeterminate + .ds-checkbox__box {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.ds-checkbox__box > svg { width: 14px; height: 14px; display: none; }
+.ds-checkbox__input:checked + .ds-checkbox__box .ds-checkbox__check { display: block; }
+.ds-checkbox__input:indeterminate + .ds-checkbox__box .ds-checkbox__minus { display: block; }
+
+.ds-checkbox__label { color: var(--color-on-surface); }

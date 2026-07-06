@@ -1,0 +1,50 @@
+/* Switch — mirrors the Figma `Switch` set (off/on + disabled). */
+
+.ds-switch {
+  display: inline-flex;
+  cursor: pointer;
+}
+.ds-switch[data-disabled] { opacity: 0.38; pointer-events: none; }
+
+.ds-switch__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  margin: 0;
+}
+
+.ds-switch__track {
+  position: relative;
+  width: 52px;
+  height: 32px;
+  border-radius: 16px;
+  background: var(--color-surface-container-highest);
+  border: 2px solid var(--color-outline);
+  box-sizing: border-box;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.ds-switch__thumb {
+  position: absolute;
+  top: 50%;
+  left: 4px;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--color-outline);
+  transition: left 0.15s ease, right 0.15s ease, width 0.15s ease, height 0.15s ease, background-color 0.15s ease;
+}
+
+.ds-switch__input:checked + .ds-switch__track {
+  background: var(--color-primary);
+  border-color: transparent;
+}
+.ds-switch__input:checked + .ds-switch__track .ds-switch__thumb {
+  left: auto;
+  right: 4px;
+  width: 24px;
+  height: 24px;
+  background: var(--color-on-primary);
+}
