@@ -1,0 +1,120 @@
+/* Bar Chart — grouped vertical bars with optional line overlays. */
+
+.ds-bar-chart {
+  width: 100%;
+  color: var(--color-on-surface);
+}
+
+.ds-bar-chart__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-bottom: 12px;
+}
+
+.ds-bar-chart__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-on-surface-variant);
+}
+
+.ds-bar-chart__legend-bar {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  background: var(--ds-chart-series);
+}
+
+.ds-bar-chart__legend-line {
+  width: 20px;
+  height: 0;
+  border-top: 1px solid var(--ds-chart-series);
+}
+
+.ds-bar-chart__legend-line[data-stroke='dashed'] {
+  border-top-style: dashed;
+}
+
+.ds-bar-chart__plot-wrap {
+  position: relative;
+}
+
+.ds-bar-chart__plot {
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+
+.ds-bar-chart__grid {
+  stroke: var(--color-outline-variant);
+  stroke-width: 1;
+  stroke-opacity: 0.45;
+}
+
+.ds-bar-chart__axis {
+  fill: var(--color-on-surface-variant);
+}
+
+.ds-bar-chart__bar {
+  fill: var(--ds-chart-series);
+}
+
+.ds-bar-chart__line {
+  fill: none;
+  stroke: var(--ds-chart-series);
+  stroke-width: 1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ds-bar-chart__line[data-stroke='dashed'] {
+  stroke-dasharray: 7 7;
+}
+
+.ds-bar-chart__point {
+  fill: var(--color-surface-container-lowest);
+  stroke: var(--ds-chart-series);
+  stroke-width: 2;
+}
+
+.ds-bar-chart__reference {
+  stroke: var(--ds-chart-series);
+  stroke-width: 1;
+  stroke-dasharray: 3 5;
+  stroke-opacity: 0.8;
+}
+
+.ds-bar-chart__guide {
+  stroke: var(--color-outline-variant);
+  stroke-width: 1;
+}
+
+.ds-bar-chart__tooltip {
+  position: absolute;
+  top: 12px;
+  transform: translateX(-50%);
+  min-width: 164px;
+  padding: 8px 10px;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 8px;
+  background: var(--color-inverse-surface);
+  color: var(--color-inverse-on-surface);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.ds-bar-chart__tooltip-label {
+  margin-bottom: 4px;
+  opacity: 0.72;
+}
+
+.ds-bar-chart__tooltip-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.ds-bar-chart__tooltip-row strong {
+  font-weight: 500;
+}

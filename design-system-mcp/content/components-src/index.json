@@ -1,0 +1,15 @@
+{
+  "components": [
+    "action-insight-list",
+    "bar-chart",
+    "button",
+    "checkbox",
+    "chip",
+    "data-table",
+    "kpi-card",
+    "line-chart",
+    "source-flow-map",
+    "switch",
+    "text-field"
+  ]
+}

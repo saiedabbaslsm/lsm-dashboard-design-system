@@ -15,7 +15,7 @@ export function buildServer(): McpServer {
     {
       title: 'Design system — start here',
       description:
-        'Read this FIRST when building or editing a Little Star Media dashboard. Explains the design system, how to install it, and the mandatory steps (follow design rules, check the team KPIs).',
+        'Read this FIRST for ANY Little Star Media build — an HTML report, a dashboard, or a deployed web app. Explains the mandatory steps (get_stylesheet, get_design_rules, components) and how to deliver for each kind of request.',
     },
     async () => text(readText('onboarding.md'))
   );
@@ -45,9 +45,43 @@ export function buildServer(): McpServer {
     {
       title: 'List components',
       description:
-        'The design-system package: install command, and the available/planned React components with their props and usage.',
+        'The design-system components with their props/usage. For each, you can fetch the real source with get_component_code, and the stylesheet with get_stylesheet.',
     },
     async () => json(readJson('components.json'))
+  );
+
+  server.registerTool(
+    'get_stylesheet',
+    {
+      title: 'Get the design-system stylesheet',
+      description:
+        'Returns the REAL compiled CSS — tokens (light+dark), the M3 type scale, and every component style. Embed this (a <style> tag for an HTML report, or a .css file for an app) so components render IDENTICALLY to the design system. Requires loading the Roboto font.',
+    },
+    async () => ({ content: [{ type: 'text' as const, text: readText('stylesheet.css') }] })
+  );
+
+  server.registerTool(
+    'get_component_code',
+    {
+      title: 'Get a component’s real source',
+      description:
+        'Returns the REAL source (.tsx + .css) for one component. For an HTML report, mirror its markup/`ds-` classes; for a React app, use the code directly. Pass a name like "KpiCard", "kpi-card", or "kpi card".',
+      inputSchema: { name: z.string().describe('Component name, e.g. "KpiCard" (see list_components).') },
+    },
+    async ({ name }) => {
+      const kebab = name.trim().replace(/([a-z0-9])([A-Z])/g, '$1-$2').replace(/[\s_]+/g, '-').toLowerCase();
+      let tsx = '';
+      let css = '';
+      try { tsx = readText(`components-src/${kebab}.tsx`); } catch { /* none */ }
+      try { css = readText(`components-src/${kebab}.css`); } catch { /* none */ }
+      if (!tsx && !css) {
+        const { components } = readJson<{ components: string[] }>('components-src/index.json');
+        return text(`No component "${name}". Available: ${components.join(', ')}.`);
+      }
+      return text(
+        `Component: ${kebab}\n\n=== ${kebab}.tsx ===\n${tsx || '(none)'}\n\n=== ${kebab}.css ===\n${css || '(none)'}`
+      );
+    }
   );
 
   server.registerTool(
