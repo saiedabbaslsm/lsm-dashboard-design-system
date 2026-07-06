@@ -1,6 +1,9 @@
 # 04 — The MCP server (`design-system-mcp`)
 
-Path: `design-system-mcp/`. An HTTP MCP server that serves the design system's guidance to Claude/agents. Built with `@modelcontextprotocol/sdk` + Express, stateless **Streamable HTTP**. Runs via `tsx` (no build step).
+Path: `design-system-mcp/`. An HTTP MCP server that serves the design system's guidance to Claude/agents. Built with `@modelcontextprotocol/sdk`, stateless **Streamable HTTP**, and two deployment surfaces:
+
+- local/always-on Node: Express entry at `src/http.ts`
+- Vercel: function routes in `api/` with clean rewrites from `vercel.json`
 
 ## Layout
 
@@ -9,9 +12,14 @@ design-system-mcp/
   package.json         deps: @modelcontextprotocol/sdk, express, zod; scripts dev/start (tsx)
   tsconfig.json        NodeNext
   src/
+    handler.ts         shared stateless MCP request handler
     content.ts         readText/readJson — reads content/ FRESH per request
     server.ts          buildServer(): registers the tools
     http.ts            Express app; POST /mcp (stateless), GET /health
+  api/
+    mcp.ts             Vercel Function route
+    health.ts          Vercel Function route
+  vercel.json          /mcp and /health rewrites; bundles content/**
   content/             ← EDIT THESE to update the system (no code change)
     onboarding.md      start-here for a coworker's agent
     design-rules.md    token / typography / color rules
@@ -60,11 +68,30 @@ curl -s -X POST http://localhost:3000/mcp \
   -d '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}'
 ```
 
-## Deploy (not done yet)
+## Deploy on Vercel
 
-It's a long-lived Streamable-HTTP server. Deploy to an **always-on host** (Railway / Render / Fly.io): start command `npm start`, expose the port, you get `https://HOST/mcp`.
+Deploy the `design-system-mcp/` folder as the Vercel project root. Use:
 
-> Vercel note: Vercel serverless doesn't suit a long-lived streaming server. To use Vercel, rewrap the handler with `mcp-handler` inside a Next.js app-router route (`app/api/[transport]/route.ts`) instead of the Express entry.
+- Framework preset: Other
+- Install command: `npm install`
+- Build command: leave empty or `npm run typecheck`
+- Output directory: leave empty
+
+The public MCP URL is:
+
+```text
+https://YOUR-VERCEL-PROJECT.vercel.app/mcp
+```
+
+The health check is:
+
+```text
+https://YOUR-VERCEL-PROJECT.vercel.app/health
+```
+
+## Deploy on always-on Node hosts
+
+Railway / Render / Fly.io still work with the Express entry: start command `npm start`, expose the port, use `https://HOST/mcp`.
 
 ## How coworkers connect it (one time)
 

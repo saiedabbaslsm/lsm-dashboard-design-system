@@ -12,7 +12,7 @@ This is the handoff path from local proof-of-visuals to real coworker adoption.
 
 1. A GitHub org/repo destination for this project.
 2. A GitHub Packages token with permission to publish `@lsm/design-system`.
-3. An always-on host for the MCP server, such as Railway, Render, Fly.io, or a small VM.
+3. A Vercel project for the MCP server, using `design-system-mcp/` as the project root.
 4. The public MCP URL after deploy, for example `https://design-system.littlestarmedia.com/mcp`.
 
 ## Publish package
@@ -32,12 +32,12 @@ echo "@lsm:registry=https://npm.pkg.github.com" >> .npmrc
 npm install @lsm/design-system
 ```
 
-## Deploy MCP
+## Deploy MCP on Vercel
 
-Deploy `design-system-mcp/` to an always-on Node host.
+Deploy `design-system-mcp/` as the Vercel project root.
 
 - Install command: `npm install`
-- Start command: `npm start`
+- Build command: leave empty or `npm run typecheck`
 - Health check: `/health`
 - MCP endpoint: `/mcp`
 
@@ -60,4 +60,3 @@ Then add this to their project instructions:
    - `ActionInsightList` tiles for actionable insights.
    - `SourceFlowMap` for source-to-order-to-goal flows.
 5. Collect boss feedback on visual consistency before moving to Phase 2 KPI governance.
-

@@ -28,9 +28,25 @@ npm run dev       # http://localhost:3000/mcp   (health: /health)
 
 ## Deploy (host once, everyone points at it)
 
-Any always-on Node host works (Railway, Render, Fly.io, a small VM). Build step isn't required — it runs `tsx src/http.ts`. Set the start command to `npm start` and expose the port. You'll get a public URL like `https://ds.littlestarmedia.com/mcp`.
+### Vercel (chosen pilot path)
 
-> Vercel note: this is a long-lived Streamable-HTTP server. For Vercel specifically, wrap it with `mcp-handler` in a Next.js route instead; for a first deploy, an always-on host is simpler.
+Deploy this `design-system-mcp/` folder as the Vercel project root. The repo includes Vercel API routes:
+
+- `/api/mcp` — function route
+- `/api/health` — function route
+- `/mcp` and `/health` — clean rewrites from `vercel.json`
+
+Use the clean MCP URL:
+
+```text
+https://YOUR-VERCEL-PROJECT.vercel.app/mcp
+```
+
+Vercel needs no long-running Express process; the function route uses the same stateless MCP handler as local dev.
+
+### Always-on Node hosts
+
+Any always-on Node host also works (Railway, Render, Fly.io, a small VM). Build step isn't required — it runs `tsx src/http.ts`. Set the start command to `npm start` and expose the port. You'll get a public URL like `https://ds.littlestarmedia.com/mcp`.
 
 ## How coworkers connect it (one time)
 

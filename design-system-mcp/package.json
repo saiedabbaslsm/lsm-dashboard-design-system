@@ -6,7 +6,8 @@
   "description": "MCP server that serves the Little Star Media design-system rules and per-team approved KPIs to Claude.",
   "scripts": {
     "dev": "tsx watch src/http.ts",
-    "start": "tsx src/http.ts"
+    "start": "tsx src/http.ts",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.0",
