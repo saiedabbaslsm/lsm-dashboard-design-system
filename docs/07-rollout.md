@@ -13,7 +13,7 @@ This is the handoff path from local proof-of-visuals to real coworker adoption.
 1. A GitHub org/repo destination for this project.
 2. A GitHub Packages token with permission to publish `@lsm/design-system`.
 3. A Vercel project for the MCP server, using `design-system-mcp/` as the project root.
-4. The public MCP URL after deploy, for example `https://design-system.littlestarmedia.com/mcp`.
+4. The public MCP URL after deploy. Current Vercel pilot URL: `https://design-system-mcp-two.vercel.app/mcp`.
 
 ## Publish package
 
@@ -40,6 +40,8 @@ Deploy `design-system-mcp/` as the Vercel project root.
 - Build command: leave empty or `npm run typecheck`
 - Health check: `/health`
 - MCP endpoint: `/mcp`
+- Current pilot health check: `https://design-system-mcp-two.vercel.app/health`
+- Current pilot MCP endpoint: `https://design-system-mcp-two.vercel.app/mcp`
 
 Coworkers connect once:
 

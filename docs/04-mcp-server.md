@@ -83,6 +83,12 @@ The public MCP URL is:
 https://YOUR-VERCEL-PROJECT.vercel.app/mcp
 ```
 
+Current pilot URL:
+
+```text
+https://design-system-mcp-two.vercel.app/mcp
+```
+
 The health check is:
 
 ```text

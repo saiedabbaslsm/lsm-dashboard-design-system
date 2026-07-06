@@ -42,6 +42,12 @@ Use the clean MCP URL:
 https://YOUR-VERCEL-PROJECT.vercel.app/mcp
 ```
 
+Current pilot URL:
+
+```text
+https://design-system-mcp-two.vercel.app/mcp
+```
+
 Vercel needs no long-running Express process; the function route uses the same stateless MCP handler as local dev.
 
 ### Always-on Node hosts
