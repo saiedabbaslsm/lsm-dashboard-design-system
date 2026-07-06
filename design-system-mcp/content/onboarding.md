@@ -8,7 +8,8 @@ You are building something for Little Star Media — a **report, dashboard, or w
 3. **Load Roboto** (the system font): add `<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">`.
 4. **Use the components.** Call `list_components` to see what exists, and `get_component_code` for any one — it returns the real `.tsx` + `.css`. Mirror its markup and `ds-` class names.
 5. **Light/dark:** support both by toggling `data-theme="light"` / `data-theme="dark"` on the root element. All tokens retheme automatically.
-6. **KPIs:** call `get_team_kpis`. (Phase 1: teams use their own KPIs — just present a few core metrics as KPI cards, supporting charts below. Don't crowd the top.)
+6. **Icons & charts (common mistakes):** give **every KPI card a top-right Lucide icon** (HTML: load Lucide via CDN — `<script src="https://unpkg.com/lucide@latest"></script>`, `<i data-lucide="NAME"></i>`, then `lucide.createIcons()`; React: `lucide-react`). **Multi-line charts (e.g. actual vs target) are plain lines with NO area fill** — the soft area fill is only for a single-series line. See `get_design_rules`.
+7. **KPIs:** call `get_team_kpis`. (Phase 1: teams use their own KPIs — just present a few core metrics as KPI cards, supporting charts below. Don't crowd the top.)
 
 ## Then pick the delivery for what they asked
 

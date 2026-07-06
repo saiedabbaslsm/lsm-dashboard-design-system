@@ -19,6 +19,25 @@ The Figma "unified AI design system" and the `@lsm/design-system` package are th
 - For subtle neutral greys, derive them from existing tokens using opacity or `color-mix()` (for example, mixing `--color-on-surface` into a surface token). Do not introduce raw grey hex values.
 - Table/header emphasis can use a very light gold tint made from `--color-primary` mixed into a surface token; keep it subtle so gold still reads as the single accent.
 
+## Icons (Lucide — always include them)
+- The system uses **Lucide** icons. Never mix icon families, and don't skip icons — they're part of the look.
+- **KPI cards MUST have a top-right icon** relevant to the metric: revenue → `dollar-sign` or `wallet`; ROAS / growth → `trending-up`; CAC / cost → `user-plus` or `wallet`; conversion → `target` or `percent`; users → `users`; orders → `shopping-cart`.
+- **On the web / in an HTML report** (this is the common case), load Lucide from a CDN and use its markup:
+  ```html
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- place an icon: -->
+  <i data-lucide="trending-up"></i>
+  <!-- once, after the DOM is built: -->
+  <script>lucide.createIcons();</script>
+  ```
+  Size icons 16–20px; they inherit `currentColor`, so set the container's `color` to a token (usually `var(--color-on-surface-variant)`).
+- **In a React app:** use `lucide-react` and pass the icon via the component's `icon` / `leadingIcon` prop.
+
+## Charts & data-viz
+- **Single-series trend** (one metric over time, and KPI-card sparklines): a thin line with a **soft area fill** (~12% of the line colour) underneath.
+- **Multi-series** (e.g. actual vs target, channel comparisons): **plain lines only — NO area fill.** Tell series apart by colour and by making the secondary/target line **dashed**, with a small legend. Shading a multi-line chart is wrong; the area fill is reserved for single-series charts. (The `LineChart` component already defaults `showArea` to single-only — match that.)
+- Keep charts minimal: thin lines (~1.5–2px), faint gridlines (low opacity), no gridline/axis clutter. Encode trend by colour (success / error / neutral).
+
 ## Theme toggle
 - Every dashboard must include a visible light/dark mode toggle, usually in the top toolbar/header.
 - Wire the toggle to `data-theme="light"` / `data-theme="dark"` on the app root or `document.documentElement`; do not build separate dark-mode CSS by hand.

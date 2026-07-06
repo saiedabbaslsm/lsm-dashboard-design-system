@@ -16,7 +16,7 @@
       "status": "available",
       "import": "import { KpiCard } from '@lsm/design-system'",
       "props": "label: string; value: string; delta?: string; caption?='vs last month'; trend?: up|down|flat; size?: default|compact; selected?: boolean; icon?: ReactNode; data?: number[] (renders bottom area chart, Default size); + native div attrs",
-      "summary": "Metric card. Responsive/fill-container by default. Default + data renders a chart; compact is the no-chart version. Native div props allow onClick/role/tabIndex/ARIA for interactive cards. Lead dashboards with these."
+      "summary": "Metric card. ALWAYS pass a Lucide `icon` — the card shows it top-right (see get_design_rules → Icons). Responsive/fill-container by default. Default + data renders a chart; compact is the no-chart version. Native div props allow onClick/role/tabIndex/ARIA for interactive cards. Lead dashboards with these."
     },
     {
       "name": "TextField",
@@ -58,7 +58,7 @@
       "status": "available",
       "import": "import { LineChart, type LineChartSeries } from '@lsm/design-system'",
       "props": "series: { id; label; data; tone?: primary|success|error|muted|secondary; stroke?: solid|dashed }[]; labels?: string[]; variant?: single|multi; showLegend?; showArea?; className?",
-      "summary": "Single or multi-series line chart. Single mode keeps the soft area-fill style; multi mode adds legends, dashed forecast/target lines, and a shared tooltip for actual vs predicted vs target."
+      "summary": "Single or multi-series line chart. Single mode has a soft area fill under one line. MULTI mode has NO area fill — plain lines only; tell series apart by color + a dashed target/secondary line + a legend. `showArea` defaults to single-only. Never shade a multi-series (actual vs target) chart."
     },
     {
       "name": "BarChart",
@@ -84,7 +84,7 @@
   ],
   "notes": [
     "Every color is a CSS variable (var(--color-*)); every text size is a class (.text-*). Never hardcode.",
-    "Icons: pass any icon element (e.g. lucide-react) via the icon/leadingIcon props. The package ships no icon dependency.",
+    "Icons: use Lucide (always include them). React: pass a lucide-react element via icon/leadingIcon. HTML report: load Lucide via CDN (<script src=\"https://unpkg.com/lucide@latest\"></script>), place <i data-lucide=\"NAME\"></i>, then call lucide.createIcons(). KPI cards must have a top-right icon. See get_design_rules → Icons.",
     "For a component or pattern not here, build it from tokens + type classes per get_design_rules."
   ]
 }
