@@ -2,6 +2,12 @@
 
 You are building something for Little Star Media — a **report, dashboard, or web app**. There is a company-wide design system. Use it so everything shares one look and feel, and so decisions are made against the right metrics. This works for non-technical users (marketing, commercial, managers) as well as engineers — you do the technical work, they just describe what they want.
 
+## Scope — what this system is (and isn't)
+This system is tuned for **reports, dashboards, and data apps** (internal analytics UIs). For anything else — **social media assets, slides, print, marketing creative** — do this:
+- **Keep it on-brand:** you MAY use the brand colours and fonts from `get_stylesheet` (the tokens + type scale) so it still reads as Little Star Media.
+- **Don't force the dashboard rules onto it.** Social/marketing is a different medium — bold, high-contrast, platform-sized, and gradients are welcome (see the `--gradient-*` tokens). Do NOT apply the dashboard visual language (KPI cards, hairline borders, "calm/flat/one-accent" restraint) to a social post — that would make weak creative.
+- **Be honest about it:** there isn't a dedicated social/brand playbook yet. So: match the palette and typography, design it as genuinely good creative for its medium, and say plainly that full design-system rules cover dashboards/reports, not social.
+
 ## Always do this
 1. **Get the look.** Call `get_stylesheet` — it returns the REAL compiled CSS (tokens for light+dark, the type scale, and every component's styles). Everything you build must use it, so it looks identical to the design system.
 2. **Follow the rules.** Call `get_design_rules` (never hardcode colors/sizes — use tokens `var(--color-*)` and type classes `.text-*`) and, before building anything not already a component, `get_visual_language` (the personality).
