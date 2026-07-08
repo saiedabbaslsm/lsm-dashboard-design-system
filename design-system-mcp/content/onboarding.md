@@ -2,6 +2,12 @@
 
 You are building something for Little Star Media — a **report, dashboard, or web app**. There is a company-wide design system. Use it so everything shares one look and feel, and so decisions are made against the right metrics. This works for non-technical users (marketing, commercial, managers) as well as engineers — you do the technical work, they just describe what they want.
 
+## ⚠ Must include in EVERY dashboard (these get skipped — don't)
+1. **Lucide icons** — every KPI card has a top-right icon, and use Lucide wherever an icon fits. HTML report: `<script src="https://unpkg.com/lucide@latest"></script>`, place `<i data-lucide="NAME"></i>`, then call `lucide.createIcons()`. React app: `lucide-react`.
+2. **Light/dark toggle** — a *visible* toggle button in the header, wired to `data-theme` on `<html>`. Verify both modes render correctly.
+
+`get_stylesheet` returns paste-ready snippets for both — use them. Don't deliver a dashboard without icons and a working theme toggle.
+
 ## Scope — what this system is (and isn't)
 This system is tuned for **reports, dashboards, and data apps** (internal analytics UIs). For anything else — **social media assets, slides, print, marketing creative** — do this:
 - **Keep it on-brand:** you MAY use the brand colours and fonts from `get_stylesheet` (the tokens + type scale) so it still reads as Little Star Media.

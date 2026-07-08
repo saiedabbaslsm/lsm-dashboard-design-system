@@ -7,6 +7,37 @@ type Kpis = Record<string, any>;
 const text = (t: string) => ({ content: [{ type: 'text' as const, text: t }] });
 const json = (v: unknown) => text(JSON.stringify(v, null, 2));
 
+// Prepended to every get_stylesheet response so the two most-skipped requirements
+// (Lucide icons + a light/dark toggle) are impossible to miss — with paste-ready snippets.
+const REQUIRED_HEADER = `/* ==============================================================
+   LSM DESIGN SYSTEM — REQUIRED in every dashboard/report (do NOT skip):
+
+   1) LUCIDE ICONS — every KPI card gets a top-right icon, and use Lucide wherever
+      an icon fits. For an HTML report, load Lucide once before </body>:
+        <script src="https://unpkg.com/lucide@latest"></script>
+      place icons with:   <i data-lucide="trending-up"></i>
+      then run once:       <script>lucide.createIcons();</script>
+      (React app: use the lucide-react package instead.)
+      Metric → icon: revenue=dollar-sign, ROAS/growth=trending-up, CAC/cost=user-plus,
+      conversion=target, users=users, orders=shopping-cart, spend=wallet.
+
+   2) LIGHT/DARK TOGGLE — put a visible toggle button in the header, wired to
+      data-theme on <html>. Paste-ready:
+        <button id="ds-theme-toggle" aria-label="Toggle theme" style="display:inline-flex;
+          align-items:center;justify-content:center;width:40px;height:40px;border-radius:8px;
+          border:1px solid var(--color-outline-variant);background:var(--color-surface-container-lowest);
+          color:var(--color-on-surface-variant);cursor:pointer;"><i data-lucide="moon"></i></button>
+        <script>(function(){var r=document.documentElement;r.dataset.theme=r.dataset.theme||'light';
+          document.getElementById('ds-theme-toggle').addEventListener('click',function(){
+          r.dataset.theme=r.dataset.theme==='dark'?'light':'dark';});})();</script>
+      Verify BOTH modes look right (tokens re-theme automatically).
+
+   Also load Roboto: <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+   Then put ALL the CSS below into a <style> tag (or a .css file).
+   ============================================================== */
+
+`;
+
 export function buildServer(): McpServer {
   const server = new McpServer({ name: 'lsm-design-system', version: '0.1.0' });
 
@@ -15,7 +46,7 @@ export function buildServer(): McpServer {
     {
       title: 'Design system — start here',
       description:
-        'Read this FIRST for ANY Little Star Media build — an HTML report, a dashboard, or a deployed web app. Explains the mandatory steps (get_stylesheet, get_design_rules, components) and how to deliver for each kind of request.',
+        'Read this FIRST for ANY Little Star Media build — an HTML report, a dashboard, or a deployed web app. Covers the mandatory steps and delivery. Non-negotiables: every dashboard uses Lucide icons (KPI cards get a top-right icon) and includes a light/dark toggle.',
     },
     async () => text(readText('onboarding.md'))
   );
@@ -55,9 +86,9 @@ export function buildServer(): McpServer {
     {
       title: 'Get the design-system stylesheet',
       description:
-        'Returns the REAL compiled CSS — tokens (light+dark), the M3 type scale, and every component style. Embed this (a <style> tag for an HTML report, or a .css file for an app) so components render IDENTICALLY to the design system. Requires loading the Roboto font.',
+        'Returns the REAL compiled CSS (tokens light+dark, type scale, all components) PLUS the two things EVERY dashboard MUST include, with paste-ready snippets: (1) Lucide icons on KPI cards, (2) a light/dark toggle. Embed the CSS in a <style> tag (HTML) or .css file (app). Load Roboto.',
     },
-    async () => ({ content: [{ type: 'text' as const, text: readText('stylesheet.css') }] })
+    async () => ({ content: [{ type: 'text' as const, text: REQUIRED_HEADER + readText('stylesheet.css') }] })
   );
 
   server.registerTool(
