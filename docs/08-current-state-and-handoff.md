@@ -1,0 +1,55 @@
+# 08 — Current state & handoff
+
+Read this to pick up the project where it stands. It captures what's **live**, how it's delivered, what was learned from real coworker usage, how to operate it, and what's next. (Older docs 01–06 explain the original design; some of their "not deployed yet" notes are now out of date — this file is the current truth.)
+
+## Where things stand (LIVE)
+
+- **The MCP connector is deployed and in use.** URL: `https://design-system-mcp-two.vercel.app/mcp` (Vercel project `design-system-mcp`). Coworkers have connected it and built real dashboards.
+- **The npm package builds** to `design-system/dist/` (tsup). Not yet published to a registry — but the connector serves the component *code* + stylesheet directly, so coworkers don't need to install anything.
+- **Figma** has all components incl. a new `KPI Card Tone` set (see "Colour / tone" below).
+
+## How it's actually delivered (important — this evolved)
+
+The audience is **mostly non-technical** (marketing, commercial, managers) on **Claude.ai**, plus some Claude Code / Codex users. They don't run React projects — they ask Claude for a **report or dashboard**. So the connector serves the **look itself**, not just rules:
+
+- `get_stylesheet` → the REAL compiled CSS (`design-system/dist/index.css`), so output looks identical to the system. **It prepends a `REQUIRED_HEADER`** (in `design-system-mcp/src/server.ts`) with paste-ready snippets for the two most-skipped must-haves: **Lucide icons** (CDN) and a **light/dark toggle**. This is the single most effective lever — coworkers' Claude always calls `get_stylesheet`, so putting mandates *in its output* is how they actually get followed.
+- `get_component_code(name)` → the real `.tsx` + `.css` for a component (mirror the markup/`ds-` classes for an HTML report, or use as code for an app).
+- `get_onboarding` routes by task: **HTML report** (embed stylesheet + markup, no install) / **deployed app** (drop component code in, wire APIs, deploy) / **novel component** (build from tokens + visual language).
+- Content lives in `design-system-mcp/content/` (onboarding.md, design-rules.md, visual-language.md, components.json, kpis.json) + synced assets (`stylesheet.css`, `components-src/`). All read fresh per request.
+
+### How coworkers connect (per surface — this is a real gotcha)
+`claude mcp add` is **Claude Code only**. Claude.ai (web/desktop) uses **Settings → Connectors → Add custom connector** (paste the `/mcp` URL; no auth needed — confirmed working). Team/Enterprise admins can add it **org-wide once** so it appears for everyone. Codex uses `npx mcp-remote <url>` in `~/.codex/config.toml`. Full instructions: `design-system-mcp/CONNECT.md`.
+
+## Colour / tone (latest work)
+
+Coworker feedback: dashboards came out **bland** when there was no trend/chart to carry colour. Fix, now shipped everywhere:
+
+- **`KpiCard` has a `tone` prop:** `neutral` (default, white + green/red chart) · `brand` (gold `primaryFixed`) · `gradient` (gold `gradientTonal`). On toned cards the **chart + text auto-go dark** (via `--ds-on`/`--ds-delta`/`--ds-chart` vars + `color-mix`) so they stay legible — never a green chart on a gold card.
+- **60/30/10 colour rule (in `design-rules.md`), applied PER SCREENFUL** (what's visible, not the whole scroll): ~60% neutral base, ~30% neutral surfaces (cards/panels/tables), ~10% **gold accent** (ONE toned hero card + the primary button). Semantic green/red (trend up/down) are functional and exempt. Don't tone every card.
+- **Figma:** the tone is in a separate `KPI Card Tone` component set (`Surface: Neutral/Brand/Gradient × Size: Default/Compact`) — NOT yet folded into the main `KPI Card` set (`Size × Trend`). See "Next tasks".
+
+## Operating it (the update loop)
+
+- **Change a rule the AI follows** (colour balance, icons, etc.) → edit `design-system-mcp/content/*.md` → redeploy the connector. No code.
+- **Change a token (colour/type)** → edit in Figma → re-export `design-system/tokens/tokens.json` → `npm run build` in `design-system/` → `npm run sync-assets` in `design-system-mcp/` → commit → redeploy.
+- **Change/add a component** → edit `design-system/src/components/…` → `npm run build` → `npm run sync-assets` → update `content/components.json` → commit → redeploy. Mirror it in Figma.
+- **Redeploy the connector** → from `design-system-mcp/`: `npx vercel deploy --prod` (needs the Vercel token — see credentials). It is **CLI-deploy, not git-auto-deploy** — pushing to GitHub alone does NOT update the live connector.
+- **Credentials** (GitHub PAT for push, Vercel token for deploy) are kept PRIVATE at `~/.lsm-design-system/credentials.md` (outside the repo, never committed). Fill it with fresh tokens. If it's missing, ask the user.
+
+## What real usage taught us (don't re-learn these)
+- Guidance only works if the AI reads it → put must-haves in `get_stylesheet`'s output, not just onboarding.
+- Multi-line charts (actual vs target) must be **plain lines, no area fill** (area fill is single-series only).
+- Scope: the system is for **dashboards/reports/apps**. For social/print, use brand colours + fonts but NOT the dashboard rules — there's a scope note in `onboarding.md`. A dedicated social/brand kit is a possible future track (the `--gradient-*` tokens are for exactly that).
+
+## Next tasks (suggested)
+1. **Figma consolidation (the pending polish):** fold `Surface` into the main `KPI Card` set → one set with `Size × Trend × Surface` (18 variants). On toned surfaces the chart is always the dark tonal treatment (trend still sets the arrow/delta direction). Then delete the separate `KPI Card Tone` set. Build via the `figma-console` bridge (`figma_execute`) — reuse the tone build logic already in this project's history.
+2. **Publish the npm package** to a registry (for engineers building real apps) — optional; the connector-served code covers non-technical use.
+3. **Phase 2 — per-team KPIs:** only after the boss signs off on the look. Add teams to `content/kpis.json` with `confirmed:true`; `get_team_kpis` returns them automatically.
+4. **Rotate the exposed tokens** and update `~/.lsm-design-system/credentials.md`.
+
+## Map of the repo (quick)
+- `design-system/` — the code package (tokens pipeline + React components + `dist/`).
+- `design-system-mcp/` — the connector (src + editable `content/` + `CONNECT.md`); deployed to Vercel.
+- `demo/` — a Vite app that consumes the package like a coworker (a toned hero card is wired in the signal-KPIs row as a live example).
+- `docs/` + `AGENTS.md` — this documentation.
+- Figma file `RoiwgeonsmbhJV9sCyFUZk` — design source of truth.

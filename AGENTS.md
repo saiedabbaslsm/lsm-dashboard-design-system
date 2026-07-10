@@ -3,6 +3,9 @@
 > Entrypoint for any coding agent (Codex, Claude, etc.) working in this repo.
 > Read this file first, then the relevant file in `docs/`.
 
+> **⚡ Current live state → read [docs/08-current-state-and-handoff.md](docs/08-current-state-and-handoff.md) first.** The MCP connector is **deployed and in use** at `https://design-system-mcp-two.vercel.app/mcp`. Docs 01–06 describe the original design; docs/08 is the current truth (delivery model, the tone/60/30/10 colour work, how to operate/redeploy, rollout learnings, next tasks).
+> **Secrets (GitHub PAT + Vercel token) for push/deploy are NOT in this repo** — they live privately at `~/.lsm-design-system/credentials.md` (outside git). If you need to push or deploy and can't find them, ask the user.
+
 ## What this project is
 
 A **company-wide design system for dashboards** at Little Star Media, plus a way to distribute it so every team's dashboards share one look and feel — and (later) surface the right KPIs. It exists to solve two problems the CEO raised:
