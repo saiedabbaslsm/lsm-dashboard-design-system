@@ -233,11 +233,12 @@ function SignalDashboardPreview() {
       </div>
 
       <div className="demo-signal__kpis">
-        {signalKpis.map((kpi) => (
+        {signalKpis.map((kpi, i) => (
           <KpiCard
             key={kpi.label}
             className="demo-signal__kpi"
             size="compact"
+            tone={i === 0 ? 'brand' : 'neutral'}
             label={kpi.label}
             value={kpi.value}
             delta={kpi.delta}

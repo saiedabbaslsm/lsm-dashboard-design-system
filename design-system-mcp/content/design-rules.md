@@ -19,6 +19,16 @@ The Figma "unified AI design system" and the `@lsm/design-system` package are th
 - For subtle neutral greys, derive them from existing tokens using opacity or `color-mix()` (for example, mixing `--color-on-surface` into a surface token). Do not introduce raw grey hex values.
 - Table/header emphasis can use a very light gold tint made from `--color-primary` mixed into a surface token; keep it subtle so gold still reads as the single accent.
 
+## Colour balance — 60/30/10 (per screenful)
+Balance colour by what's visible on an **average screen** (a ~1-viewport fold), NOT the whole scrollable dashboard — re-balance each fold as the user scrolls:
+- **~60% neutral base** — page surface, whitespace, body text.
+- **~30% neutral surfaces** — the cards, panels, and tables (white / surface-container).
+- **~10% gold accent** — used deliberately: ONE hero card (`KpiCard tone="brand"` gold, or `tone="gradient"`), the primary button, and the odd key highlight. **Don't tone every card** — if gold creeps past ~10% it stops reading as the accent.
+- Semantic status colours (`--color-success` green / `--color-error` red for up/down trends) are **functional and separate** from this balance — they don't count as "the 10%".
+- **Toned cards use dark charts** (the chart + text follow the surface so they stay legible); green/red charts stay on neutral cards. Never put a green chart on a gold card.
+
+This is how a dashboard gets colour without going bland OR garish: mostly neutral, one gold moment per screen.
+
 ## Icons (Lucide — always include them)
 - The system uses **Lucide** icons. Never mix icon families, and don't skip icons — they're part of the look.
 - **KPI cards MUST have a top-right icon** relevant to the metric: revenue → `dollar-sign` or `wallet`; ROAS / growth → `trending-up`; CAC / cost → `user-plus` or `wallet`; conversion → `target` or `percent`; users → `users`; orders → `shopping-cart`.

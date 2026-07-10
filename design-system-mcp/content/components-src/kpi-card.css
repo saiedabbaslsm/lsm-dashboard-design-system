@@ -1,6 +1,15 @@
-/* KPI Card — mirrors the Figma `KPI Card` set (Default/Compact × trend, "vs last month", bottom area chart). */
+/* KPI Card — Default/Compact × trend, "vs last month", bottom area chart.
+   `tone` (neutral | brand | gradient) themes the whole surface; the chart + text
+   follow the surface (dark on toned cards) so it stays legible — never green on gold. */
 
 .ds-kpi {
+  --ds-surface: var(--color-surface-container-lowest);
+  --ds-border: var(--color-outline-variant);
+  --ds-on: var(--color-on-surface);
+  --ds-on-muted: var(--color-on-surface-variant);
+  --ds-delta: var(--ds-trend);
+  --ds-chart: var(--ds-trend);
+
   position: relative;
   display: flex;
   flex-direction: column;
@@ -9,8 +18,8 @@
   min-width: 0;
   padding: 24px 24px 0;
   border-radius: 14px;
-  background: var(--color-surface-container-lowest);
-  border: 1px solid var(--color-outline-variant);
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border);
   overflow: hidden;
   box-sizing: border-box;
 }
@@ -35,21 +44,33 @@
 .ds-kpi[data-trend='down'] { --ds-trend: var(--color-error); }
 .ds-kpi[data-trend='flat'] { --ds-trend: var(--color-on-surface-variant); }
 
+/* Toned (hero) surfaces — text + delta + chart go dark to read on gold. */
+.ds-kpi[data-tone='brand'],
+.ds-kpi[data-tone='gradient'] {
+  --ds-border: var(--color-primary-fixed-dim);
+  --ds-on: var(--color-on-primary-fixed);
+  --ds-on-muted: color-mix(in srgb, var(--color-on-primary-fixed) 60%, transparent);
+  --ds-delta: var(--color-on-primary-fixed);
+  --ds-chart: color-mix(in srgb, var(--color-on-primary-fixed) 55%, transparent);
+}
+.ds-kpi[data-tone='brand'] { --ds-surface: var(--color-primary-fixed); }
+.ds-kpi[data-tone='gradient'] { background: var(--gradient-tonal); }
+
 .ds-kpi__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-.ds-kpi__label { color: var(--color-on-surface); }
+.ds-kpi__label { color: var(--ds-on); }
 .ds-kpi__icon {
   display: inline-flex;
-  color: var(--color-on-surface-variant);
+  color: var(--ds-on-muted);
   width: 18px;
   height: 18px;
 }
 .ds-kpi__icon > svg { width: 100%; height: 100%; }
 
-.ds-kpi__value { color: var(--color-on-surface); }
+.ds-kpi__value { color: var(--ds-on); }
 
 .ds-kpi__delta {
   display: flex;
@@ -60,14 +81,14 @@
   display: inline-flex;
   width: 16px;
   height: 16px;
-  color: var(--ds-trend);
+  color: var(--ds-delta);
 }
-.ds-kpi__delta-value { color: var(--ds-trend); }
-.ds-kpi__caption { color: var(--color-on-surface-variant); }
+.ds-kpi__delta-value { color: var(--ds-delta); }
+.ds-kpi__caption { color: var(--ds-on-muted); }
 
 .ds-kpi__chart {
   display: block;
   width: calc(100% + 48px);
   margin: 4px -24px 0;
-  color: var(--ds-trend);
+  color: var(--ds-chart);
 }

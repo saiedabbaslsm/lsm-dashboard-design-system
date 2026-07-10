@@ -15,8 +15,8 @@
       "name": "KpiCard",
       "status": "available",
       "import": "import { KpiCard } from '@lsm/design-system'",
-      "props": "label: string; value: string; delta?: string; caption?='vs last month'; trend?: up|down|flat; size?: default|compact; selected?: boolean; icon?: ReactNode; data?: number[] (renders bottom area chart, Default size); + native div attrs",
-      "summary": "Metric card. ALWAYS pass a Lucide `icon` — the card shows it top-right (see get_design_rules → Icons). Responsive/fill-container by default. Default + data renders a chart; compact is the no-chart version. Native div props allow onClick/role/tabIndex/ARIA for interactive cards. Lead dashboards with these."
+      "props": "label: string; value: string; delta?: string; caption?='vs last month'; trend?: up|down|flat; size?: default|compact; tone?: neutral|brand|gradient; selected?: boolean; icon?: ReactNode; data?: number[] (renders bottom area chart, Default size); + native div attrs",
+      "summary": "Metric card. `tone`: neutral (default, white + green/red chart) | brand (gold `primaryFixed`) | gradient (gold gradient) — use a toned card for ONE hero metric per screen (the 10% gold accent, see 60/30/10 in get_design_rules); on toned cards the chart + text auto-go dark to stay legible. ALWAYS pass a Lucide `icon` — the card shows it top-right (see get_design_rules → Icons). Responsive/fill-container by default. Default + data renders a chart; compact is the no-chart version. Native div props allow onClick/role/tabIndex/ARIA for interactive cards. Lead dashboards with these."
     },
     {
       "name": "TextField",

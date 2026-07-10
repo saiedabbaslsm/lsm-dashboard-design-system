@@ -3,6 +3,7 @@ import './kpi-card.css';
 
 export type KpiTrend = 'up' | 'down' | 'flat';
 export type KpiSize = 'default' | 'compact';
+export type KpiTone = 'neutral' | 'brand' | 'gradient';
 
 export interface KpiCardProps extends HTMLAttributes<HTMLDivElement> {
   label: string;
@@ -13,6 +14,8 @@ export interface KpiCardProps extends HTMLAttributes<HTMLDivElement> {
   caption?: string;
   trend?: KpiTrend;
   size?: KpiSize;
+  /** Surface colour. `brand` = gold, `gradient` = gold gradient. Use for ONE hero card per view (the 10% accent). On toned cards the chart + text go dark to stay legible. */
+  tone?: KpiTone;
   selected?: boolean;
   /** Optional header icon (top-right). */
   icon?: ReactNode;
@@ -74,6 +77,7 @@ export function KpiCard({
   caption = 'vs last month',
   trend = 'flat',
   size = 'default',
+  tone = 'neutral',
   selected = false,
   icon,
   data,
@@ -92,7 +96,7 @@ export function KpiCard({
   const paths = showChart ? chartPaths(data!) : null;
 
   return (
-    <div className={cls} data-trend={trend} {...rest}>
+    <div className={cls} data-trend={trend} data-tone={tone} {...rest}>
       <div className="ds-kpi__header">
         <span className="ds-kpi__label text-title-small">{label}</span>
         {icon ? (
