@@ -41,7 +41,16 @@ Coworker feedback: dashboards came out **bland** when there was no trend/chart t
 - Multi-line charts (actual vs target) must be **plain lines, no area fill** (area fill is single-series only).
 - Scope: the system is for **dashboards/reports/apps**. For social/print, use brand colours + fonts but NOT the dashboard rules — there's a scope note in `onboarding.md`. A dedicated social/brand kit is a possible future track (the `--gradient-*` tokens are for exactly that).
 
+## Open issue — mobile (raised, NOT yet diagnosed)
+
+The user reported: **"not working on mobile"**. This was raised at the very end of the last session and **no diagnosis or fix was done** — do not assume the cause. Before touching anything, establish *what* is broken and *where*:
+
+- **Which artifact is broken?** Three different things could be meant: (a) dashboards/reports that coworkers' Claude generates from the connector, (b) the `demo/` Vite app, or (c) the components themselves at narrow viewports. **Ask the user / get a screenshot before assuming.**
+- **Most likely suspect if it's (a) or (c):** nothing in the system currently states a **responsive rule**. `design-rules.md` and `visual-language.md` have no breakpoint guidance, so coworkers' Claude is free to emit fixed multi-column grids (e.g. the demo's `grid-template-columns: repeat(4, minmax(0,1fr))` in `demo/src/demo.css`) that never collapse on a phone. `KpiCard` itself is fill-container and fine; the **layouts around it** are the risk. If confirmed, the fix follows the established lever: add a responsive rule to `design-rules.md` **and** to the `REQUIRED_HEADER` in `design-system-mcp/src/server.ts` (that header is what actually gets followed), then redeploy.
+- The user's phrasing "**lets deploy on vercel**" in the same breath suggested they wanted to *see* it on a real URL to test on a phone — the connector is already on Vercel, so this likely meant deploying the **demo app** as a testable link. Clarify which.
+
 ## Next tasks (suggested)
+0. **Diagnose the mobile issue above** (highest priority — it's live user feedback).
 1. **Figma consolidation (the pending polish):** fold `Surface` into the main `KPI Card` set → one set with `Size × Trend × Surface` (18 variants). On toned surfaces the chart is always the dark tonal treatment (trend still sets the arrow/delta direction). Then delete the separate `KPI Card Tone` set. Build via the `figma-console` bridge (`figma_execute`) — reuse the tone build logic already in this project's history.
 2. **Publish the npm package** to a registry (for engineers building real apps) — optional; the connector-served code covers non-technical use.
 3. **Phase 2 — per-team KPIs:** only after the boss signs off on the look. Add teams to `content/kpis.json` with `confirmed:true`; `get_team_kpis` returns them automatically.

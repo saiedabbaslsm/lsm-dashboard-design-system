@@ -101,11 +101,15 @@ Railway / Render / Fly.io still work with the Express entry: start command `npm 
 
 ## How coworkers connect it (one time)
 
-```bash
-claude mcp add --transport http lsm-design https://HOST/mcp
-```
-Plus one line in their project `CLAUDE.md`:
-> Use the Little Star Media design system. At the start of dashboard work, call `get_onboarding`, follow `get_design_rules` / `get_visual_language`, and check `get_team_kpis`.
+**The method depends on the Claude surface — this matters.** `claude mcp add` is a **Claude Code (CLI)** command; it does NOT work in **Claude.ai** (web/desktop app), where MCP servers are added as **Connectors** in Settings. Since the audience is mostly non-technical (Claude.ai users), the primary path is the connector UI. Full instructions for every surface are in [`design-system-mcp/CONNECT.md`](../design-system-mcp/CONNECT.md). Summary:
+
+- **Team/Enterprise admin (recommended):** add it once as an org connector → appears for everyone automatically.
+- **Claude.ai individual (paid plan):** Settings → Connectors → Add custom connector → the `/mcp` URL.
+- **Claude Code:** `claude mcp add --transport http lsm-design https://HOST/mcp`.
+
+Claude **cannot** add a connector to a user's account itself — it's always a one-time human/admin action. Free-plan users can't use custom connectors.
+
+**Transport status:** confirmed working on **both** Claude Code and Claude.ai custom connectors over Streamable HTTP, with **no auth**. (An earlier worry that Claude.ai would need SSE or an OAuth handshake turned out to be unfounded — no change was needed.)
 
 ## Adding a new tool
 
