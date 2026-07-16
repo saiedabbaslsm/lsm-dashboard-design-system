@@ -29,6 +29,14 @@ Balance colour by what's visible on an **average screen** (a ~1-viewport fold), 
 
 This is how a dashboard gets colour without going bland OR garish: mostly neutral, one gold moment per screen.
 
+## Gold surfaces always take dark text
+A gold surface pairs with **`--color-on-primary-fixed` (`#111`, the same in both modes)** — never `--color-on-surface`.
+
+- Use the utility classes: **`ds-surface-brand`** (gold) or **`ds-surface-gradient`** (gold gradient). They set the background, pin the text, and expose `--ds-on` / `--ds-on-muted` for children. `KpiCard tone="brand"` does this for you.
+- **Why this bites:** `--color-on-surface` is near-black in light mode, so a gold card styled with it *looks correct* — then it flips to cream in dark mode and the text vanishes. **The bug is invisible until you toggle the theme.**
+- So: after building any toned/hero surface, **switch to dark mode and actually look at it.**
+- Same rule for anything sitting on gold: icons, deltas, and dividers all take `--ds-on` / `--ds-on-muted`, not the neutral on-surface tokens.
+
 ## Control height & padding (the most-repeated mistake)
 **Never size an inline control with vertical padding.** Writing `padding: 3px 8px` on a pill is what makes it look cramped, and it is the single most common thing that goes wrong. Every control in this system sets an **explicit height, zero vertical padding, and centres with flex**:
 
@@ -71,7 +79,11 @@ Statuses have **real tokens**. Never invent a status colour, and never hand-roll
   <!-- once, after the DOM is built: -->
   <script>lucide.createIcons();</script>
   ```
-  Size icons 16–20px; they inherit `currentColor`, so set the container's `color` to a token (usually `var(--color-on-surface-variant)`).
+  **Pin the size — `lucide.createIcons()` emits `24x24` by default**, so icons render inconsistently (mismatched check/✕ icons in a list are the classic symptom). Always ship this rule:
+  ```css
+  svg.lucide { width: 16px; height: 16px; flex: none; stroke-width: 2; vertical-align: middle; }
+  ```
+  Then override per context (KPI card icons 18px). **Every icon in the same list must be the same size** — set it in CSS, not per-icon, so they can't drift. Icons inherit `currentColor`, so set the container's `color` to a token (usually `var(--color-on-surface-variant)`; on a gold surface, `--ds-on-muted`).
 - **In a React app:** use `lucide-react` and pass the icon via the component's `icon` / `leadingIcon` prop.
 
 ## Charts & data-viz

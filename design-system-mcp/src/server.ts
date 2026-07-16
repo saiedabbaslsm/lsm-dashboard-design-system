@@ -21,6 +21,12 @@ const REQUIRED_HEADER = `/* ====================================================
       Metric → icon: revenue=dollar-sign, ROAS/growth=trending-up, CAC/cost=user-plus,
       conversion=target, users=users, orders=shopping-cart, spend=wallet.
 
+      SIZE THEM — lucide.createIcons() emits 24x24 by default, so icons come out
+      inconsistent unless you pin them. Always include this CSS:
+        svg.lucide { width:16px; height:16px; flex:none; stroke-width:2; vertical-align:middle; }
+      and override per context if needed (e.g. KPI card icons 18px). Icons in one
+      list MUST all be the same size — mismatched check/x icons are a common bug.
+
    2) LIGHT/DARK TOGGLE — put a visible toggle button in the header, wired to
       data-theme on <html>. Paste-ready:
         <button id="ds-theme-toggle" aria-label="Toggle theme" style="display:inline-flex;
@@ -32,7 +38,13 @@ const REQUIRED_HEADER = `/* ====================================================
           r.dataset.theme=r.dataset.theme==='dark'?'light':'dark';});})();</script>
       Verify BOTH modes look right (tokens re-theme automatically).
 
-   3) NEVER SIZE A PILL WITH VERTICAL PADDING — this is the most-repeated mistake.
+   3) GOLD SURFACES ALWAYS TAKE DARK TEXT — use class ds-surface-brand (or
+      ds-surface-gradient) for any gold/hero card. Do NOT hand-pick colours:
+      --color-on-surface is near-black in light so a gold card LOOKS fine, then
+      flips to cream in dark mode and becomes unreadable. The classes below pin
+      text to --color-on-primary-fixed (#111 in both modes). ALWAYS check dark mode.
+
+   4) NEVER SIZE A PILL WITH VERTICAL PADDING — this is the most-repeated mistake.
       \`padding: 3px 8px\` on a chip/pill/badge always looks cramped. Set an explicit
       height, zero vertical padding, and centre. Copy this for ANY inline pill:
         display:inline-flex; align-items:center; gap:7px;

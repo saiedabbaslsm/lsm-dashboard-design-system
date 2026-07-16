@@ -1,0 +1,33 @@
+/* Brand surface utilities.
+   A gold surface must ALWAYS carry dark text. --color-on-surface is near-black
+   in light mode, so a gold card styled with it LOOKS right — then flips to cream
+   in dark mode and becomes unreadable. The bug is invisible until you toggle.
+   Use these classes for any hand-built gold/hero surface instead of picking
+   colours yourself; they pin the text to on-primary-fixed, which is #111 in both
+   modes, and expose --ds-on / --ds-on-muted for children. */
+
+.ds-surface-brand,
+.ds-surface-gradient {
+  --ds-on: var(--color-on-primary-fixed);
+  --ds-on-muted: color-mix(in srgb, var(--color-on-primary-fixed) 60%, transparent);
+  --ds-on-border: color-mix(in srgb, var(--color-on-primary-fixed) 20%, transparent);
+  color: var(--ds-on);
+  border-color: var(--color-primary-fixed-dim);
+}
+
+.ds-surface-brand { background: var(--color-primary-fixed); }
+.ds-surface-gradient { background: var(--gradient-tonal); }
+
+/* Children inherit unless they opt out — stops a nested element quietly
+   reintroducing --color-on-surface and breaking dark mode again. */
+.ds-surface-brand :where(h1, h2, h3, h4, h5, h6, p, span, strong, em, li, td, th, dt, dd),
+.ds-surface-gradient :where(h1, h2, h3, h4, h5, h6, p, span, strong, em, li, td, th, dt, dd) {
+  color: inherit;
+}
+
+.ds-surface-brand :where(svg),
+.ds-surface-gradient :where(svg) {
+  color: inherit;
+}
+
+.ds-on-brand-muted { color: var(--ds-on-muted); }

@@ -45,7 +45,9 @@ The **distribution model**: coworkers `npm install @lsm/design-system` (versione
 - **Never size an inline control with vertical padding.** Set an explicit height + `padding: 0 Xpx` + flex centring — that's what every component here does. Badge 28px · Chip 32px · Button 32/40/48px · TextField 52px. `padding: 3px 8px` on a pill is the recurring "too tight" bug.
 - **Status vs action:** `Badge` = inert status (no border). `Chip` = clickable control (border + pointer). Never a Chip for a status.
 - **Component CSS classes are prefixed `ds-`.** Icons are never bundled — components take icon elements via `icon`/`leadingIcon` props (consumers pass `lucide-react` etc.).
-- **Everything must work in light AND dark** (`[data-theme="dark"]`).
+- **Everything must work in light AND dark** (`[data-theme="dark"]`). Some bugs only appear in dark — always toggle and look.
+- **Gold surfaces take dark text.** Use `ds-surface-brand` / `ds-surface-gradient` (or `KpiCard tone="brand"`), never `--color-on-surface` — it is near-black in light so a gold card *looks* fine, then flips to cream in dark.
+- **Pin Lucide icon size in CSS** (`svg.lucide { width:16px; height:16px }`). `lucide.createIcons()` emits 24x24 by default, so unpinned icons render at mismatched sizes.
 - **Every dashboard must include a visible light/dark mode toggle** wired to `data-theme="light"` / `data-theme="dark"` on the app root or document element.
 
 ## Build / run quick reference
