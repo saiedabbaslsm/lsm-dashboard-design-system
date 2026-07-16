@@ -84,6 +84,7 @@ Statuses have **real tokens**. Never invent a status colour, and never hand-roll
   svg.lucide { width: 16px; height: 16px; flex: none; stroke-width: 2; vertical-align: middle; }
   ```
   Then override per context (KPI card icons 18px). **Every icon in the same list must be the same size** — set it in CSS, not per-icon, so they can't drift. Icons inherit `currentColor`, so set the container's `color` to a token (usually `var(--color-on-surface-variant)`; on a gold surface, `--ds-on-muted`).
+- **An icon wrapper inside a flex row needs `flex: none`.** Without it the label shrinks the icon horizontally: it renders *squashed* (roughly half width) rather than smaller, which is easy to misread as "the icon is too small". Any `icon + label` row — buttons, pills, list items — needs it.
 - **In a React app:** use `lucide-react` and pass the icon via the component's `icon` / `leadingIcon` prop.
 
 ## Charts & data-viz

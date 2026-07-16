@@ -67,6 +67,7 @@
   color: var(--ds-on-muted);
   width: 18px;
   height: 18px;
+  flex: none;
 }
 .ds-kpi__icon > svg { width: 100%; height: 100%; }
 
@@ -81,6 +82,7 @@
   display: inline-flex;
   width: 16px;
   height: 16px;
+  flex: none;
   color: var(--ds-delta);
 }
 .ds-kpi__delta-value { color: var(--ds-delta); }

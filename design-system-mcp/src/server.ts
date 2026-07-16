@@ -26,6 +26,10 @@ const REQUIRED_HEADER = `/* ====================================================
         svg.lucide { width:16px; height:16px; flex:none; stroke-width:2; vertical-align:middle; }
       and override per context if needed (e.g. KPI card icons 18px). Icons in one
       list MUST all be the same size — mismatched check/x icons are a common bug.
+      If you wrap an icon in a flex row (icon + label), the WRAPPER needs flex:none
+      too, or the label squashes the icon to half width — it looks "too small" but
+      is actually distorted. (Components with ds- classes already size their own
+      icons; the rule above is for icons you place yourself.)
 
    2) LIGHT/DARK TOGGLE — put a visible toggle button in the header, wired to
       data-theme on <html>. Paste-ready:
