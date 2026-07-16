@@ -49,6 +49,15 @@ The user reported: **"not working on mobile"**. This was raised at the very end 
 - **Most likely suspect if it's (a) or (c):** nothing in the system currently states a **responsive rule**. `design-rules.md` and `visual-language.md` have no breakpoint guidance, so coworkers' Claude is free to emit fixed multi-column grids (e.g. the demo's `grid-template-columns: repeat(4, minmax(0,1fr))` in `demo/src/demo.css`) that never collapse on a phone. `KpiCard` itself is fill-container and fine; the **layouts around it** are the risk. If confirmed, the fix follows the established lever: add a responsive rule to `design-rules.md` **and** to the `REQUIRED_HEADER` in `design-system-mcp/src/server.ts` (that header is what actually gets followed), then redeploy.
 - The user's phrasing "**lets deploy on vercel**" in the same breath suggested they wanted to *see* it on a real URL to test on a phone — the connector is already on Vercel, so this likely meant deploying the **demo app** as a testable link. Clarify which.
 
+## Figma parity (updated 2026-07-16)
+
+Figma now matches code for the Badge work — verified by reading the variables back out of Figma and diffing against `tokens.json`: **all 17 `M3 Extended` variables identical in both modes.**
+
+- `M3 Extended` gained the **`warning`** and **`info`** families, plus five **`badgeSurface*`** fills.
+- **Why `badgeSurface*` exists:** `badge.css` used to compute its fill with `color-mix()`. A computed CSS value **cannot be a Figma variable**, so the fill would have had to be hardcoded in Figma and would not track Light/Dark. These tokens hold the exact same colours (verified: max drift 0.46/255 — invisible), so design and code share one source of truth.
+- **`Badge` component set** (`Tone: Neutral/Danger/Warning/Success/Info × Lead: Dot/Icon/None`, 15 variants) is on Page 1 in a `Badge` section at (1500, 1700). Every fill/text/dot is **variable-bound**, so it re-themes with the mode.
+- Badge type is **pinned** to label-large (14/500/20). Before this it set no `font-size` and inherited — the same component rendered at 16px in a tile and 14px in a table, which Figma could not have mirrored.
+
 ## Next tasks (suggested)
 0. **Diagnose the mobile issue above** (highest priority — it's live user feedback).
 1. **Figma consolidation (the pending polish):** fold `Surface` into the main `KPI Card` set → one set with `Size × Trend × Surface` (18 variants). On toned surfaces the chart is always the dark tonal treatment (trend still sets the arrow/delta direction). Then delete the separate `KPI Card Tone` set. Build via the `figma-console` bridge (`figma_execute`) — reuse the tone build logic already in this project's history.

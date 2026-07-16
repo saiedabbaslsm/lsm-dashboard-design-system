@@ -51,6 +51,11 @@ export const color = {
   onInfo: 'var(--color-on-info)',
   infoContainer: 'var(--color-info-container)',
   onInfoContainer: 'var(--color-on-info-container)',
+  badgeSurfaceNeutral: 'var(--color-badge-surface-neutral)',
+  badgeSurfaceDanger: 'var(--color-badge-surface-danger)',
+  badgeSurfaceWarning: 'var(--color-badge-surface-warning)',
+  badgeSurfaceSuccess: 'var(--color-badge-surface-success)',
+  badgeSurfaceInfo: 'var(--color-badge-surface-info)',
 } as const;
 
 export type ColorToken = keyof typeof color;

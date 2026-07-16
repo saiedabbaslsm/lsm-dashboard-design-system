@@ -46,6 +46,11 @@
   --color-on-info: #ffffff;
   --color-info-container: #dbe9f8;
   --color-on-info-container: #08395f;
+  --color-badge-surface-neutral: #ece9e3;
+  --color-badge-surface-danger: #f1dbdb;
+  --color-badge-surface-warning: #f4eadb;
+  --color-badge-surface-success: #e0efe4;
+  --color-badge-surface-info: #dde9f2;
   --gradient-tonal: linear-gradient(135deg, #ffce00, #f5bf2c);
   --gradient-hue-shift: linear-gradient(135deg, #f5bf2c, #000000);
   --gradient-bold: linear-gradient(135deg, #ffce00, #dedede);
@@ -112,6 +117,11 @@
   --color-on-info: #00335c;
   --color-info-container: #123a5e;
   --color-on-info-container: #cfe4fa;
+  --color-badge-surface-neutral: #15120b;
+  --color-badge-surface-danger: #251110;
+  --color-badge-surface-warning: #251c0d;
+  --color-badge-surface-success: #131f17;
+  --color-badge-surface-info: #121a22;
   --gradient-tonal: linear-gradient(135deg, #ffce00, #f5bf2c);
   --gradient-hue-shift: linear-gradient(135deg, #f5bf2c, #bebebe);
   --gradient-bold: linear-gradient(135deg, #ffce00, #dedede);
@@ -716,10 +726,17 @@
   height: 28px;
   padding: 0 12px;
   border-radius: 8px;
-  background: color-mix(in srgb, var(--ds-badge-dot) 14%, var(--color-surface-container-lowest));
+  background: var(--ds-badge-bg);
   color: var(--ds-badge-fg);
-  font-family: var(--font-sans);
   white-space: nowrap;
+  /* Pinned to the label-large role. Without this the badge inherits its
+     surroundings and the SAME component renders at different sizes per
+     context (16px in a tile, 14px in a table) — and Figma cannot mirror it. */
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.1px;
+  font-weight: 500;
 }
 
 .ds-badge__dot {
@@ -740,27 +757,34 @@
 .ds-badge__icon > svg { width: 100%; height: 100%; }
 
 /* Per-tone: `dot` is the saturated carrier, `fg` is a dark-enough text that
-   clears AA (4.5:1) against the mixed fill in BOTH themes. Verified per tone —
-   the base tone is only reused as text where it is already dark enough. */
+   clears AA (4.5:1) against the fill in BOTH themes, and `bg` is a real token.
+   The fill used to be color-mix(), but a computed CSS value cannot exist as a
+   Figma variable — these badgeSurface* tokens hold the exact same colours so
+   design and code share one source of truth and both track the mode. */
 .ds-badge[data-tone='neutral'] {
+  --ds-badge-bg: var(--color-badge-surface-neutral);
   --ds-badge-dot: var(--color-outline);
   --ds-badge-fg: var(--color-on-surface-variant);
 }
 /* danger reads its own text from `error`: onErrorContainer is #111 in the
    Figma export, and black-on-pink reads flat rather than red. */
 .ds-badge[data-tone='danger'] {
+  --ds-badge-bg: var(--color-badge-surface-danger);
   --ds-badge-dot: var(--color-error);
   --ds-badge-fg: var(--color-error);
 }
 .ds-badge[data-tone='warning'] {
+  --ds-badge-bg: var(--color-badge-surface-warning);
   --ds-badge-dot: var(--color-warning);
   --ds-badge-fg: var(--color-on-warning-container);
 }
 .ds-badge[data-tone='success'] {
+  --ds-badge-bg: var(--color-badge-surface-success);
   --ds-badge-dot: var(--color-success);
   --ds-badge-fg: var(--color-on-success-container);
 }
 .ds-badge[data-tone='info'] {
+  --ds-badge-bg: var(--color-badge-surface-info);
   --ds-badge-dot: var(--color-info);
   --ds-badge-fg: var(--color-on-info-container);
 }

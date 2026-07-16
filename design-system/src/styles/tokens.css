@@ -45,6 +45,11 @@
   --color-on-info: #ffffff;
   --color-info-container: #dbe9f8;
   --color-on-info-container: #08395f;
+  --color-badge-surface-neutral: #ece9e3;
+  --color-badge-surface-danger: #f1dbdb;
+  --color-badge-surface-warning: #f4eadb;
+  --color-badge-surface-success: #e0efe4;
+  --color-badge-surface-info: #dde9f2;
   --gradient-tonal: linear-gradient(135deg, #ffce00, #f5bf2c);
   --gradient-hue-shift: linear-gradient(135deg, #f5bf2c, #000000);
   --gradient-bold: linear-gradient(135deg, #ffce00, #dedede);
@@ -111,6 +116,11 @@
   --color-on-info: #00335c;
   --color-info-container: #123a5e;
   --color-on-info-container: #cfe4fa;
+  --color-badge-surface-neutral: #15120b;
+  --color-badge-surface-danger: #251110;
+  --color-badge-surface-warning: #251c0d;
+  --color-badge-surface-success: #131f17;
+  --color-badge-surface-info: #121a22;
   --gradient-tonal: linear-gradient(135deg, #ffce00, #f5bf2c);
   --gradient-hue-shift: linear-gradient(135deg, #f5bf2c, #bebebe);
   --gradient-bold: linear-gradient(135deg, #ffce00, #dedede);
