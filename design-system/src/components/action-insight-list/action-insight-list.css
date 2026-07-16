@@ -35,8 +35,10 @@
   --ds-action-tone: var(--color-error);
 }
 
+/* warning, not brand gold: gold is the 10% accent, so using it for a status
+   makes every "watch" item read as a hero highlight. */
 .ds-action-insight[data-tone='watch'] {
-  --ds-action-tone: var(--color-primary);
+  --ds-action-tone: var(--color-warning);
 }
 
 .ds-action-insight[data-tone='good'] {
@@ -53,11 +55,6 @@
 
 .ds-action-insight__score,
 .ds-action-insight__rank,
-.ds-action-insight__chips span {
-  border: 1px solid var(--color-outline-variant);
-  border-radius: 8px;
-}
-
 .ds-action-insight__score {
   display: flex;
   align-items: center;
@@ -115,8 +112,9 @@
   justify-content: flex-end;
 }
 
-.ds-action-insight__chips span {
-  padding: 3px 8px;
-  color: var(--color-on-surface);
-  background: var(--color-surface);
+/* Chips are Badge components — tone/fill/text come from badge.css.
+   Only the density is tightened for these dense tiles. */
+.ds-action-insight__chips .ds-badge {
+  height: 24px;
+  padding: 0 10px;
 }

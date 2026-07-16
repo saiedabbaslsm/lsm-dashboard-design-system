@@ -343,24 +343,7 @@ function SignalDashboardPreview() {
               <div className="text-body-small demo-text-muted">Ranked action cards with a status edge</div>
             </div>
           </div>
-          <div className="demo-action-stack">
-            {signalRows.map((row, index) => (
-              <article key={row.title} className="demo-action-card" data-tone={row.tone}>
-                <div className="demo-action-card__rank text-label-large">{index + 1}</div>
-                <div className="demo-action-card__body">
-                  <div className="demo-action-card__topline">
-                    <div className="text-label-large demo-action-card__impact">{row.impact}</div>
-                    <div className="demo-action-card__meta">
-                      <span className="text-label-large">{row.verb}</span>
-                      <span className="text-label-large">{row.owner}</span>
-                    </div>
-                  </div>
-                  <div className="text-title-small demo-text-strong">{row.title}</div>
-                  <div className="text-body-small demo-text-muted">{row.reason}</div>
-                </div>
-              </article>
-            ))}
-          </div>
+          <ActionInsightList items={signalRows} variant="rail" />
         </div>
       </div>
     </section>

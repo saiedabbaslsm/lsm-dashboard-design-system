@@ -1,8 +1,16 @@
 import type { HTMLAttributes } from 'react';
+import { Badge, type BadgeTone } from '../badge/badge';
 import './action-insight-list.css';
 
 export type ActionInsightTone = 'danger' | 'watch' | 'good' | 'neutral';
 export type ActionInsightVariant = 'tiles' | 'rail';
+
+const BADGE_TONE: Record<ActionInsightTone, BadgeTone> = {
+  danger: 'danger',
+  watch: 'warning',
+  good: 'success',
+  neutral: 'neutral',
+};
 
 export interface ActionInsightItem {
   id?: string;
@@ -43,8 +51,8 @@ export function ActionInsightList({
                 <div className="ds-action-insight__topline">
                   <div className="ds-action-insight__impact text-label-large">{item.impact}</div>
                   <div className="ds-action-insight__chips">
-                    <span className="text-label-large">{item.verb}</span>
-                    <span className="text-label-large">{item.owner}</span>
+                    <Badge tone={BADGE_TONE[tone]}>{item.verb}</Badge>
+                    <Badge tone="neutral" dot={false}>{item.owner}</Badge>
                   </div>
                 </div>
                 <div className="ds-action-insight__title text-title-small">{item.title}</div>
@@ -63,8 +71,8 @@ export function ActionInsightList({
             <div className="ds-action-insight__body">
               <div className="ds-action-insight__title text-title-small">{item.title}</div>
               <div className="ds-action-insight__chips">
-                <span className="text-label-large">{item.verb}</span>
-                <span className="text-label-large">{item.owner}</span>
+                <Badge tone={BADGE_TONE[tone]}>{item.verb}</Badge>
+                <Badge tone="neutral" dot={false}>{item.owner}</Badge>
               </div>
               <div className="ds-action-insight__reason text-body-small">{item.reason}</div>
             </div>
