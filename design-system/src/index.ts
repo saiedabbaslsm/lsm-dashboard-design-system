@@ -9,6 +9,8 @@ export type { TextFieldProps, TextFieldVariant } from './components/text-field/t
 
 export { Chip } from './components/chip/chip';
 export type { ChipProps, ChipType } from './components/chip/chip';
+export { Badge } from './components/badge/badge';
+export type { BadgeProps, BadgeTone } from './components/badge/badge';
 
 export { Checkbox } from './components/checkbox/checkbox';
 export type { CheckboxProps } from './components/checkbox/checkbox';

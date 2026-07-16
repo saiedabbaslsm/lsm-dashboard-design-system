@@ -29,6 +29,15 @@ Balance colour by what's visible on an **average screen** (a ~1-viewport fold), 
 
 This is how a dashboard gets colour without going bland OR garish: mostly neutral, one gold moment per screen.
 
+## Status colours & badges (RAG)
+Statuses have **real tokens**. Never invent a status colour, and never hand-roll a status pill.
+- Use the **`Badge`** component: `tone="danger"` (red) · `"warning"` (amber) · `"success"` (green) · `"info"` (blue) · `"neutral"` (round-table / N/A).
+- Tokens: `--color-error`, `--color-warning`, `--color-success`, `--color-info` — each with `on*`, `*Container`, `on*Container`.
+- **Amber is `--color-warning` (a burnt orange), NOT brand gold.** Gold is the 10% accent; if amber matched it, every amber row would read as a hero highlight. Keep status and brand visually separate.
+- **Status badges have NO border.** A border reads as "clickable". Recipe: soft tinted fill + a saturated dot + dark label text. A bordered, faint status pill is the classic tell of a hand-rolled one.
+- **Badge (inert status) vs Chip (clickable control)** — Chip has a border and a pointer cursor because it *does* something. Don't use a Chip to show a status.
+- Status colours are functional; like trend green/red they are **exempt** from the 60/30/10 balance above.
+
 ## Icons (Lucide — always include them)
 - The system uses **Lucide** icons. Never mix icon families, and don't skip icons — they're part of the look.
 - **KPI cards MUST have a top-right icon** relevant to the metric: revenue → `dollar-sign` or `wallet`; ROAS / growth → `trending-up`; CAC / cost → `user-plus` or `wallet`; conversion → `target` or `percent`; users → `users`; orders → `shopping-cart`.

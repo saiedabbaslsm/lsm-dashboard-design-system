@@ -38,6 +38,14 @@
   --color-on-success: #ffffff;
   --color-success-container: #c4f3cf;
   --color-on-success-container: #052e15;
+  --color-warning: #b06a00;
+  --color-on-warning: #ffffff;
+  --color-warning-container: #fbeecb;
+  --color-on-warning-container: #6b3f00;
+  --color-info: #0b5fa5;
+  --color-on-info: #ffffff;
+  --color-info-container: #dbe9f8;
+  --color-on-info-container: #08395f;
   --gradient-tonal: linear-gradient(135deg, #ffce00, #f5bf2c);
   --gradient-hue-shift: linear-gradient(135deg, #f5bf2c, #000000);
   --gradient-bold: linear-gradient(135deg, #ffce00, #dedede);
@@ -96,6 +104,14 @@
   --color-on-success: #00391b;
   --color-success-container: #1d5132;
   --color-on-success-container: #c4f3cf;
+  --color-warning: #ffc55c;
+  --color-on-warning: #3f2a00;
+  --color-warning-container: #4a3208;
+  --color-on-warning-container: #ffdf9e;
+  --color-info: #7ab8f0;
+  --color-on-info: #00335c;
+  --color-info-container: #123a5e;
+  --color-on-info-container: #cfe4fa;
   --gradient-tonal: linear-gradient(135deg, #ffce00, #f5bf2c);
   --gradient-hue-shift: linear-gradient(135deg, #f5bf2c, #bebebe);
   --gradient-bold: linear-gradient(135deg, #ffce00, #dedede);
@@ -650,6 +666,57 @@
   padding: 0;
 }
 
+/* src/components/badge/badge.css */
+/* Badge — inert status label. NOT a Chip: no border, no pointer, no hover.
+   A border reads as "clickable"; a badge is text that happens to have a colour. */
+
+.ds-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--ds-badge-dot) 14%, var(--color-surface-container-lowest));
+  color: var(--ds-badge-fg);
+  font-family: var(--font-sans);
+  white-space: nowrap;
+}
+
+.ds-badge__dot {
+  width: 7px;
+  height: 7px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--ds-badge-dot);
+}
+
+/* Per-tone: `dot` is the saturated carrier, `fg` is a dark-enough text that
+   clears AA (4.5:1) against the mixed fill in BOTH themes. Verified per tone —
+   the base tone is only reused as text where it is already dark enough. */
+.ds-badge[data-tone='neutral'] {
+  --ds-badge-dot: var(--color-outline);
+  --ds-badge-fg: var(--color-on-surface-variant);
+}
+/* danger reads its own text from `error`: onErrorContainer is #111 in the
+   Figma export, and black-on-pink reads flat rather than red. */
+.ds-badge[data-tone='danger'] {
+  --ds-badge-dot: var(--color-error);
+  --ds-badge-fg: var(--color-error);
+}
+.ds-badge[data-tone='warning'] {
+  --ds-badge-dot: var(--color-warning);
+  --ds-badge-fg: var(--color-on-warning-container);
+}
+.ds-badge[data-tone='success'] {
+  --ds-badge-dot: var(--color-success);
+  --ds-badge-fg: var(--color-on-success-container);
+}
+.ds-badge[data-tone='info'] {
+  --ds-badge-dot: var(--color-info);
+  --ds-badge-fg: var(--color-on-info-container);
+}
+
 /* src/components/checkbox/checkbox.css */
 /* Checkbox — mirrors the Figma `Checkbox` set (unchecked/checked/indeterminate + disabled). */
 
@@ -803,10 +870,12 @@
   text-align: left;
 }
 
-.ds-table [data-tone='muted'] { color: var(--color-on-surface-variant); }
-.ds-table [data-tone='success'] { color: var(--color-success); }
-.ds-table [data-tone='error'] { color: var(--color-error); }
-.ds-table [data-tone='primary'] { color: var(--color-primary-text); }
+/* Scoped to the cell: `data-tone` is set on the td itself. A descendant
+   selector here would recolour any toned child (e.g. a Badge in a cell). */
+.ds-table td[data-tone='muted'] { color: var(--color-on-surface-variant); }
+.ds-table td[data-tone='success'] { color: var(--color-success); }
+.ds-table td[data-tone='error'] { color: var(--color-error); }
+.ds-table td[data-tone='primary'] { color: var(--color-primary-text); }
 
 /* src/components/line-chart/line-chart.css */
 /* Line Chart — single or multi-series chart for dashboard panels. */

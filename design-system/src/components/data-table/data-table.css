@@ -54,7 +54,9 @@
   text-align: left;
 }
 
-.ds-table [data-tone='muted'] { color: var(--color-on-surface-variant); }
-.ds-table [data-tone='success'] { color: var(--color-success); }
-.ds-table [data-tone='error'] { color: var(--color-error); }
-.ds-table [data-tone='primary'] { color: var(--color-primary-text); }
+/* Scoped to the cell: `data-tone` is set on the td itself. A descendant
+   selector here would recolour any toned child (e.g. a Badge in a cell). */
+.ds-table td[data-tone='muted'] { color: var(--color-on-surface-variant); }
+.ds-table td[data-tone='success'] { color: var(--color-success); }
+.ds-table td[data-tone='error'] { color: var(--color-error); }
+.ds-table td[data-tone='primary'] { color: var(--color-primary-text); }

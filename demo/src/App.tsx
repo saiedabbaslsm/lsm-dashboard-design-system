@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import {
   ActionInsightList,
+  Badge,
   Button,
   BarChart,
   type BarChartBarSeries,
@@ -41,6 +42,7 @@ import { Dropdown } from './widgets';
 
 const campaignCols: DataTableColumn[] = [
   { key: 'name', label: 'Partner' },
+  { key: 'status', label: 'Status' },
   { key: 'owner', label: 'Owner' },
   { key: 'pipeline', label: 'Pipeline', numeric: true },
   { key: 'sla', label: 'SLA', numeric: true },
@@ -52,11 +54,11 @@ const campaignCols: DataTableColumn[] = [
   },
 ];
 const campaignRows = [
-  { name: 'Northstar Casino', owner: 'Maya', pipeline: '£142k', sla: '4h', quality: '94%' },
-  { name: 'Royal Leads', owner: 'Jonas', pipeline: '£118k', sla: '6h', quality: '91%' },
-  { name: 'Playline Media', owner: 'Amir', pipeline: '£86k', sla: '11h', quality: '83%' },
-  { name: 'Bingo Direct', owner: 'Nadia', pipeline: '£64k', sla: '18h', quality: '78%' },
-  { name: 'Slots Hub', owner: 'Lina', pipeline: '£42k', sla: '22h', quality: '74%' },
+  { name: 'Northstar Casino', status: <Badge tone="success">Green</Badge>, owner: 'Maya', pipeline: '£142k', sla: '4h', quality: '94%' },
+  { name: 'Royal Leads', status: <Badge tone="warning">Amber</Badge>, owner: 'Jonas', pipeline: '£118k', sla: '6h', quality: '91%' },
+  { name: 'Playline Media', status: <Badge tone="danger">Red</Badge>, owner: 'Amir', pipeline: '£86k', sla: '11h', quality: '83%' },
+  { name: 'Bingo Direct', status: <Badge tone="info">Informational</Badge>, owner: 'Nadia', pipeline: '£64k', sla: '18h', quality: '78%' },
+  { name: 'Slots Hub', status: <Badge tone="neutral">Round table</Badge>, owner: 'Lina', pipeline: '£42k', sla: '22h', quality: '74%' },
 ];
 
 // deterministic bounded series so charts always read well (trend is shown by the delta/color)

@@ -4,21 +4,14 @@ import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const dist = join(root, 'dist');
-const cssFiles = [
-  'src/styles/tokens.css',
-  'src/styles/typography.css',
-  'src/components/button/button.css',
-  'src/components/kpi-card/kpi-card.css',
-  'src/components/text-field/text-field.css',
-  'src/components/chip/chip.css',
-  'src/components/checkbox/checkbox.css',
-  'src/components/switch/switch.css',
-  'src/components/data-table/data-table.css',
-  'src/components/line-chart/line-chart.css',
-  'src/components/bar-chart/bar-chart.css',
-  'src/components/action-insight-list/action-insight-list.css',
-  'src/components/source-flow-map/source-flow-map.css',
-];
+// Derived from src/index.css's @import order — never hand-maintain this list.
+// A component whose CSS is imported there but missing here would build, typecheck
+// and ship with no styles at all, silently.
+const entry = readFileSync(join(root, 'src/index.css'), 'utf8');
+const cssFiles = [...entry.matchAll(/@import\s+['"](.+?)['"]\s*;/g)].map((m) =>
+  join('src', m[1].replace(/^\.\//, ''))
+);
+if (cssFiles.length === 0) throw new Error('No @import rules found in src/index.css');
 
 mkdirSync(dist, { recursive: true });
 copyFileSync(join(root, 'src/styles/tokens.css'), join(dist, 'tokens.css'));

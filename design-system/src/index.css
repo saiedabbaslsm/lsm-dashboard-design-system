@@ -5,6 +5,7 @@
 @import './components/kpi-card/kpi-card.css';
 @import './components/text-field/text-field.css';
 @import './components/chip/chip.css';
+@import './components/badge/badge.css';
 @import './components/checkbox/checkbox.css';
 @import './components/switch/switch.css';
 @import './components/data-table/data-table.css';

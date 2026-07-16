@@ -43,6 +43,14 @@ export const color = {
   onSuccess: 'var(--color-on-success)',
   successContainer: 'var(--color-success-container)',
   onSuccessContainer: 'var(--color-on-success-container)',
+  warning: 'var(--color-warning)',
+  onWarning: 'var(--color-on-warning)',
+  warningContainer: 'var(--color-warning-container)',
+  onWarningContainer: 'var(--color-on-warning-container)',
+  info: 'var(--color-info)',
+  onInfo: 'var(--color-on-info)',
+  infoContainer: 'var(--color-info-container)',
+  onInfoContainer: 'var(--color-on-info-container)',
 } as const;
 
 export type ColorToken = keyof typeof color;

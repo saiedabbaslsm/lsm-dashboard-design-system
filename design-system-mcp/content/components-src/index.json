@@ -1,6 +1,7 @@
 {
   "components": [
     "action-insight-list",
+    "badge",
     "bar-chart",
     "button",
     "checkbox",

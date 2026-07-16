@@ -30,7 +30,14 @@
       "status": "available",
       "import": "import { Chip } from '@lsm/design-system'",
       "props": "type?: assist|filter|input|suggestion; selected?: boolean; leadingIcon?: ReactNode; onRemove?: (input chips); children: label; + native button attrs",
-      "summary": "Filter/assist/input/suggestion chips. Selected shows a check + secondary-container fill."
+      "summary": "INTERACTIVE control — filter/assist/input/suggestion. Selected shows a check + secondary-container fill. It has a border and a pointer cursor because it is clickable. NEVER use a Chip to show a status (Red/Amber/Green, Active, Pending) — use Badge for that."
+    },
+    {
+      "name": "Badge",
+      "status": "available",
+      "import": "import { Badge } from '@lsm/design-system'",
+      "props": "tone?: neutral|danger|warning|success|info; dot?: boolean (default true); children: label; + native span attrs",
+      "summary": "INERT status label — RAG statuses, states, categories. Use this for any non-clickable status (Red/Amber/Green, Blocked, Informational, Round table). No border by design: a border reads as 'clickable' and is what makes hand-rolled status pills look wrong. Renders a saturated dot + a dark, AA-contrast label on a soft tinted fill; every tone is verified 4.5:1+ in BOTH light and dark. Map RAG: red -> tone=\"danger\", amber -> tone=\"warning\", green -> tone=\"success\", informational -> tone=\"info\", round-table/NA -> tone=\"neutral\". Do NOT hand-roll status pills and do NOT use brand gold for amber — tone=\"warning\" is a burnt orange chosen so status never gets mistaken for the gold 10% accent."
     },
     {
       "name": "Checkbox",
@@ -84,6 +91,8 @@
   ],
   "notes": [
     "Every color is a CSS variable (var(--color-*)); every text size is a class (.text-*). Never hardcode.",
+    "Status vs action: Badge = inert status (no border, has a dot). Chip = clickable control (has a border). Picking the wrong one is the most common mistake — a bordered status pill is the tell.",
+    "Semantic colours available as tokens: --color-error, --color-warning, --color-success, --color-info (each with on*/​*Container/on*Container). Never invent a status colour — especially amber: use --color-warning, not brand gold.",
     "Icons: use Lucide (always include them). React: pass a lucide-react element via icon/leadingIcon. HTML report: load Lucide via CDN (<script src=\"https://unpkg.com/lucide@latest\"></script>), place <i data-lucide=\"NAME\"></i>, then call lucide.createIcons(). KPI cards must have a top-right icon. See get_design_rules → Icons.",
     "For a component or pattern not here, build it from tokens + type classes per get_design_rules."
   ]
