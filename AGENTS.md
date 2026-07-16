@@ -42,6 +42,8 @@ The **distribution model**: coworkers `npm install @lsm/design-system` (versione
 - **Flat, bordered, calm.** No shadows/gradients in dashboards; separate surfaces with a 1px `--color-outline-variant` border (also required for dark mode). Full personality spec: `design-system-mcp/content/visual-language.md`.
 - **Actionable insights are not tables.** Default to `ActionInsightList` with ranked impact tiles; the left-edge colored rail is only a secondary variant.
 - **Source flows should feel like flows.** Default to `SourceFlowMap` with curved connectors and line thickness for contribution strength; rigid source grids are secondary/fallback.
+- **Never size an inline control with vertical padding.** Set an explicit height + `padding: 0 Xpx` + flex centring — that's what every component here does. Badge 28px · Chip 32px · Button 32/40/48px · TextField 52px. `padding: 3px 8px` on a pill is the recurring "too tight" bug.
+- **Status vs action:** `Badge` = inert status (no border). `Chip` = clickable control (border + pointer). Never a Chip for a status.
 - **Component CSS classes are prefixed `ds-`.** Icons are never bundled — components take icon elements via `icon`/`leadingIcon` props (consumers pass `lucide-react` etc.).
 - **Everything must work in light AND dark** (`[data-theme="dark"]`).
 - **Every dashboard must include a visible light/dark mode toggle** wired to `data-theme="light"` / `data-theme="dark"` on the app root or document element.

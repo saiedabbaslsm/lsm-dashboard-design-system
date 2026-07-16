@@ -32,6 +32,17 @@ const REQUIRED_HEADER = `/* ====================================================
           r.dataset.theme=r.dataset.theme==='dark'?'light':'dark';});})();</script>
       Verify BOTH modes look right (tokens re-theme automatically).
 
+   3) NEVER SIZE A PILL WITH VERTICAL PADDING — this is the most-repeated mistake.
+      \`padding: 3px 8px\` on a chip/pill/badge always looks cramped. Set an explicit
+      height, zero vertical padding, and centre. Copy this for ANY inline pill:
+        display:inline-flex; align-items:center; gap:7px;
+        height:28px; padding:0 12px;   /* horizontal ONLY */
+        border-radius:8px;
+      Heights: badge/status pill 28px · chip (clickable) 32px · button 32/40/48px
+      · text field 52px. Cards/panels: 16-24px internal padding, never under 12px.
+      Status pills use class .ds-badge (below) with data-tone="danger|warning|success|
+      info|neutral" — prefer that over hand-rolling. Status pills have NO border.
+
    Also load Roboto: <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
    Then put ALL the CSS below into a <style> tag (or a .css file).
    ============================================================== */

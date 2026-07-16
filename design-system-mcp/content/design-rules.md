@@ -29,6 +29,28 @@ Balance colour by what's visible on an **average screen** (a ~1-viewport fold), 
 
 This is how a dashboard gets colour without going bland OR garish: mostly neutral, one gold moment per screen.
 
+## Control height & padding (the most-repeated mistake)
+**Never size an inline control with vertical padding.** Writing `padding: 3px 8px` on a pill is what makes it look cramped, and it is the single most common thing that goes wrong. Every control in this system sets an **explicit height, zero vertical padding, and centres with flex**:
+
+```css
+display: inline-flex; align-items: center; gap: 7px;
+height: 28px;          /* explicit */
+padding: 0 12px;       /* horizontal ONLY — never a vertical value */
+```
+
+Heights to match (these are what the real components use):
+
+| Control | Height | Padding |
+|---|---|---|
+| Badge / status pill | 28px | `0 12px` |
+| Chip (clickable) | 32px | `0 14px` |
+| Button sm / md / lg | 32 / 40 / 48px | `0 16px` / `0 24px` / `0 32px` |
+| Text field | 52px | `0 16px` |
+
+- A metadata pill ("Owner: …", "Linked risk: R43") is a **`Badge`** — use `<Badge icon={…}>`, don't hand-roll it. Hand-rolling is what produces the tight padding.
+- If you must hand-roll something inline, copy the block above verbatim and set the height from the table.
+- Same idea for cards/panels: **16–24px of internal padding**, never less than 12px. When in doubt, more air.
+
 ## Status colours & badges (RAG)
 Statuses have **real tokens**. Never invent a status colour, and never hand-roll a status pill.
 - Use the **`Badge`** component: `tone="danger"` (red) · `"warning"` (amber) · `"success"` (green) · `"info"` (blue) · `"neutral"` (round-table / N/A).

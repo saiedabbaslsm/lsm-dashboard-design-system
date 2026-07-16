@@ -368,6 +368,11 @@ export default function App() {
         <div>
           <h1 className="text-headline-small demo-title">Partner operations</h1>
           <p className="text-body-medium demo-subtitle">Last 28 days · compliance, revenue, and delivery</p>
+          <div className="demo-meta-badges">
+            <Badge tone="neutral" icon={<Users size={14} />}>Owner: Omar Chin-Keow</Badge>
+            <Badge tone="neutral" icon={<ShieldCheck size={14} />}>Linked risk: R43</Badge>
+            <Badge tone="danger" icon={<AlertTriangle size={14} />}>Overall: not ready</Badge>
+          </div>
         </div>
         <div className="demo-actions">
           <label className="demo-theme-toggle text-body-medium">

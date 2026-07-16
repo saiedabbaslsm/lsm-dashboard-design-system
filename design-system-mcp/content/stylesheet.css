@@ -691,6 +691,15 @@
   background: var(--ds-badge-dot);
 }
 
+.ds-badge__icon {
+  display: inline-flex;
+  width: 14px;
+  height: 14px;
+  flex: none;
+  color: var(--ds-badge-dot);
+}
+.ds-badge__icon > svg { width: 100%; height: 100%; }
+
 /* Per-tone: `dot` is the saturated carrier, `fg` is a dark-enough text that
    clears AA (4.5:1) against the mixed fill in BOTH themes. Verified per tone —
    the base tone is only reused as text where it is already dark enough. */

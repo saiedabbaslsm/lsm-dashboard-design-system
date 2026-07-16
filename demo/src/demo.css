@@ -607,3 +607,10 @@
     min-width: 760px;
   }
 }
+
+.demo-meta-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
