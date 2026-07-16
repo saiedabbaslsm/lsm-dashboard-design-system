@@ -1165,14 +1165,15 @@
   border-inline-start-color: var(--ds-action-tone);
 }
 
-.ds-action-insight__score,
-.ds-action-insight__rank,
+/* Inner radius is 6px against the card's 8px — a square block inside a
+   rounded card reads as a stray box rather than part of it. */
 .ds-action-insight__score {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
   padding: 8px 10px;
+  border-radius: 6px;
   color: var(--color-on-surface);
   background: color-mix(in srgb, var(--ds-action-tone) 10%, var(--color-surface-container-lowest));
 }
@@ -1182,6 +1183,7 @@
   place-items: center;
   inline-size: 30px;
   block-size: 30px;
+  border-radius: 9999px;
   color: var(--color-on-surface);
   background: color-mix(in srgb, var(--color-on-surface) 5%, var(--color-surface-container-lowest));
 }
