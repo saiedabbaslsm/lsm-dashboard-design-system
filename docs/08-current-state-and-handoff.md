@@ -8,11 +8,11 @@ Read this to pick up the project where it stands. It captures what's **live**, h
 - **The npm package builds** to `design-system/dist/` (tsup). Not yet published to a registry — but the connector serves the component *code* + stylesheet directly, so coworkers don't need to install anything.
 - **Figma** has all components incl. `KPI Card Tone` and the new `Badge` set, and is **verified in token parity with code** (see "Figma parity" below).
 
-### ⚠️ Uncommitted state as of 2026-07-16 — READ FIRST
+### State as of 2026-07-16
 
-**`main` is pushed up to `e8eb075`. Everything after that is committed LOCALLY ONLY and is NOT live.** The last deploy (`e8eb075`) shipped the Badge/padding/gold-surface/icon work. The commit after it (`9d6e2ff`, Figma parity: `badgeSurface*` tokens + pinned Badge type) is **local, unpushed, and undeployed** — plus whatever this documentation commit adds.
+**Everything is pushed and deployed.** `main` is at `693bc08` on GitHub, and production is `READY` on the same SHA (verified: 18/18 checks against the live `/mcp`). Nothing is sitting local.
 
-To ship it: `git push` **then** `npx vercel deploy --prod` from `design-system-mcp/`. Both. Credentials at `~/.lsm-design-system/credentials.md` (both tokens are filled in and verified working). Confirm with the user before a production deploy.
+**Remember: push ≠ deploy.** The Vercel project is not git-connected, so any future change needs BOTH `git push` AND `npx vercel deploy --prod` from `design-system-mcp/`. Credentials at `~/.lsm-design-system/credentials.md` (both tokens filled in and verified). Confirm with the user before a production deploy.
 
 ## How it's actually delivered (important — this evolved)
 
