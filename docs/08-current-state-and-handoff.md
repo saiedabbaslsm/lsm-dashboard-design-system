@@ -6,7 +6,13 @@ Read this to pick up the project where it stands. It captures what's **live**, h
 
 - **The MCP connector is deployed and in use.** URL: `https://design-system-mcp-two.vercel.app/mcp` (Vercel project `design-system-mcp`). Coworkers have connected it and built real dashboards.
 - **The npm package builds** to `design-system/dist/` (tsup). Not yet published to a registry — but the connector serves the component *code* + stylesheet directly, so coworkers don't need to install anything.
-- **Figma** has all components incl. a new `KPI Card Tone` set (see "Colour / tone" below).
+- **Figma** has all components incl. `KPI Card Tone` and the new `Badge` set, and is **verified in token parity with code** (see "Figma parity" below).
+
+### ⚠️ Uncommitted state as of 2026-07-16 — READ FIRST
+
+**`main` is pushed up to `e8eb075`. Everything after that is committed LOCALLY ONLY and is NOT live.** The last deploy (`e8eb075`) shipped the Badge/padding/gold-surface/icon work. The commit after it (`9d6e2ff`, Figma parity: `badgeSurface*` tokens + pinned Badge type) is **local, unpushed, and undeployed** — plus whatever this documentation commit adds.
+
+To ship it: `git push` **then** `npx vercel deploy --prod` from `design-system-mcp/`. Both. Credentials at `~/.lsm-design-system/credentials.md` (both tokens are filled in and verified working). Confirm with the user before a production deploy.
 
 ## How it's actually delivered (important — this evolved)
 
@@ -41,6 +47,21 @@ Coworker feedback: dashboards came out **bland** when there was no trend/chart t
 - Multi-line charts (actual vs target) must be **plain lines, no area fill** (area fill is single-series only).
 - Scope: the system is for **dashboards/reports/apps**. For social/print, use brand colours + fonts but NOT the dashboard rules — there's a scope note in `onboarding.md`. A dedicated social/brand kit is a possible future track (the `--gradient-*` tokens are for exactly that).
 
+### The single most useful lesson (2026-07-16 feedback round)
+
+Five separate pieces of coworker feedback — faint status chips, cramped padding, white text on gold in dark mode, mismatched icon sizes, a bordered pill — all had **the same root cause: the system failed to *say* something.** Their Claude was not being careless; it improvised precisely where we left a gap, and it improvised badly in the same predictable places:
+
+| Symptom reported | Actual gap |
+|---|---|
+| Status chips look faint + have an ugly stroke | No status component existed → `Chip` (interactive, bordered) got borrowed. No amber/blue tokens at all. |
+| Padding too tight, "again and again" | Every component already used `height + padding: 0 Xpx`, but **that convention was written down nowhere**. |
+| White text on the gold card in dark mode | `KpiCard tone="brand"` solved it *inside the component*; no reusable utility existed for a hand-built gold surface. |
+| Check/✕ icons different sizes | The rule said "size icons 16–20px" but gave **no mechanism**, and `lucide.createIcons()` emits 24×24. |
+
+**So when feedback arrives, ask "what didn't we say?" before "what did it do wrong?"** The fix is usually (a) ship the missing component, and (b) put the rule in `get_stylesheet`'s `REQUIRED_HEADER` — the one thing their Claude always reads. Rules in `onboarding.md` alone get skipped.
+
+Corollary: **a bug that only appears in dark mode will ship.** `--color-on-surface` is near-black in light, so a gold card styled with it looks perfect until someone toggles. Always check both modes.
+
 ## Open issue — mobile (raised, NOT yet diagnosed)
 
 The user reported: **"not working on mobile"**. This was raised at the very end of the last session and **no diagnosis or fix was done** — do not assume the cause. Before touching anything, establish *what* is broken and *where*:
@@ -59,11 +80,24 @@ Figma now matches code for the Badge work — verified by reading the variables 
 - Badge type is **pinned** to label-large (14/500/20). Before this it set no `font-size` and inherited — the same component rendered at 16px in a tile and 14px in a table, which Figma could not have mirrored.
 
 ## Next tasks (suggested)
-0. **Diagnose the mobile issue above** (highest priority — it's live user feedback).
-1. **Figma consolidation (the pending polish):** fold `Surface` into the main `KPI Card` set → one set with `Size × Trend × Surface` (18 variants). On toned surfaces the chart is always the dark tonal treatment (trend still sets the arrow/delta direction). Then delete the separate `KPI Card Tone` set. Build via the `figma-console` bridge (`figma_execute`) — reuse the tone build logic already in this project's history.
-2. **Publish the npm package** to a registry (for engineers building real apps) — optional; the connector-served code covers non-technical use.
-3. **Phase 2 — per-team KPIs:** only after the boss signs off on the look. Add teams to `content/kpis.json` with `confirmed:true`; `get_team_kpis` returns them automatically.
-4. **Rotate the exposed tokens** and update `~/.lsm-design-system/credentials.md`.
+0. **Push + deploy the local commits** (see the uncommitted-state warning at the top). Nothing after `e8eb075` is live.
+1. **Diagnose the mobile issue above** — live user feedback, still undiagnosed. Get a screenshot first; don't assume the cause.
+2. **Figma: remap `ActionInsightList`'s `watch` tone.** Code now uses `--color-warning`; Figma may still imply gold. Small, but it's live drift.
+3. **Figma consolidation (the pending polish):** fold `Surface` into the main `KPI Card` set → one set with `Size × Trend × Surface` (18 variants). On toned surfaces the chart is always the dark tonal treatment (trend still sets the arrow/delta direction). Then delete the separate `KPI Card Tone` set. Build via the `figma-console` bridge (`figma_execute`) — reuse the tone build logic already in this project's history.
+4. **Consider connecting Vercel to GitHub** so `main` auto-deploys. The user already *believes* this is how it works (it isn't — see [docs/02](02-architecture.md)), which makes "pushed but forgot to deploy" a standing trap. Wiring it up would make the mental model true.
+5. **Narrow the GitHub PAT.** It currently carries `admin:org`, `user`, `write:packages`, `codespace`, `project` and repo `admin` when it only needs `repo`. Blast radius is the whole org if it leaks.
+6. **Publish the npm package** to a registry (for engineers building real apps) — optional; the connector-served code covers non-technical use.
+7. **Phase 2 — per-team KPIs:** only after the boss signs off on the look. Add teams to `content/kpis.json` with `confirmed:true`; `get_team_kpis` returns them automatically.
+
+## Verification habits that caught real bugs (worth copying)
+
+The visual work in this project is easy to get wrong and easy to *believe* is right. What actually worked:
+
+- **Read computed styles, not screenshots.** `getComputedStyle` in the demo caught the squashed icons (8.6 × 17.5, not "small"), the three different Badge font sizes, and the `DataTable` selector collision. A screenshot would have shown none of them clearly.
+- **Assert on both themes programmatically.** Toggle `data-theme` and diff — that's how the gold-surface bug was proven (`rgb(12,1,0)` in light vs `rgb(242,220,172)` in dark from the *same* CSS).
+- **Diff Figma against `tokens.json` by reading Figma back.** Writing the same value twice isn't proof.
+- **Verify the live connector, not the local file.** `design-system-mcp/` content is only live after a CLI deploy. There's a working script pattern in the session history: POST JSON-RPC to `/mcp`, `initialize`, then `tools/call`, and regex the returned text.
+  - ⚠️ **JSON-RPC ids must be an integer or string.** A `Math.random()` id gets rejected with `Parse error: Invalid JSON-RPC message`, and if your code reads `result.content[0].text` with a fallback it will silently report the error text as tool output — i.e. a green deploy looks like a total failure. This cost real time; use `++counter`.
 
 ## Map of the repo (quick)
 - `design-system/` — the code package (tokens pipeline + React components + `dist/`).
@@ -71,3 +105,7 @@ Figma now matches code for the Badge work — verified by reading the variables 
 - `demo/` — a Vite app that consumes the package like a coworker (a toned hero card is wired in the signal-KPIs row as a live example).
 - `docs/` + `AGENTS.md` — this documentation.
 - Figma file `RoiwgeonsmbhJV9sCyFUZk` — design source of truth.
+
+**Run the demo to verify anything visual:** `cd demo && npm run dev` → `http://localhost:5173` (NOT the static `index.html` — it's an empty `#root`). The demo aliases `@lsm/design-system` to `../design-system/dist`, so **run `npm run build` in `design-system/` after changing the package** or the demo serves stale code. HMR often fails across a `dist` rebuild — hard-reload.
+
+**The demo is also the regression suite.** It renders every component, both `ActionInsightList` variants, all five `Badge` tones, and both themes. When `rail` was *not* rendered there, it silently rotted (its chips drifted and its rank lost its radius). **If you add a variant, render it in the demo** — unexercised code is where the bugs hide.

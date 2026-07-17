@@ -1,5 +1,7 @@
 # 06 — Status, roadmap & known gaps
 
+> ⚠️ **This file lags reality. [docs/08](08-current-state-and-handoff.md) is the current truth.** The connector is live and in daily use; the "not deployed" gap below is stale and has been corrected in place.
+
 ## Status (what's done)
 
 - ✅ **Figma design system** — tokens (M3 Color/Fixed/Extended/Gradients), 30 Roboto text styles (M3 expressive, standard + emphasized), and 6 component sets (Button, KPI Card, Text Field, Checkbox, Switch, Chip). A "Sample Dashboard" section assembled from instances.
@@ -11,7 +13,7 @@
 
 ## Known gaps / bugs
 
-1. **Not published / not deployed.** No `git init` yet; package isn't on GitHub Packages; MCP isn't hosted. These are maintainer actions (and were intentionally left to the user).
+1. ~~**Not published / not deployed.**~~ **OUTDATED.** The repo is on GitHub (`saiedabbaslsm/lsm-dashboard-design-system`) and the MCP is live at `https://design-system-mcp-two.vercel.app/mcp`. The package is still unpublished, which is fine — the connector serves the real CSS + component code, so the (mostly non-technical) audience installs nothing. **Deploy is CLI-only; pushing does not deploy** — see [docs/02](02-architecture.md#deployment--hosting-live--this-section-was-written-before-launch).
 2. **Per-team KPIs are placeholders (Phase 1).** `content/kpis.json` is generic on purpose. Do NOT fill in real team KPIs until Phase 2 is explicitly started.
 3. **Stray root files** — `button.css` and `m3-tokens (1).css` at the repo root are early scratch artifacts, superseded by `design-system/`. Safe to delete.
 4. **Icons decoupled by design** — components take icon elements as props; the package intentionally has no icon dependency. Consumers use `lucide-react` (the Figma icons are Lucide too).
@@ -27,9 +29,10 @@
 
 **Go live:**
 - [x] Add a `tsup` build for `@lsm/design-system`.
-- [ ] `git init` the repos; publish `@lsm/design-system` to GitHub Packages.
-- [ ] Deploy the MCP to an always-on host; get the public `/mcp` URL.
-- [ ] Onboard 1–2 coworkers, run a real dashboard build, get the boss's sign-off on the look.
+- [x] `git init` + push to GitHub. (`publish @lsm/design-system` — deferred, not needed for the current audience.)
+- [x] Deploy the MCP to an always-on host; public URL is `https://design-system-mcp-two.vercel.app/mcp`.
+- [x] Onboard coworkers and run real dashboard builds — **done, and the feedback drove most of the current rules** (see [docs/08](08-current-state-and-handoff.md#what-real-usage-taught-us-dont-re-learn-these)).
+- [ ] Get the boss's sign-off on the look → this is the gate for **Phase 2 (per-team KPIs)**.
 
 **Phase 2 — KPI governance (only after sign-off):**
 - [ ] With each team lead, define their 3–5 approved core KPIs.

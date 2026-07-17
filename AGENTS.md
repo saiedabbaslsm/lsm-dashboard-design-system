@@ -3,8 +3,11 @@
 > Entrypoint for any coding agent (Codex, Claude, etc.) working in this repo.
 > Read this file first, then the relevant file in `docs/`.
 
-> **⚡ Current live state → read [docs/08-current-state-and-handoff.md](docs/08-current-state-and-handoff.md) first.** The MCP connector is **deployed and in use** at `https://design-system-mcp-two.vercel.app/mcp`. Docs 01–06 describe the original design; docs/08 is the current truth (delivery model, the tone/60/30/10 colour work, how to operate/redeploy, rollout learnings, next tasks).
-> **Secrets (GitHub PAT + Vercel token) for push/deploy are NOT in this repo** — they live privately at `~/.lsm-design-system/credentials.md` (outside git). If you need to push or deploy and can't find them, ask the user.
+> **⚡ Current live state → read [docs/08-current-state-and-handoff.md](docs/08-current-state-and-handoff.md) first.** The MCP connector is **deployed and in use** at `https://design-system-mcp-two.vercel.app/mcp`. Docs 01–06 describe the original design; docs/08 is the current truth (delivery model, the colour/tone work, how to operate/redeploy, rollout learnings, next tasks). docs/08 also lists **local commits that are not yet live**.
+>
+> **Push ≠ deploy.** The Vercel project is **not** connected to GitHub (verified: `link: NONE`, every deploy is `source=cli`). Pushing to `main` changes nothing for coworkers. You must **also** run `npx vercel deploy --prod` from `design-system-mcp/`. It *looks* git-connected because the CLI stamps local git metadata onto each deploy.
+>
+> **Secrets (GitHub PAT + Vercel token) for push/deploy are NOT in this repo** — they live privately at `~/.lsm-design-system/credentials.md` (outside git, mode 600; both filled in and verified). Read them from there; never inline one into a tracked file, a commit message, or `git remote set-url`. **Confirm with the user before any production deploy.**
 
 ## What this project is
 
@@ -68,6 +71,9 @@ npm run dev                 # http://localhost:5173  (consumes the package via a
 ```
 
 ## Gotchas you will hit (see docs/05 for the full list)
-- Figma plugin API: `setBoundVariableForPaint` wipes paint `opacity` (use node opacity); `node.resize()` flips auto-layout sizing to FIXED; `vectorPaths` needs absolute SVG commands; Figma nodes are non-extensible (`node._x = ...` throws).
+- Figma plugin API: `figma.currentPage = p` throws → use `await figma.setCurrentPageAsync(p)`; `setBoundVariableForPaint` wipes paint `opacity` (use node opacity); `node.resize()` flips auto-layout sizing to FIXED; `vectorPaths` needs absolute SVG commands; Figma nodes are non-extensible (`node._x = ...` throws).
 - Token CSS var names are `--color-{kebab}` (Figma var `onPrimary` → `--color-on-primary`).
+- **`dist/index.css` is assembled from `src/index.css`'s `@import` order.** Add a component's CSS there or it builds, typechecks, and ships with **no styles, silently**.
+- **A `color-mix()` can't be a Figma variable.** If code computes a colour Figma must mirror, promote it to a token (that's why `badgeSurface*` exists).
+- **Verify visual work with computed styles, not screenshots** (`getComputedStyle` in the demo at `localhost:5173`), and **check both themes** — several bugs here only appear in dark.
 - Ignore the two stray root files `button.css` and `m3-tokens (1).css` — early scratch, superseded by `design-system/`.

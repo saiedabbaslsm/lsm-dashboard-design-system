@@ -13,6 +13,10 @@ design-system/
   scripts/
     build-tokens.mjs        tokens.json → CSS + TS  (npm run build:tokens)
     copy-build-assets.mjs   copies standalone CSS exports + assembles dist/index.css
+                            NOTE: the file list is DERIVED from src/index.css's @import
+                            order. It used to be hand-maintained, which meant a new
+                            component could build + typecheck clean and ship with NO
+                            styles, silently. Add a component by adding its @import.
   tsup.config.ts            src/index.ts → dist/index.js / index.cjs / index.d.ts
   src/
     css.d.ts                declare module '*.css'  (so tsc accepts css imports)
@@ -21,12 +25,15 @@ design-system/
     styles/
       tokens.css            GENERATED — CSS variables (light/dark/fixed/gradients)
       typography.css        GENERATED — .text-* type classes
+      surfaces.css          hand-written — .ds-surface-brand / .ds-surface-gradient
+                            utilities (gold surfaces + guaranteed dark text)
     tokens.ts               GENERATED — `color` map: { primary: 'var(--color-primary)', … }
     components/
       button/               button.tsx + button.css
       kpi-card/             kpi-card.tsx + kpi-card.css
       text-field/          text-field.tsx + text-field.css
       chip/                 chip.tsx + chip.css
+      badge/               badge.tsx + badge.css
       checkbox/            checkbox.tsx + checkbox.css
       switch/              switch.tsx + switch.css
       data-table/          data-table.tsx + data-table.css
@@ -49,7 +56,9 @@ Source: `tokens/tokens.json`, four Figma collections:
 
 - **M3 Color** (modes: Light, Dark) — 29 semantic roles: `primary`, `onPrimary`, `primaryContainer`, `onPrimaryContainer`, `primaryText`, `secondary`/`onSecondary`/`secondaryContainer`/`onSecondaryContainer`, `error` family, full `surface`/`surfaceDim`/`surfaceBright`/`surfaceContainerLowest…Highest`, `onSurface`, `onSurfaceVariant`, `outline`, `outlineVariant`, `inverseSurface`, `inverseOnSurface`, `inversePrimary`, `scrim`.
 - **M3 Fixed** (single mode) — 9 theme-independent: `primaryFixed`, `primaryFixedDim`, `onPrimaryFixed`, `onPrimaryFixedVariant`, `secondaryFixed`, `secondaryFixedDim`, `onSecondaryFixed`, `onSecondaryFixedVariant`, `boldSurfaceContainer`.
-- **M3 Extended** (Light, Dark) — the `success`, `warning`, and `info` families (each `x` / `onX` / `xContainer` / `onXContainer`). **Added by us**, not from the original Figma export, because dashboards need green up / red down and full RAG + informational statuses. Kept separate so `M3 Color` stays a mirror of the Figma export. `warning` is a **burnt orange** (`#b06a00`), deliberately *not* brand gold — amber statuses must not be mistaken for the gold 10% accent. Every `Badge` tone is verified ≥4.5:1 in both themes.
+- **M3 Extended** (Light, Dark) — **17 vars, all added by us**, kept separate so `M3 Color` stays a mirror of the Figma export:
+  - `success` / `warning` / `info` families (each `x` / `onX` / `xContainer` / `onXContainer`) — dashboards need green up / red down plus full RAG + informational statuses. `warning` is a **burnt orange** (`#b06a00`), deliberately *not* brand gold, so an amber status is never mistaken for the gold 10% accent. Every `Badge` tone is verified ≥4.5:1 in both themes.
+  - `badgeSurfaceNeutral|Danger|Warning|Success|Info` — the `Badge` fills. **Why they exist:** `badge.css` originally computed the fill with `color-mix()`, and **a computed CSS value cannot be a Figma variable** — Figma would have needed a hardcoded fill that ignores Light/Dark. These hold the identical colours (max drift 0.46/255 when promoted), so design and code share one source of truth. Don't "simplify" them back into a `color-mix()`.
 - **M3 Gradients** (Light, Dark) — 11 STRING tokens (`gradientTonal`, `gradientVibrant`, `onGradient*`, `gradientAngle`). Figma variables can't hold gradient fills, so they're stored as CSS strings. Use sparingly (marketing, not dashboards).
 
 **Naming:** CSS var = `--color-{kebab(name)}` (e.g. `onPrimary` → `--color-on-primary`; `surfaceContainerLowest` → `--color-surface-container-lowest`). Gradient vars drop the `color-` prefix (`--gradient-vibrant`, `--on-gradient-tonal`). Light values go in `:root, [data-theme='light']`; dark in `[data-theme='dark']`; fixed in `:root`.
@@ -70,7 +79,7 @@ All are token-driven, typed, class-prefixed `ds-`, and take icons as props (no i
 | `KpiCard` | `label`, `value`, `delta?`, `caption?='vs last month'`, `trend?` (up\|down\|flat), `size?` (default\|compact), `selected?`, `icon?`, `data?: number[]`, + native div attrs | Responsive/fill-container by default. `default` renders a bottom SVG area chart from `data`; `compact` has no chart (3–4 per row). Trend sets delta color (success/error/neutral) + arrow. Native div props make it usable as an interactive card with `onClick`, `role`, `tabIndex`, and ARIA attrs. |
 | `TextField` | `label?`, `helperText?`, `variant?` (filled\|outlined), `error?`, `leadingIcon?`, + native input attrs | Focus state via `:focus-within`; error shows red border/helper + a built-in alert icon. |
 | `Chip` | `type?` (assist\|filter\|input\|suggestion), `selected?`, `leadingIcon?`, `onRemove?`, children=label | **Interactive** control — bordered, pointer cursor. Selected → `secondaryContainer` fill + built-in check icon; `input` shows a trailing ×. Never use for a status. |
-| `Badge` | `tone?` (neutral\|danger\|warning\|success\|info), `dot?`=true, `icon?` (leading Lucide icon, replaces the dot), children=label, + native span attrs | **Inert** status label (RAG, states). Deliberately borderless — a border reads as clickable. Soft tinted fill + saturated dot + dark AA-contrast text; per-tone `--ds-badge-dot`/`--ds-badge-fg` verified ≥4.5:1 in both themes. `danger` takes its text from `error` because `onErrorContainer` is `#111` in the Figma export. |
+| `Badge` | `tone?` (neutral\|danger\|warning\|success\|info), `dot?`=true, `icon?` (leading Lucide icon, replaces the dot), children=label, + native span attrs | **Inert** status label (RAG, states) and metadata pills. Deliberately borderless — a border reads as clickable. Fill = `badgeSurface*` token, + saturated dot + dark AA-contrast text; per-tone `--ds-badge-bg`/`--ds-badge-dot`/`--ds-badge-fg`, all verified ≥4.5:1 in both themes. `danger` takes its text from `error` because `onErrorContainer` is `#111` in the Figma export. **Type is pinned** (label-large 14/500/20) — it must not inherit, or the same badge renders at different sizes per context and Figma can't mirror it. |
 | `Checkbox` | `label?`, `checked?`, `indeterminate?`, `disabled?`, `onChange?` | Real hidden `<input>`; `indeterminate` set via ref/effect; check/minus are inline SVG shown by CSS state. |
 | `Switch` | native input attrs (`checked`, `onChange`, `disabled`) | Standalone control (compose your own label row). `role="switch"`. |
 | `DataTable` | `columns`, `rows`, `className?` | Alternating token-surface rows for readability, numeric alignment, tone states (`success`/`error`/etc.), horizontal overflow containment. |
@@ -80,6 +89,19 @@ All are token-driven, typed, class-prefixed `ds-`, and take icons as props (no i
 | `SourceFlowMap` | `sources`, `order`, `goal`, `badge?`, + native div attrs | Curved source-to-order-to-goal map. Connector thickness encodes source strength/contribution, making the flow easier to understand than rigid node grids. |
 
 State/interaction icons inside components (trend arrows, check, ×, alert) are **inline SVG using lucide paths**. Header/leading icons are **passed in** by the consumer.
+
+## Component conventions (non-obvious — read before adding one)
+
+These were all learned by shipping bugs. They're invariants, not preferences.
+
+1. **Size controls with an explicit height, never vertical padding.** Every control does `height: Npx; padding: 0 Xpx;` + flex centring. Badge 28 · Chip 32 · Button 32/40/48 · TextField 52. `padding: 3px 8px` on a pill is the recurring "too tight" bug.
+2. **Icon wrappers need `flex: none`.** Without it a sibling label shrinks the wrapper and the icon renders **squashed** (~half width) rather than smaller — which reads as "the icon is too small" and gets misdiagnosed. Bit `.ds-btn__icon`; `.ds-kpi__icon` had it latent.
+3. **Pin type on any component with a fixed spec.** No `font-size` means it inherits, and the same component renders differently per context (`Badge` was 16px in a tile, 14px in a table). It also makes Figma parity impossible.
+4. **Scope attribute selectors to the element that carries them.** `DataTable` used `.ds-table [data-tone='success']` (descendant) and silently recoloured any `Badge` in a cell. It's `td[data-tone=…]` now. Several components use `data-tone` — assume collisions.
+5. **A gold surface always takes `--color-on-primary-fixed`, never `--color-on-surface`.** `on-surface` is near-black in light so a gold card *looks* right, then flips to cream in dark. Use `ds-surface-brand` / `ds-surface-gradient`. **This class of bug is invisible in light mode — always toggle.**
+6. **Never use brand gold as a status colour.** Gold is the 10% accent; amber status is `--color-warning` (burnt orange). `ActionInsightList`'s `watch` tone used `--color-primary` and made every "watch" item look like a hero.
+7. **Prefer a token over a computed colour.** See `badgeSurface*` above — `color-mix()` can't cross into Figma.
+8. **Inert vs interactive:** `Badge` = status, no border. `Chip` = control, border + pointer. A bordered status pill is the tell that someone reached for the wrong one.
 
 ## Install & use (consumer)
 

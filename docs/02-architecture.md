@@ -50,7 +50,13 @@ The tokens are **generated**, not hand-written. `design-system/tokens/tokens.jso
 
 This keeps the code palette identical to the design palette by construction. (Typography roles are defined in the build script, since M3 text styles aren't Figma variables.)
 
-## Deployment / hosting (not done yet)
+## Deployment / hosting (LIVE — this section was written before launch)
 
-- **Package:** publish to **GitHub Packages** (`publishConfig.registry` is set). Needs `git init` + `npm publish` (a maintainer action).
-- **MCP:** it's a long-lived Streamable-HTTP Node server (`tsx src/http.ts`). Deploy to an **always-on host** (Railway / Render / Fly.io). For Vercel specifically, wrap with `mcp-handler` in a Next.js route instead (Vercel serverless doesn't love long-lived streaming). See [docs/04-mcp-server.md](04-mcp-server.md).
+> ⚠️ The rest of this doc describes the **original design**. Two things changed in practice — see [docs/08](08-current-state-and-handoff.md) for the current truth.
+
+- **MCP: deployed and in use** at `https://design-system-mcp-two.vercel.app/mcp` (Vercel project `design-system-mcp`). Deployed **from the CLI** (`npx vercel deploy --prod --token …`).
+  - **The Vercel project is NOT connected to GitHub.** Verified against the API: `link: NONE`, and every deployment is `source=cli`. **Pushing to `main` does not deploy anything.** It *looks* connected because the CLI attaches your local git metadata (`gitCommitMessage`, `gitCommitSha`) to each deploy, so the dashboard shows a commit next to it. The tell is `gitDirty: 1` — it deploys the working tree, not the commit.
+  - Push and deploy are **two separate steps**. Doing one without the other is the most common way changes fail to reach coworkers.
+- **Package:** still not published to a registry. This turned out not to block anyone — the connector serves the **real compiled CSS and component source** directly, so the mostly non-technical audience never installs anything.
+
+**The distribution model in practice diverged from the table above:** the npm channel is largely unused, and the MCP carries *both* the guidance **and** the look (`get_stylesheet` returns the real `dist/index.css`). See [docs/08](08-current-state-and-handoff.md#how-its-actually-delivered-important--this-evolved).
