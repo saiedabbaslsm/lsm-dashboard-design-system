@@ -10,7 +10,7 @@ Read this to pick up the project where it stands. It captures what's **live**, h
 
 ### State as of 2026-07-16
 
-**Everything is pushed and deployed.** `main` is at `693bc08` on GitHub, and production is `READY` on the same SHA (verified: 18/18 checks against the live `/mcp`). Nothing is sitting local.
+**Everything is pushed and deployed.** `main` is at `0aab8e0` on GitHub, and production is `READY` on the same SHA (verified: 20/20 checks against the live `/mcp`, including regression checks on the earlier rounds). Nothing is sitting local.
 
 **Remember: push ≠ deploy.** The Vercel project is not git-connected, so any future change needs BOTH `git push` AND `npx vercel deploy --prod` from `design-system-mcp/`. Credentials at `~/.lsm-design-system/credentials.md` (both tokens filled in and verified). Confirm with the user before a production deploy.
 
@@ -61,6 +61,27 @@ Five separate pieces of coworker feedback — faint status chips, cramped paddin
 **So when feedback arrives, ask "what didn't we say?" before "what did it do wrong?"** The fix is usually (a) ship the missing component, and (b) put the rule in `get_stylesheet`'s `REQUIRED_HEADER` — the one thing their Claude always reads. Rules in `onboarding.md` alone get skipped.
 
 Corollary: **a bug that only appears in dark mode will ship.** `--color-on-surface` is near-black in light, so a gold card styled with it looks perfect until someone toggles. Always check both modes.
+
+## UX rules round (2026-07-20)
+
+Feedback: a long report looked good but was "page after page with no way to get around it". Same root cause as the visual rounds — **every rule we had was about appearance; nothing covered whether the artifact is usable once it's longer than a screen.**
+
+Six rules added to `design-rules.md`, sourced from the user's UX Strategy reference and filtered to this project's scope. Each has an explicit **anti-rule** so it doesn't over-fire:
+
+- **Structure & navigation** — triggered on **section count** (countable while writing) rather than "is it long" (a judgement the model gets wrong both ways). 1–3 → none · 4–7 → contents block · 8+ → sticky sidebar. Heading hierarchy is folded in as a *precondition*, since the contents block is generated from headings. Anti-rule: never on a single-screen dashboard.
+- **Line length** 65–75ch (`.ds-prose`) — excludes tables/charts/KPI rows.
+- **Empty & no-data** — never a blank box; never `0`/`NaN` for unknown; muted colour, not error.
+- **Base-8 spacing** (`--space-1..9`) — we had control heights but no spacing scale.
+- **Density cap** 5–7 tiles per view, group beyond.
+- **Verb + noun button labels**; destructive styling on the final confirm only.
+
+Backed by real CSS in `design-system/src/styles/layout.css`. **This is the pattern that works:** a rule with a class behind it gets followed; a rule that is only prose gets skipped.
+
+**What was deliberately excluded** from the source doc, and why it matters: mobile-app patterns (bottom nav, thumb zones, swipe — actively wrong for desktop dashboards), modals/focus traps, onboarding/paywall states, and every QA item Claude cannot perform in a chat (cross-browser, Lighthouse, real-device and screen-reader testing). **Unactionable rules teach the model that the rules list contains things you skip**, which weakens the rules that are actionable.
+
+**Still on the table, deferred by the user:** "colour is never the only signal" (pair colour with icon/label). We comply by accident in `Badge` and multi-line charts but not as a principle — a bar chart or colour-only status column still fails it.
+
+**Header note:** `REQUIRED_HEADER` grew 3,674 → 4,342 chars with item 5. If the earlier mandates start slipping, item 5 is the first candidate to pull back to `design-rules.md` only.
 
 ## Open issue — mobile (raised, NOT yet diagnosed)
 
