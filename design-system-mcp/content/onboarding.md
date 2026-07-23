@@ -28,6 +28,8 @@ This system is tuned for **reports, dashboards, and data apps** (internal analyt
 ### A) A one-off report or dashboard page (most common)
 Produce a **self-contained HTML file**: put the `get_stylesheet` CSS in a `<style>` tag, add the Roboto link, and write the body using the component markup + `ds-` classes (translate the JSX from `get_component_code` into HTML — the class names are the same). No install, no build, no dependencies. Open it in a browser and it looks exactly like the system. Ideal when someone pastes data and asks for a report.
 
+> **If it's a long report, navigation is not optional.** A real complaint from a coworker: "page after page of content with no way to get around it." Count your top-level sections — 4–7 gets a contents block of jump links, 8+ gets a sticky sidebar, and anything over ~3 screens opens with a 3–5 bullet summary. Cap body text with `class="ds-prose"`. Full rule: `get_design_rules` → **Structure & navigation**. (A single-screen dashboard needs none of this.)
+
 ### B) A real web app to deploy (e.g. on Vercel, with live APIs)
 Scaffold a React app (Vite or Next). You install everything the environment needs (Node, etc.) as part of the work — the user is not technical. Two ways to use the components:
 - **Simplest / most reliable:** drop the component source from `get_component_code` into the project (e.g. `src/lib/ds/`), import `get_stylesheet` as a global CSS file, and use the components locally. No package registry needed.

@@ -27,6 +27,8 @@ design-system/
       typography.css        GENERATED — .text-* type classes
       surfaces.css          hand-written — .ds-surface-brand / .ds-surface-gradient
                             utilities (gold surfaces + guaranteed dark text)
+      layout.css            hand-written — --space-1..9 (base-8 scale),
+                            .ds-prose (65-75ch measure), .ds-empty/.ds-no-data
     tokens.ts               GENERATED — `color` map: { primary: 'var(--color-primary)', … }
     components/
       button/               button.tsx + button.css

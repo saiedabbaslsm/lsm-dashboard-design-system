@@ -1,0 +1,68 @@
+/* Layout primitives: spacing scale, readable measure, empty states.
+   Hand-written (not generated). These exist so the corresponding rules in
+   design-rules.md are mechanical rather than advisory — a rule with a class
+   behind it gets followed; a rule that is only prose gets skipped. */
+
+/* Base-8 spacing scale. Use these instead of arbitrary px values —
+   7px/15px/23px drift is the main reason a layout can have every colour
+   right and still feel off-system. */
+:root {
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+}
+
+/* Readable measure for long-form text. Full-width paragraphs on a wide
+   monitor are physically hard to read — the eye loses the line on the
+   return sweep. Tables, charts and KPI rows should NOT use this. */
+.ds-prose {
+  max-width: 68ch;
+}
+.ds-prose-wide {
+  max-width: 80ch;
+}
+
+/* Empty / no-data state. Never render a blank box: keep the container's
+   shape so the layout doesn't collapse, and say why the data is missing.
+   Uses on-surface-variant, NOT the error colour — missing data is not an
+   error. */
+.ds-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  min-height: 120px;
+  padding: var(--space-5);
+  text-align: center;
+  color: var(--color-on-surface-variant);
+}
+
+.ds-empty__title {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  color: var(--color-on-surface-variant);
+}
+
+.ds-empty__reason {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--color-on-surface-variant);
+  opacity: 0.8;
+}
+
+/* Inline "no value" for a metric slot. Never show 0 or NaN when the truth
+   is "we don't know" — 0 is a lie. */
+.ds-no-data {
+  color: var(--color-on-surface-variant);
+  font-variant-numeric: tabular-nums;
+}

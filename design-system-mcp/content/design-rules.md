@@ -29,6 +29,64 @@ Balance colour by what's visible on an **average screen** (a ~1-viewport fold), 
 
 This is how a dashboard gets colour without going bland OR garish: mostly neutral, one gold moment per screen.
 
+## Structure & navigation (scale it to the content)
+
+Match navigation to how much there is. Too little makes a long report unusable; too much clutters a short one. **Count the top-level sections:**
+
+- **1–3 sections, or it fits in ~2 screens** → **no navigation.** Headings are enough.
+- **4–7 sections** → a **contents block** at the top: one row of jump links.
+- **8+ sections, or anything people will come back to** → a **sticky sidebar** listing the sections, highlighting the current one, plus back-to-top.
+
+Whichever you use:
+- **Headings must be a clean hierarchy** (H1 → H2 → H3, no skipped levels) and every section needs a stable `id`. The contents block is built from these — a messy heading structure makes messy navigation.
+- Anything over ~3 screens opens with a **summary block**: 3–5 bullets of what it says. Most readers never scroll past it, and that's fine.
+- Under 768px, collapse a sidebar to a contents block or dropdown. Sticky chrome must never eat more than ~15% of the viewport height.
+- If it might be printed or saved as PDF, the contents block must be **real text** — a fixed sidebar vanishes in print.
+
+**Never add navigation to a single-screen dashboard.** If everything is visible at once, navigation is decoration.
+
+## Line length (long-form text)
+
+Cap body text at **65–75 characters** per line — use `class="ds-prose"` (`max-width: 68ch`). A paragraph running the full width of a 27" monitor is physically hard to read; the eye loses the line on the return sweep.
+
+- Applies to paragraphs, list items and long captions. **Not** to tables, charts or KPI rows — those should use the full width.
+- In a sidebar layout, the content column carries the cap.
+
+## Empty & no-data states (not an edge case)
+
+Real exports have gaps. **Never render a blank box.**
+
+- **A metric with no value** shows `No data` (class `ds-no-data`) where the number goes, plus a short reason in the caption: "No rows in this range", "Not connected yet". **Never `0`, `null`, `NaN` or blank** — `0` is a lie when the truth is "we don't know".
+- **A chart with no data** keeps its frame, axes and title, with a centred message. The layout must not collapse or resize.
+- **A filtered table with no matches** echoes the filter back ("No partners match 'acme'") and offers a way out — a clear-filter link.
+- **A partially missing series** shows a gap in the line, not a drop to zero.
+- Use `class="ds-empty"` for the block. Empty-state text is `--color-on-surface-variant`, **not** the error colour — missing data is not an error.
+
+## Spacing — base-8 scale
+
+Use only **4, 8, 12, 16, 24, 32, 48, 64, 96px** (`var(--space-1)` … `var(--space-9)`). Never arbitrary values like 7px or 23px — that drift is the main reason a layout can have every colour right and still feel off-system.
+
+- Inside a component (icon-to-label, row padding): 4–12.
+- Inside a card or panel: 16–24.
+- Between cards and panels: 12–24.
+- Between major sections: 32–48.
+- **Group by proximity:** related things get less space, unrelated things get more. Even spacing everywhere destroys the grouping cues that make a dense dashboard readable.
+
+## Density — cap what's in one view
+
+No more than **5–7 KPI cards or tiles in a single view.** Past that, people stop reading and start scanning.
+
+- More than that → **group them** under sub-headings ("Revenue", "Delivery", "Risk") rather than extending the row.
+- A row of 4 is the sweet spot for KPI cards; 8 in a row is unreadable at any width.
+- Applies per screenful, like the 60/30/10 colour rule.
+
+## Button labels — verb + noun
+
+Labels say what will happen: **"Export CSV"**, "Save changes", "Delete partner". Never "OK", "Submit", "Confirm" or "Yes/No".
+
+- In a confirmation, the buttons resolve the question: "Delete this report?" → **"Delete report"** / **"Keep report"**.
+- Destructive styling (`--color-error`) goes only on the **final** confirm button — never on the trigger that opens the dialog.
+
 ## Gold surfaces always take dark text
 A gold surface pairs with **`--color-on-primary-fixed` (`#111`, the same in both modes)** — never `--color-on-surface`.
 

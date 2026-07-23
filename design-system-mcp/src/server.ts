@@ -59,6 +59,16 @@ const REQUIRED_HEADER = `/* ====================================================
       Status pills use class .ds-badge (below) with data-tone="danger|warning|success|
       info|neutral" — prefer that over hand-rolling. Status pills have NO border.
 
+   5) BEFORE YOU BUILD, COUNT THE SECTIONS — anything long needs a way to get
+      around it. 1-3 sections: nothing, headings are enough. 4-7: a contents
+      block of jump links at the top. 8+: a sticky sidebar + back-to-top.
+      Give every section a stable id and a clean H1>H2>H3 hierarchy (the
+      contents block is built from them). Long reports open with a 3-5 bullet
+      summary. Cap body text at 65-75 chars (class ds-prose) — NOT tables or
+      charts. Never add navigation to a single-screen dashboard.
+      And never render a blank box: no data shows "No data" + why (class
+      ds-empty / ds-no-data), never 0 or NaN. Detail: get_design_rules.
+
    Also load Roboto: <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
    Then put ALL the CSS below into a <style> tag (or a .css file).
    ============================================================== */
