@@ -83,6 +83,24 @@ Backed by real CSS in `design-system/src/styles/layout.css`. **This is the patte
 
 **Header note:** `REQUIRED_HEADER` grew 3,674 → 4,342 chars with item 5. If the earlier mandates start slipping, item 5 is the first candidate to pull back to `design-rules.md` only.
 
+## PowerPoint / decks round (2026-07-20)
+
+Feedback: a coworker built a **PowerPoint** with the connector — tables came out "too grey", and a month-vs-month comparison used one colour so it read as blocks of text with no visible winner.
+
+Root cause, two layers:
+1. **The whole delivery model serves compiled CSS**, and a real `.pptx` has no CSS — colours there are RGB fills on shapes. So the brand arrived in a form the target can't use, and Claude fell back to PowerPoint's default greys.
+2. **Our own scope note lumped "slides" in with social/marketing** and told Claude to *skip* the data discipline (table banding, semantic colour, comparisons) — the exact rules the deck needed. A performance deck is a report that lives in slides; it's in scope.
+
+The user's question was "can we attach a design Skill to the connector?" **Answer: no — Skills and MCP are separate systems, one can't bundle the other, and connecting the connector can't install a Skill.** But we didn't need to: the connector already does what a skill does (serves instructions + brand). The only skill that adds anything is Anthropic's `pptx` skill for the *file mechanics* — it's complementary, not attachable. Tell users to turn both on.
+
+Shipped three connector changes (no Skill authoring):
+- **Reclassified slides** in `onboarding.md`: a data deck is in scope, with a new delivery **route D** for PowerPoint/Slides/PDF.
+- **`get_brand_values`** — a new tool serving the palette as **raw hex** (a `.pptx` can't use `get_stylesheet`'s CSS), plus the deck table + comparison recipe. Content in `content/brand-values.md`.
+- **Slides & decks rule section** in `design-rules.md`: banded rows + gold header (kills the grey), and **comparisons must encode direction with colour — where "good" depends on the metric** (fewer losses/cost/churn = green on a *decrease*; the "up = green" trap).
+- Plus a **redirect** at the top of `get_stylesheet`'s REQUIRED_HEADER (item 0): "wrong target? call get_brand_values".
+
+Also this round, per user: **removed the "calm / restraint" language** from `visual-language.md` and `AGENTS.md`. It was making output bland — Claude read "be calm/restrained" as "hold back on colour". **Colour is now governed by 60/30/10 alone**; "flat/bordered/no-shadow" stays (that's structure, not colour suppression), and gold stays the 10% accent. Explicit new line: *bland/grey that should carry meaning is a failure, the same as garish.*
+
 ## Open issue — mobile (raised, NOT yet diagnosed)
 
 The user reported: **"not working on mobile"**. This was raised at the very end of the last session and **no diagnosis or fix was done** — do not assume the cause. Before touching anything, establish *what* is broken and *where*:

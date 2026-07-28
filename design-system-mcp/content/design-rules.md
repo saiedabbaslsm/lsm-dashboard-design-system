@@ -87,6 +87,24 @@ Labels say what will happen: **"Export CSV"**, "Save changes", "Delete partner".
 - In a confirmation, the buttons resolve the question: "Delete this report?" → **"Delete report"** / **"Keep report"**.
 - Destructive styling (`--color-error`) goes only on the **final** confirm button — never on the trigger that opens the dialog.
 
+## Slides & decks (PowerPoint, Google Slides, PDF export)
+
+A data deck is a **report in slide form** — full discipline applies. But the medium is different: **there is NO CSS in a `.pptx`.** Get the palette as raw fills from `get_brand_values`, not `get_stylesheet`. Decks are always light background.
+
+**Tables (the main surface in most decks — this is where "too grey" comes from):**
+- **Header row:** gold fill `#f5bf2d`, near-black text `#111`, bold. Not default grey.
+- **Body rows:** band them — alternate white `#ffffff` and `#f2f2f2`. Flat grey identical rows are the #1 deck complaint.
+- Hairline row separators `#bebebe`; numbers right-aligned, tabular; labels left.
+- One gold accent per slide max (the 10% rule still holds) — the header bar, or one highlighted figure, not both plus more.
+
+**Comparisons — encode direction with colour (the most common deck miss):**
+- Any "this month vs last", "A vs B", "actual vs target" must make the *direction* visible, not just print two numbers in the same colour.
+- Better = `success` green (`#1f8a3b` text / `#e0efe4` fill), worse = `error` red (`#9d0000` / `#f1dbdb`), with a ▲/▼ or delta value.
+- **"Good" depends on the metric.** For revenue/profit/conversion, up is good. For losses, cost, complaints, churn, refunds — **down is good**, so a *decrease* is green. Never blindly colour "increase = green".
+- One neutral baseline column (the earliest period) shows "—", not a colour.
+
+**Everything else:** section title in gold or near-black bold; body copy dark on white; charts use the same semantic colours as tables; Roboto (fall back to Arial/Calibri if Roboto isn't available in the deck tool). Gradients are fine on a title/hero slide, not behind a data table.
+
 ## Gold surfaces always take dark text
 A gold surface pairs with **`--color-on-primary-fixed` (`#111`, the same in both modes)** — never `--color-on-surface`.
 

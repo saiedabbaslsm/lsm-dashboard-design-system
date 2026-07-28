@@ -3,9 +3,9 @@
 How the system *feels* — the principles for building anything not already in it, so new things still belong. Tokens make the atoms match; this makes the composition match. Read this when you need a component or pattern that doesn't exist yet.
 
 ## Personality
-- **Calm and flat.** No drop shadows, no gradients, no glows in dashboard UI. Surfaces are flat; depth comes from a 1px hairline border, not elevation. (Gradient tokens exist for the occasional marketing moment, not dashboards.)
-- **Restraint over decoration.** Most of the screen is neutral. Gold (`--color-primary` / `--color-primary-fixed`) is the *one* accent — use it for a single primary action, one hero metric, or a selected state. If gold is everywhere, it means nothing.
-- **Content first.** The data is the hero. Chrome — labels, icons, borders — stays quiet (muted `onSurfaceVariant`, thin, small) so numbers and charts stand out.
+- **Flat, not shadowed.** No drop shadows, no glows, no fake elevation. Depth comes from a 1px hairline border, not a shadow. (Gradients are reserved for gold hero surfaces and marketing, not general chrome.) This is *structure* — it does not mean "hold back on colour".
+- **Colour is governed by 60/30/10, not by "restraint".** ~60% neutral base, ~30% neutral surfaces, ~10% gold accent, per screenful (see `get_design_rules` → Colour balance). Gold (`--color-primary` / `--color-primary-fixed`) is the ONE brand accent — it *is* the 10%. Semantic colours (success/error/warning/info) are functional and separate, and you should use them freely to encode meaning: trends, comparisons, status, direction. **Bland is a failure here, the same as garish is.** Do not leave something grey to play it safe — grey that should be carrying meaning is a bug, not a neutral choice.
+- **Content first.** The data is the hero. Chrome — labels, borders, axes — stays muted `onSurfaceVariant` so the numbers, charts and status colours are what stand out.
 
 ## Shape language
 - Radius scale, applied consistently: **buttons = pill** (fully rounded); **controls (inputs, chips) = 8px**; **cards / panels = 14px**. When unsure, match the nearest existing element.
@@ -30,7 +30,7 @@ How the system *feels* — the principles for building anything not already in i
 - Insights are decisions, not rows of data. Use a ranked card/tile pattern when showing "fix / watch / do more / absorb" recommendations.
 - The preferred pattern is `ActionInsightList` with **ranked impact tiles**: rank + impact are grouped in a quiet score area, while verb and owner are small chips. This should feel like an action queue, not a spreadsheet.
 - The left-edge colored status rail is allowed as a secondary variant, but avoid making it the default. It can look like a generic AI-generated dashboard treatment when overused.
-- Keep tone subtle: small tinted score areas, neutral borders, restrained chips, and short one-sentence explanations.
+- Tint the score area with a token-based mix and keep borders neutral, but the verb/owner chips are `Badge`s with real status tone — use them. Short one-sentence explanations.
 
 ## Source flow patterns
 - Use `SourceFlowMap` for source-to-order-to-goal relationships. Curved connectors make the direction of travel easier to understand than rigid arrow grids.
@@ -51,5 +51,5 @@ How the system *feels* — the principles for building anything not already in i
 ## When inventing a new component
 1. Find the nearest existing component and match its radius, padding, border, and type roles.
 2. Compose from existing components + tokens before drawing anything from scratch.
-3. Choose the quieter option when unsure — "too plain" is a one-line fix; "too loud" spreads across the product.
+3. When unsure, reach for 60/30/10 rather than defaulting to grey — encode meaning with colour (trend, status, comparison). The guardrail is *not* "keep it quiet"; it's "don't rainbow" — colour must mean something, and gold stays the single brand accent.
 4. It must work in light *and* dark: bind tokens, separate with borders, never hardcode.

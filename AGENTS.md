@@ -42,7 +42,8 @@ The **distribution model**: coworkers `npm install @lsm/design-system` (versione
 
 - **Never hardcode a color, font size, line-height, or radius.** Use a token (`var(--color-*)`) or a type class (`.text-*`). This is the whole point of the system.
 - **Gold is the one accent.** Primary = gold; use it for a single primary action / hero / selected state. Everything else is neutral.
-- **Flat, bordered, calm.** No shadows/gradients in dashboards; separate surfaces with a 1px `--color-outline-variant` border (also required for dark mode). Full personality spec: `design-system-mcp/content/visual-language.md`.
+- **Flat and bordered.** No shadows in dashboards; separate surfaces with a 1px `--color-outline-variant` border (also required for dark mode). This is structure, not a reason to hold back on colour.
+- **Colour is governed by 60/30/10, not "restraint".** Gold is the 10% accent; semantic colours (success/error/warning/info) are functional and should be used to encode meaning. Bland/grey output is a failure, not a safe default. Full personality spec: `design-system-mcp/content/visual-language.md`.
 - **Actionable insights are not tables.** Default to `ActionInsightList` with ranked impact tiles; the left-edge colored rail is only a secondary variant.
 - **Source flows should feel like flows.** Default to `SourceFlowMap` with curved connectors and line thickness for contribution strength; rigid source grids are secondary/fallback.
 - **Never size an inline control with vertical padding.** Set an explicit height + `padding: 0 Xpx` + flex centring — that's what every component here does. Badge 28px · Chip 32px · Button 32/40/48px · TextField 52px. `padding: 3px 8px` on a pill is the recurring "too tight" bug.

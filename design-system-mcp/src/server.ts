@@ -12,6 +12,11 @@ const json = (v: unknown) => text(JSON.stringify(v, null, 2));
 const REQUIRED_HEADER = `/* ==============================================================
    LSM DESIGN SYSTEM — REQUIRED in every dashboard/report (do NOT skip):
 
+   0) WRONG TARGET? If you are building a PowerPoint, Word doc, PDF, or slides
+      (NOT a web page), this CSS does NOT apply there — colours are RGB fills,
+      not stylesheet rules. Stop, call get_brand_values for the raw palette +
+      deck table/comparison recipe, and get_design_rules → Slides & decks.
+
    1) LUCIDE ICONS — every KPI card gets a top-right icon, and use Lucide wherever
       an icon fits. For an HTML report, load Lucide once before </body>:
         <script src="https://unpkg.com/lucide@latest"></script>
@@ -103,7 +108,7 @@ export function buildServer(): McpServer {
     {
       title: 'Visual language',
       description:
-        'The design PERSONALITY — flatness, restraint, shape/radius language, spacing, data-viz style, icons, states. Read this when building a component or pattern that is NOT already in the package, so it still feels like the system (this is about visual style, not just tokens).',
+        'The design PERSONALITY — flatness, colour governed by 60/30/10 (not restraint), shape/radius language, spacing, data-viz style, icons, states. Read this when building a component or pattern that is NOT already in the package, so it still feels like the system (this is about visual style, not just tokens).',
     },
     async () => text(readText('visual-language.md'))
   );
@@ -123,9 +128,19 @@ export function buildServer(): McpServer {
     {
       title: 'Get the design-system stylesheet',
       description:
-        'Returns the REAL compiled CSS (tokens light+dark, type scale, all components) PLUS the two things EVERY dashboard MUST include, with paste-ready snippets: (1) Lucide icons on KPI cards, (2) a light/dark toggle. Embed the CSS in a <style> tag (HTML) or .css file (app). Load Roboto.',
+        'Returns the REAL compiled CSS (tokens light+dark, type scale, all components) PLUS the two things EVERY dashboard MUST include, with paste-ready snippets: (1) Lucide icons on KPI cards, (2) a light/dark toggle. Embed the CSS in a <style> tag (HTML) or .css file (app). Load Roboto. NOTE: for a PowerPoint/Word/PDF (non-web) file this CSS does NOT apply — call get_brand_values instead.',
     },
     async () => ({ content: [{ type: 'text' as const, text: REQUIRED_HEADER + readText('stylesheet.css') }] })
+  );
+
+  server.registerTool(
+    'get_brand_values',
+    {
+      title: 'Brand palette as raw values (PowerPoint / non-web)',
+      description:
+        'Use when the output is NOT a web page — a PowerPoint deck, Word doc, PDF, or slides. Returns the brand palette as raw hex to paint as fills (a .pptx has no CSS, so get_stylesheet does not apply), plus the deck table recipe and the comparison "encode direction with colour" rule. Pair with Claude\'s pptx skill: the skill writes the file, this supplies the brand.',
+    },
+    async () => text(readText('brand-values.md'))
   );
 
   server.registerTool(

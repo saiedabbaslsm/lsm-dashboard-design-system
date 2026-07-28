@@ -9,10 +9,12 @@ You are building something for Little Star Media — a **report, dashboard, or w
 `get_stylesheet` returns paste-ready snippets for both — use them. Don't deliver a dashboard without icons and a working theme toggle.
 
 ## Scope — what this system is (and isn't)
-This system is tuned for **reports, dashboards, and data apps** (internal analytics UIs). For anything else — **social media assets, slides, print, marketing creative** — do this:
-- **Keep it on-brand:** you MAY use the brand colours and fonts from `get_stylesheet` (the tokens + type scale) so it still reads as Little Star Media.
-- **Don't force the dashboard rules onto it.** Social/marketing is a different medium — bold, high-contrast, platform-sized, and gradients are welcome (see the `--gradient-*` tokens). Do NOT apply the dashboard visual language (KPI cards, hairline borders, "calm/flat/one-accent" restraint) to a social post — that would make weak creative.
-- **Be honest about it:** there isn't a dedicated social/brand playbook yet. So: match the palette and typography, design it as genuinely good creative for its medium, and say plainly that full design-system rules cover dashboards/reports, not social.
+This system is for **reports, dashboards, data apps, and data-driven slide decks** (internal analytics, performance reviews, CRM decks). **A performance deck is a report that happens to live in slides — it IS in scope** and gets the full discipline (tables, semantic colour, comparisons). See delivery route **D** below. Data lives in HTML, apps, AND PowerPoint/PDF — the medium changes, the discipline doesn't.
+
+Only **social media assets, print, and marketing creative** are out of scope:
+- **Keep it on-brand:** you MAY use the brand colours and fonts (from `get_stylesheet` or `get_brand_values`) so it still reads as Little Star Media.
+- **Don't force the dashboard rules onto it.** Social/marketing is a different medium — bold, high-contrast, platform-sized, gradients welcome (`--gradient-*` tokens). Don't apply KPI cards / hairline borders / the 60/30/10 balance to a social post — that would make weak creative.
+- **Be honest:** there's no dedicated social/brand playbook yet. Match the palette and typography, design genuinely good creative for the medium, and say plainly that full system rules cover data (dashboards/reports/decks), not social.
 
 ## Always do this
 1. **Get the look.** Call `get_stylesheet` — it returns the REAL compiled CSS (tokens for light+dark, the type scale, and every component's styles). Everything you build must use it, so it looks identical to the design system.
@@ -36,7 +38,17 @@ Scaffold a React app (Vite or Next). You install everything the environment need
 - Wire the live data/APIs the user describes, then deploy (e.g. to Vercel).
 
 ### C) Something the system doesn't have yet
-Call `get_visual_language`, then build it from tokens + type classes + existing components so it still looks like the family (flat, calm, one gold accent, bordered not shadowed, minimal charts). Reuse existing components rather than reinventing.
+Call `get_visual_language`, then build it from tokens + type classes + existing components so it still looks like the family (flat and bordered not shadowed, gold as the 10% accent, colour used to encode meaning per 60/30/10). Reuse existing components rather than reinventing.
+
+### D) A slide deck (PowerPoint, Google Slides, Keynote, PDF export)
+A data/performance deck is a **report in slide form** — apply the full discipline (tables, semantic colour, comparisons), NOT the social/marketing treatment.
+
+**Critical: a real `.pptx` / `.pdf` has NO CSS.** `get_stylesheet` is useless for a slide file — colours there are RGB fills painted on shapes, not stylesheet rules. **Call `get_brand_values`** for the palette as raw hex to use as fills, plus the slide table + comparison recipe.
+
+- **Complementary tools:** Claude's PowerPoint capability (the `pptx` skill) builds the *file*; this connector supplies the *brand*. Use both — the skill doesn't know our colours, and we don't write `.pptx` bytes.
+- **Tables are the main surface in decks — don't leave them grey.** Banded rows, a gold header, right-aligned numbers. Full recipe: `get_design_rules` → **Slides & decks**.
+- **Comparisons (this month vs last, A vs B) must show direction with colour** — the single most common deck miss. Better = success green, worse = error red, per the metric (remember "fewer is better" metrics like losses/cost/complaints invert it). See the same rule section.
+- Decks are always light background; ignore dark-mode guidance for a `.pptx`.
 
 ## The golden rule
 Whatever you build — an HTML report or a deployed app — it must look like it came from the same design system: same gold accent, same type, same KPI cards and charts. The `get_stylesheet` CSS + component markup guarantee that. Never hardcode a color, font size, or radius.

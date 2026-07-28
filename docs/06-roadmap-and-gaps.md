@@ -7,7 +7,7 @@
 - ✅ **Figma design system** — tokens (M3 Color/Fixed/Extended/Gradients), 30 Roboto text styles (M3 expressive, standard + emphasized), and 6 component sets (Button, KPI Card, Text Field, Checkbox, Switch, Chip). A "Sample Dashboard" section assembled from instances.
 - ✅ **Token pipeline** — `tokens.json` (from Figma) → `build:tokens` → `tokens.css` / `typography.css` / `tokens.ts`. Tested.
 - ✅ **npm package `@lsm/design-system`** — core components ported to React, token-driven, typed, `npm run typecheck` clean, and built with `tsup` to `dist/` (ESM/CJS/types/bundled CSS).
-- ✅ **MCP server** — 6 tools (`get_onboarding`, `get_design_rules`, `get_visual_language`, `list_components`, `list_teams`, `get_team_kpis`), content in editable files, runs and verified locally.
+- ✅ **MCP server** — 9 tools (`get_onboarding`, `get_design_rules`, `get_visual_language`, `get_brand_values`, `get_stylesheet`, `get_component_code`, `list_components`, `list_teams`, `get_team_kpis`), content in editable files, live on Vercel.
 - ✅ **Visual-language doc** — the personality spec that governs new/unlisted components.
 - ✅ **End-to-end test** (`demo/`) — a Vite app consuming the package like a coworker, with package table/chart/insight/flow components plus novel dropdown/funnel/activity patterns that landed on-system.
 
