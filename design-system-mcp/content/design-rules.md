@@ -29,6 +29,8 @@ Balance colour by what's visible on an **average screen** (a ~1-viewport fold), 
 
 This is how a dashboard gets colour without going bland OR garish: mostly neutral, one gold moment per screen.
 
+**Exception — statement openings (encouraged):** a long report MAY open with a **full-width gold cover block** (`ds-surface-brand` / `ds-surface-gradient`, dark text): the report title, a one-line summary, maybe one headline number. Same for a section divider or a single big-verdict moment mid-report. The gate is **text volume, not gold amount** — one message on gold is a statement; a table or paragraphs on gold is a mistake. This hero opening doesn't count against the 10% for the screens that follow.
+
 ## Structure & navigation (scale it to the content)
 
 Match navigation to how much there is. Too little makes a long report unusable; too much clutters a short one. **Count the top-level sections:**
@@ -102,6 +104,8 @@ A data deck is a **report in slide form** — full discipline applies. But the m
 - Better = `success` green (`#1f8a3b` text / `#e0efe4` fill), worse = `error` red (`#9d0000` / `#f1dbdb`), with a ▲/▼ or delta value.
 - **"Good" depends on the metric.** For revenue/profit/conversion, up is good. For losses, cost, complaints, churn, refunds — **down is good**, so a *decrease* is green. Never blindly colour "increase = green".
 - One neutral baseline column (the earliest period) shows "—", not a colour.
+
+**Statement pages (encouraged, not just allowed):** the **cover, section dividers, and any single-message slide** (one big stat, a verdict) go **full-bleed gold** (`#ffce00`, dark `#111` text) — edge to edge, dark text low-left, small brand mark, lots of empty gold. A timid gold *band* floating on white reads as unfinished; commit or stay light. The gate is **text volume**: one message → gold page; real content (tables/charts/paragraphs) → light page with gold at the header/one highlight. Never white text on gold; never a data table on a gold page.
 
 **Everything else:** section title in gold or near-black bold; body copy dark on white; charts use the same semantic colours as tables; Roboto (fall back to Arial/Calibri if Roboto isn't available in the deck tool). Gradients are fine on a title/hero slide, not behind a data table.
 

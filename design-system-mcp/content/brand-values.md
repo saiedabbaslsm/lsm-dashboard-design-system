@@ -10,9 +10,19 @@ Use this when the output is **not a web page** and cannot use CSS. A `.pptx` / `
 
 | Role | Hex | Use it for |
 |---|---|---|
-| Brand gold | `#f5bf2d` | THE accent (the 10%). Title bar, table header, one highlight per slide. Never the majority of a slide. |
+| Brand gold | `#f5bf2d` | THE accent (the 10%) on **data slides**: table header, one highlight. Not the majority of a *data* slide. |
 | Text on gold | `#111111` | Any text or icon sitting on a gold fill. Never white on gold. |
-| Gold (bright) | `#ffce00` | A hero/title slide fill if you want more punch than `#f5bf2d`. |
+| Gold (bright) | `#ffce00` | **Full-bleed statement pages — encouraged, not just allowed.** See below. |
+
+## Statement pages — full-bleed gold (encouraged)
+
+The **title/cover slide, section dividers, and any single-message moment** (one big stat, a verdict, a key takeaway) should be **entirely gold** (`#ffce00`), edge to edge, with dark `#111` text. This is the brand's hero move — a timid gold *band* floating on white reads as unfinished; commit to the full page.
+
+The gate is **text volume, not gold amount**:
+- **One message, minimal text** (a title + subtitle, one number + label) → full-bleed gold. Encouraged.
+- **Actual content** (tables, charts, paragraphs, lists) → light page, gold stays at the header/one highlight.
+
+Rough shape of a statement page: dark text anchored low-left poster-style, a small dark brand mark top-left, lots of empty gold. Never white text on gold, never a data table on gold.
 | Page / slide bg | `#ffffff` | Slide background, table body row A. |
 | Surface band | `#f2f2f2` | Alternating table row B, panel fills. |
 | Surface (deeper) | `#e4e4e4` | A slightly stronger panel / grouping. |
