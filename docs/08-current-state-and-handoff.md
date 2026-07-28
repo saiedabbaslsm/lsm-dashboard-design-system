@@ -10,7 +10,7 @@ Read this to pick up the project where it stands. It captures what's **live**, h
 
 ### State as of 2026-07-16
 
-**Everything is pushed and deployed.** `main` is at `0aab8e0` on GitHub, and production is `READY` on the same SHA (verified: 20/20 checks against the live `/mcp`, including regression checks on the earlier rounds). Nothing is sitting local.
+**Everything is pushed and deployed.** `main` is at `ed5dbe2` on GitHub, and production is `READY` on the same SHA (verified: 15/15 checks against the live `/mcp`, including regressions). Nothing is sitting local. Latest rounds: PowerPoint/deck support (`get_brand_values`, route D, Slides & decks rules), "calm/restraint" removed in favour of 60/30/10, and statement pages (full-bleed gold or dark covers/dividers; content slides stay 60/30/10; decks carry both modes since a .pptx can't toggle).
 
 **Remember: push ≠ deploy.** The Vercel project is not git-connected, so any future change needs BOTH `git push` AND `npx vercel deploy --prod` from `design-system-mcp/`. Credentials at `~/.lsm-design-system/credentials.md` (both tokens filled in and verified). Confirm with the user before a production deploy.
 
