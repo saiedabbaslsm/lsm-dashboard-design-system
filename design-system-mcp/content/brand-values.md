@@ -2,7 +2,7 @@
 
 Use this when the output is **not a web page** and cannot use CSS. A `.pptx` / `.docx` / slide colours its shapes with **RGB fills** — there is no stylesheet. These are the same brand colours `get_stylesheet` ships, given as plain hex so you can paint them directly.
 
-**Decks are always light background.** Ignore dark-mode values here.
+**A deck can't toggle themes — so the deck carries both modes deliberately.** Data/content slides stay **light** (tables and charts must survive any projector). Statement pages (cover, dividers, verdicts) may be **gold or dark** — mixing dark statement pages between light content pages gives the deck both modes and a rhythm. Palettes for all three page types below.
 
 **Font:** Roboto. If the deck tool doesn't have Roboto, fall back to **Arial** or **Calibri** (do not substitute a serif).
 
@@ -14,15 +14,27 @@ Use this when the output is **not a web page** and cannot use CSS. A `.pptx` / `
 | Text on gold | `#111111` | Any text or icon sitting on a gold fill. Never white on gold. |
 | Gold (bright) | `#ffce00` | **Full-bleed statement pages — encouraged, not just allowed.** See below. |
 
-## Statement pages — full-bleed gold (encouraged)
+## Statement pages — full-bleed gold or dark (encouraged)
 
-The **title/cover slide, section dividers, and any single-message moment** (one big stat, a verdict, a key takeaway) should be **entirely gold** (`#ffce00`), edge to edge, with dark `#111` text. This is the brand's hero move — a timid gold *band* floating on white reads as unfinished; commit to the full page.
+The **title/cover slide, section dividers, and any single-message moment** (one big stat, a verdict, a key takeaway) should be a **full-bleed statement page** — either **gold** (`#ffce00`, dark `#111` text) or **dark** (see palette below). This is the brand's hero move — a timid gold *band* floating on white reads as unfinished; commit to the full page.
+
+**Normal pages are NOT statement pages.** Every data/content slide follows **60/30/10** exactly as on the web: ~60% white base, ~30% neutral surfaces (the banded table), ~10% gold (the header row or one highlight). The statement pages are the exception, not the norm — a deck is mostly light content pages punctuated by the odd gold or dark moment.
 
 The gate is **text volume, not gold amount**:
-- **One message, minimal text** (a title + subtitle, one number + label) → full-bleed gold. Encouraged.
+- **One message, minimal text** (a title + subtitle, one number + label) → full-bleed statement page. Encouraged.
 - **Actual content** (tables, charts, paragraphs, lists) → light page, gold stays at the header/one highlight.
 
-Rough shape of a statement page: dark text anchored low-left poster-style, a small dark brand mark top-left, lots of empty gold. Never white text on gold, never a data table on gold.
+**Dark statement page palette** (this is how a deck gets "dark mode" without a toggle):
+| Role | Hex |
+|---|---|
+| Background | `#0c0100` |
+| Title / big number | `#ffce00` (gold) or `#f2dcac` (cream) |
+| Body / subtitle | `#f2dcac` |
+| Muted caption | `#d1bb8c` |
+| Hairline on dark | `#3c2b00` |
+| Good / bad on dark | `#82e0a1` / `#ff7772` |
+
+Suggested rhythm: **gold cover → light content slides → dark section dividers → dark or gold closing verdict.** Rough shape of any statement page: text anchored low-left poster-style, small brand mark top-left, lots of empty background. Never white text on gold, never a data table on a gold OR dark page.
 | Page / slide bg | `#ffffff` | Slide background, table body row A. |
 | Surface band | `#f2f2f2` | Alternating table row B, panel fills. |
 | Surface (deeper) | `#e4e4e4` | A slightly stronger panel / grouping. |

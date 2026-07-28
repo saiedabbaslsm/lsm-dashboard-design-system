@@ -91,7 +91,7 @@ Labels say what will happen: **"Export CSV"**, "Save changes", "Delete partner".
 
 ## Slides & decks (PowerPoint, Google Slides, PDF export)
 
-A data deck is a **report in slide form** — full discipline applies. But the medium is different: **there is NO CSS in a `.pptx`.** Get the palette as raw fills from `get_brand_values`, not `get_stylesheet`. Decks are always light background.
+A data deck is a **report in slide form** — full discipline applies. But the medium is different: **there is NO CSS in a `.pptx`.** Get the palette as raw fills from `get_brand_values`, not `get_stylesheet`.
 
 **Tables (the main surface in most decks — this is where "too grey" comes from):**
 - **Header row:** gold fill `#f5bf2d`, near-black text `#111`, bold. Not default grey.
@@ -105,7 +105,11 @@ A data deck is a **report in slide form** — full discipline applies. But the m
 - **"Good" depends on the metric.** For revenue/profit/conversion, up is good. For losses, cost, complaints, churn, refunds — **down is good**, so a *decrease* is green. Never blindly colour "increase = green".
 - One neutral baseline column (the earliest period) shows "—", not a colour.
 
-**Statement pages (encouraged, not just allowed):** the **cover, section dividers, and any single-message slide** (one big stat, a verdict) go **full-bleed gold** (`#ffce00`, dark `#111` text) — edge to edge, dark text low-left, small brand mark, lots of empty gold. A timid gold *band* floating on white reads as unfinished; commit or stay light. The gate is **text volume**: one message → gold page; real content (tables/charts/paragraphs) → light page with gold at the header/one highlight. Never white text on gold; never a data table on a gold page.
+**Statement pages (encouraged, not just allowed):** the **cover, section dividers, and any single-message slide** (one big stat, a verdict) go **full-bleed** — **gold** (`#ffce00`, dark `#111` text) or **dark** (`#0c0100` bg, gold/cream text — palette in `get_brand_values`). A timid gold *band* floating on white reads as unfinished; commit or stay light. The gate is **text volume**: one message → statement page; real content (tables/charts/paragraphs) → light page with gold at the header/one highlight. Never white text on gold; never a data table on a gold or dark page.
+
+**Normal (data/content) slides follow 60/30/10**, same as the web: ~60% white base, ~30% neutral surfaces, ~10% gold. Statement pages are the punctuation, not the norm.
+
+**Both modes in one deck:** a `.pptx` has no theme toggle, so the deck carries both deliberately — light content slides, dark statement pages between sections. Suggested rhythm: gold cover → light content → dark dividers → dark or gold closing verdict.
 
 **Everything else:** section title in gold or near-black bold; body copy dark on white; charts use the same semantic colours as tables; Roboto (fall back to Arial/Calibri if Roboto isn't available in the deck tool). Gradients are fine on a title/hero slide, not behind a data table.
 

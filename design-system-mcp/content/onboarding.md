@@ -48,7 +48,7 @@ A data/performance deck is a **report in slide form** — apply the full discipl
 - **Complementary tools:** Claude's PowerPoint capability (the `pptx` skill) builds the *file*; this connector supplies the *brand*. Use both — the skill doesn't know our colours, and we don't write `.pptx` bytes.
 - **Tables are the main surface in decks — don't leave them grey.** Banded rows, a gold header, right-aligned numbers. Full recipe: `get_design_rules` → **Slides & decks**.
 - **Comparisons (this month vs last, A vs B) must show direction with colour** — the single most common deck miss. Better = success green, worse = error red, per the metric (remember "fewer is better" metrics like losses/cost/complaints invert it). See the same rule section.
-- Decks are always light background; ignore dark-mode guidance for a `.pptx`.
+- A `.pptx` has no theme toggle — the deck carries both modes deliberately: **light content slides, gold or dark statement pages** (cover/dividers/verdicts). Palettes + rhythm: `get_brand_values`.
 
 ## The golden rule
 Whatever you build — an HTML report or a deployed app — it must look like it came from the same design system: same gold accent, same type, same KPI cards and charts. The `get_stylesheet` CSS + component markup guarantee that. Never hardcode a color, font size, or radius.
