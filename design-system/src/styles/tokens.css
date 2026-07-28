@@ -72,6 +72,10 @@
   --color-on-secondary-fixed: #111111;
   --color-on-secondary-fixed-variant: #111111;
   --color-bold-surface-container: #ffe76f;
+  --color-statement-surface: #0c0100;
+  --color-on-statement: #f2dcac;
+  --color-on-statement-muted: #d1bb8c;
+  --color-statement-outline: #3c2b00;
 }
 
 [data-theme='dark'] {

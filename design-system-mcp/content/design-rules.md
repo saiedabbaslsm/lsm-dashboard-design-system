@@ -29,7 +29,7 @@ Balance colour by what's visible on an **average screen** (a ~1-viewport fold), 
 
 This is how a dashboard gets colour without going bland OR garish: mostly neutral, one gold moment per screen.
 
-**Exception — statement openings (encouraged):** a long report MAY open with a **full-width gold cover block** (`ds-surface-brand` / `ds-surface-gradient`, dark text): the report title, a one-line summary, maybe one headline number. Same for a section divider or a single big-verdict moment mid-report. The gate is **text volume, not gold amount** — one message on gold is a statement; a table or paragraphs on gold is a mistake. This hero opening doesn't count against the 10% for the screens that follow.
+**Exception — statement openings (encouraged):** a long report MAY open with a **full-width statement block** — gold (`ds-surface-brand` / `ds-surface-gradient`, dark text) or dark (`ds-surface-dark`, pinned cream/gold text): the report title, a one-line summary, maybe one headline number. Same for a section divider or a single big-verdict moment mid-report. The gate is **text volume, not gold amount** — one message on gold is a statement; a table or paragraphs on gold is a mistake. This hero opening doesn't count against the 10% for the screens that follow.
 
 ## Structure & navigation (scale it to the content)
 
@@ -113,8 +113,10 @@ A data deck is a **report in slide form** — full discipline applies. But the m
 
 **Everything else:** section title in gold or near-black bold; body copy dark on white; charts use the same semantic colours as tables; Roboto (fall back to Arial/Calibri if Roboto isn't available in the deck tool). Gradients are fine on a title/hero slide, not behind a data table.
 
-## Gold surfaces always take dark text
-A gold surface pairs with **`--color-on-primary-fixed` (`#111`, the same in both modes)** — never `--color-on-surface`.
+## Fixed-colour surfaces take pinned text (gold AND dark)
+A surface with a **fixed** colour must never use theme tokens for its text — `--color-on-surface` flips with the theme, and the bug bites in both directions:
+- **Gold surface + theme token** → looks fine in light, goes cream-on-gold in dark. Use **`ds-surface-brand`** / **`ds-surface-gradient`** (pins text to `--color-on-primary-fixed`, `#111` in both modes).
+- **Dark statement section + theme token** → text is **invisible in light mode** (near-black on near-black) and only appears when the user toggles to dark. Use **`ds-surface-dark`** (pins text to the fixed `statement*` tokens: cream body `#f2dcac`, gold headline, muted `#d1bb8c`).
 
 - Use the utility classes: **`ds-surface-brand`** (gold) or **`ds-surface-gradient`** (gold gradient). They set the background, pin the text, and expose `--ds-on` / `--ds-on-muted` for children. `KpiCard tone="brand"` does this for you.
 - **Why this bites:** `--color-on-surface` is near-black in light mode, so a gold card styled with it *looks correct* — then it flips to cream in dark mode and the text vanishes. **The bug is invisible until you toggle the theme.**
@@ -168,6 +170,7 @@ Statuses have **real tokens**. Never invent a status colour, and never hand-roll
   svg.lucide { width: 16px; height: 16px; flex: none; stroke-width: 2; vertical-align: middle; }
   ```
   Then override per context (KPI card icons 18px). **Every icon in the same list must be the same size** — set it in CSS, not per-icon, so they can't drift. Icons inherit `currentColor`, so set the container's `color` to a token (usually `var(--color-on-surface-variant)`; on a gold surface, `--ds-on-muted`).
+- **Never butt an icon directly against text.** Wrap icon + label in `display:inline-flex; align-items:center; gap:6px` — a bare icon glued to a number (delta cells are the classic case) reads cramped and vertically misaligned.
 - **An icon wrapper inside a flex row needs `flex: none`.** Without it the label shrinks the icon horizontally: it renders *squashed* (roughly half width) rather than smaller, which is easy to misread as "the icon is too small". Any `icon + label` row — buttons, pills, list items — needs it.
 - **In a React app:** use `lucide-react` and pass the icon via the component's `icon` / `leadingIcon` prop.
 

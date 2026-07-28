@@ -73,6 +73,10 @@
   --color-on-secondary-fixed: #111111;
   --color-on-secondary-fixed-variant: #111111;
   --color-bold-surface-container: #ffe76f;
+  --color-statement-surface: #0c0100;
+  --color-on-statement: #f2dcac;
+  --color-on-statement-muted: #d1bb8c;
+  --color-statement-outline: #3c2b00;
 }
 
 [data-theme='dark'] {
@@ -412,6 +416,27 @@
 }
 
 .ds-on-brand-muted { color: var(--ds-on-muted); }
+
+/* Dark statement surface — the mirror-image trap of the gold one. A section
+   with a FIXED dark background must not use theme tokens for its text:
+   --color-on-surface is near-black in light mode, so the text is invisible on
+   the dark section until the user toggles to dark theme. Pin everything to
+   the statement* fixed tokens (theme-independent, like primaryFixed). */
+.ds-surface-dark {
+  --ds-on: var(--color-on-statement);
+  --ds-on-strong: var(--color-primary-fixed);
+  --ds-on-muted: var(--color-on-statement-muted);
+  --ds-on-border: var(--color-statement-outline);
+  color: var(--ds-on);
+  background: var(--color-statement-surface);
+  border-color: var(--color-statement-outline);
+}
+
+.ds-surface-dark :where(h1, h2, h3, h4, h5, h6, p, span, strong, em, li, td, th, dt, dd) {
+  color: inherit;
+}
+.ds-surface-dark :where(svg) { color: inherit; }
+.ds-on-dark-muted { color: var(--ds-on-muted); }
 
 /* src/styles/layout.css */
 /* Layout primitives: spacing scale, readable measure, empty states.

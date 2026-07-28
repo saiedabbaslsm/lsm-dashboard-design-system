@@ -60,6 +60,27 @@ Amber is `#b06a00`-family, not the brand gold — keep status and brand visually
 - Separators `#bebebe`; numbers right-aligned + tabular; labels left-aligned.
 - At most one gold moment per slide (header OR one highlighted figure, not everything).
 
+## Component recipes — what the shapes look like without CSS
+
+Colours alone don't make it look like the system — these shapes do. Follow them exactly; improvised cards/chips are the #1 reason non-web output "looks off".
+
+**Radius scale (never improvise):** cards/panels ≈ **12px** equivalent (PowerPoint: 0.12"). Chips/badges ≈ **8px**. Buttons = pill. Never large blobby 20px+ corners on a card.
+
+**KPI / stat card** (mirror the web `KpiCard` anatomy, top to bottom):
+1. Small **muted label** on top (12–13pt, `#3c2b00`) — never under the number.
+2. **Big value** (28–36pt bold, `#0c0100`).
+3. **Delta line** coloured by direction (▲ `#1f8a3b` / ▼ `#9d0000`) + a muted "vs last quarter" caption.
+- Fill **white**, hairline border `#bebebe`. **Gold fill only if it is THE single hero stat of the slide** — and then dark `#111` text.
+- 3–4 cards in a row, equal sizes. Never one stat card stranded in a corner of an empty slide.
+
+**Status chip in a table cell** (mirror the web `Badge`): a **small pill inside the cell** — tinted fill + dark text of the same family (e.g. `#e0efe4` + `#052e15`), rounded ≈ 8px, hugging its text with modest padding. **Never flood the entire cell** with colour; the pill is the signal, the cell stays banded.
+
+**Slide type scale:** slide title 28–32pt bold · subtitle 14–16pt muted · table body 11–13pt · table header 11–13pt bold · big stat 30–40pt. Don't go smaller than 11pt anywhere.
+
+**One gold moment per data slide.** The gold table header **or** one gold hero stat — never both. (Statement pages are the exception — see below.)
+
+**Fill the slide.** Content composed deliberately: table + supporting stat side by side or stacked with even margins. A half-empty slide with one element floating in a corner reads as unfinished.
+
 ## Comparison recipe (this month vs last, A vs B — the other common miss)
 
 Show the **direction**, not just two numbers in the same colour:

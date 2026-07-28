@@ -29,6 +29,10 @@ const REQUIRED_HEADER = `/* ====================================================
       SIZE THEM — lucide.createIcons() emits 24x24 by default, so icons come out
       inconsistent unless you pin them. Always include this CSS:
         svg.lucide { width:16px; height:16px; flex:none; stroke-width:2; vertical-align:middle; }
+      SPACE THEM — never butt an icon directly against text. Wrap icon + label:
+        display:inline-flex; align-items:center; gap:6px;
+      (a bare icon glued to a number, e.g. in a delta/Change cell, reads cramped
+      and misaligned — the gap + align-items:center is what fixes both).
       and override per context if needed (e.g. KPI card icons 18px). Icons in one
       list MUST all be the same size — mismatched check/x icons are a common bug.
       If you wrap an icon in a flex row (icon + label), the WRAPPER needs flex:none
@@ -47,11 +51,13 @@ const REQUIRED_HEADER = `/* ====================================================
           r.dataset.theme=r.dataset.theme==='dark'?'light':'dark';});})();</script>
       Verify BOTH modes look right (tokens re-theme automatically).
 
-   3) GOLD SURFACES ALWAYS TAKE DARK TEXT — use class ds-surface-brand (or
-      ds-surface-gradient) for any gold/hero card. Do NOT hand-pick colours:
-      --color-on-surface is near-black in light so a gold card LOOKS fine, then
-      flips to cream in dark mode and becomes unreadable. The classes below pin
-      text to --color-on-primary-fixed (#111 in both modes). ALWAYS check dark mode.
+   3) FIXED-COLOUR SURFACES TAKE PINNED TEXT — never theme tokens. Two classes:
+      gold hero -> ds-surface-brand / ds-surface-gradient (pins text to #111);
+      dark statement section -> ds-surface-dark (pins text to cream/gold).
+      Why: --color-on-surface FLIPS with the theme. On a gold card it looks fine
+      in light then goes cream-on-gold in dark; on a fixed DARK section it is
+      near-black in light — the text is INVISIBLE until the user toggles.
+      Same bug, both directions. ALWAYS check both modes.
 
    4) NEVER SIZE A PILL WITH VERTICAL PADDING — this is the most-repeated mistake.
       \`padding: 3px 8px\` on a chip/pill/badge always looks cramped. Set an explicit
