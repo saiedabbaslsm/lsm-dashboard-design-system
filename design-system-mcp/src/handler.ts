@@ -26,14 +26,25 @@ export async function handleMcpRequest(
   res: JsonResponse,
   parsedBody?: unknown
 ) {
-  if (req.method && !['POST', 'GET'].includes(req.method)) {
-    sendJson(res, 405, { error: 'Method not allowed' });
+  // POST only. A GET opens a standalone SSE stream for server->client
+  // notifications and holds the function open until maxDuration — this server
+  // never sends notifications (content is read fresh per request), so the
+  // stream did nothing but burn ~2GB x 300s per connected client. The spec
+  // explicitly permits 405 here; clients fall back to POST-only.
+  if (req.method !== 'POST') {
+    res.setHeader('allow', 'POST');
+    sendJson(res, 405, { error: 'Method not allowed — this MCP endpoint is POST-only (no SSE stream)' });
     return;
   }
 
   try {
     const server = buildServer();
-    const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined });
+    const transport = new StreamableHTTPServerTransport({
+      sessionIdGenerator: undefined,
+      // Plain JSON responses: every tool here is single-response, so an SSE
+      // envelope only adds bytes and keeps the response open longer.
+      enableJsonResponse: true,
+    });
     res.on('close', () => {
       transport.close();
       server.close();
