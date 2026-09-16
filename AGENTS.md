@@ -7,7 +7,7 @@
 >
 > **Push ≠ deploy.** The Vercel project is **not** connected to GitHub (verified: `link: NONE`, every deploy is `source=cli`). Pushing to `main` changes nothing for coworkers. You must **also** run `npx vercel deploy --prod` from `design-system-mcp/`. It *looks* git-connected because the CLI stamps local git metadata onto each deploy.
 >
-> **Secrets (GitHub PAT + Vercel token) for push/deploy are NOT in this repo** — they live privately at `~/.lsm-design-system/credentials.md` (outside git, mode 600; both filled in and verified). Read them from there; never inline one into a tracked file, a commit message, or `git remote set-url`. **Confirm with the user before any production deploy.**
+> **No tokens needed for push/deploy (since 2026-09-16).** Push: `git push origin main` — the Mac keychain is logged into GitHub as `saaidhassan-max`, a collaborator on the repo. Deploy: `npx vercel deploy --prod --yes` from `design-system-mcp/` — the Vercel CLI is logged in. The old `~/.lsm-design-system/credentials.md` tokens are expired; ignore that file. **Confirm with the user before any production deploy.**
 
 ## What this project is
 

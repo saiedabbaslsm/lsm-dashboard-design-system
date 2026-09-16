@@ -8,18 +8,21 @@ Read this to pick up the project where it stands. It captures what's **live**, h
 - **The npm package builds** to `design-system/dist/` (tsup). Not yet published to a registry — but the connector serves the component *code* + stylesheet directly, so coworkers don't need to install anything.
 - **Figma** has all components incl. `KPI Card Tone` and the new `Badge` set, and is **verified in token parity with code** (see "Figma parity" below).
 
-### ⚠️ State as of 2026-09-16 — billing fix DEPLOYED, repo push blocked
-The Vercel GB-hour fix (`13daab0`: GET→405, JSON responses, `maxDuration` 300→15) is **live on production and verified** (GET 405 in 0.3s, POST JSON in 0.27s, 7/7 content regressions pass). Deployed via the **logged-in Vercel CLI** (`npx vercel deploy --prod`, account `saaidhassan-max`) — no token needed; that's now the deploy path.
+### State as of 2026-09-16 — billing fix live, everything pushed, NO TOKENS NEEDED ANYMORE
+`main` is at `e18d1cc`+ on GitHub and the Vercel GB-hour fix (`13daab0`) is **live and verified** (GET→405 in 0.3s, POST JSON in 0.27s, 7/7 content regressions). Vercel usage should collapse from ~47 invocations/hr at 7-min durations to a handful of sub-second calls; **verify the drop on the Vercel function graph a day later** before calling it closed.
 
-**Not pushed to GitHub.** The old PAT expired, and the Mac keychain's GitHub identity is `saaidhassan-max`, which has no permission on `saiedabbaslsm/lsm-dashboard-design-system` (403). Fix options: add `saaidhassan-max` as a collaborator on the repo, or enable a GitHub connector for the session, or a fresh PAT for `saiedabbaslsm`. Until then `main` on GitHub is at `3968c09`; local is ahead by the fix + docs.
+**New push/deploy workflow — no tokens:** both old tokens expired and are no longer needed.
+- **Deploy:** the Vercel CLI on this Mac is logged in (`npx vercel whoami` → `saaidhassan-max`). From `design-system-mcp/`: `npx vercel deploy --prod --yes`.
+- **Push:** the Mac keychain is logged into GitHub as `saaidhassan-max`, now a **collaborator** on `saiedabbaslsm/lsm-dashboard-design-system`. Plain `git push origin main` works. Never embed a token in the remote URL.
+- `~/.lsm-design-system/credentials.md` is obsolete — its tokens are dead. Leave it or delete it; don't try to use it.
 
-**Why it burned:** the MCP endpoint accepted GET, which the SDK turns into a held-open SSE notification stream; combined with our own `maxDuration: 300`, every connected client (the whole company via the org connector) burned 2GB×5min per reconnect. The server never sends notifications, so the stream did nothing. The "timeouts/errors" in Vercel's stats were those kills, not failed tool calls.
+**Why it burned:** the MCP endpoint accepted GET, which the SDK turns into a held-open SSE notification stream; combined with our own `maxDuration: 300`, every connected client (the whole company via the org connector) burned 2GB×5min per reconnect. The server never sends notifications, so the stream did nothing. Vercel's "timeouts/errors" were those kills, not failed tool calls. Fix: GET→405, `enableJsonResponse: true`, `maxDuration: 15`.
 
 ### State as of 2026-07-16
 
 **Everything is pushed and deployed.** `main` is at `3968c09` on GitHub, production `READY` on the same SHA (16/16 live checks incl. regressions). Latest round (first real deck/PDF test): non-web **component recipes** in `brand-values.md` (card anatomy, pill-in-cell, radius/type scales — colours alone made cards 'look off'), **`ds-surface-dark`** + fixed `statement*` tokens (a fixed dark section with theme-token text is INVISIBLE in light mode — mirror of the gold bug; reproduced and fixed), and the **icon spacing** rule (inline-flex/gap:6px — size was pinned earlier but spacing never stated). Also confirmed live: the comparison-direction rule passed its hardest real test (five fewer-is-better metrics + one worsening metric, all coloured correctly). **Figma parity debt:** the four `statement*` fixed variables are not yet in Figma (same follow-up as `badgeSurface*` was).
 
-**Remember: push ≠ deploy.** The Vercel project is not git-connected, so any future change needs BOTH `git push` AND `npx vercel deploy --prod` from `design-system-mcp/`. **Deploy:** the Vercel CLI on this Mac is logged in (`npx vercel whoami` → `saaidhassan-max`) — run `npx vercel deploy --prod` from `design-system-mcp/`, no token. **Push:** the PAT in `~/.lsm-design-system/credentials.md` expired 2026-09-16 and the keychain identity lacks repo permission — see the state note above. Confirm with the user before a production deploy.
+**Remember: push ≠ deploy.** The Vercel project is not git-connected, so any future change needs BOTH `git push` AND `npx vercel deploy --prod` from `design-system-mcp/`. **No tokens needed:** deploy via the logged-in Vercel CLI, push via the keychain (`saaidhassan-max` is a collaborator). See the state note above. Confirm with the user before a production deploy. Confirm with the user before a production deploy.
 
 ## How it's actually delivered (important — this evolved)
 
