@@ -8,11 +8,14 @@ Read this to pick up the project where it stands. It captures what's **live**, h
 - **The npm package builds** to `design-system/dist/` (tsup). Not yet published to a registry — but the connector serves the component *code* + stylesheet directly, so coworkers don't need to install anything.
 - **Figma** has all components incl. `KPI Card Tone` and the new `Badge` set, and is **verified in token parity with code** (see "Figma parity" below).
 
+### ⚠️ UNSHIPPED as of 2026-09-16 — Vercel billing fix, blocked on credentials
+Commit `13daab0` (local, NOT pushed, NOT deployed) fixes the Vercel GB-hour burn: the MCP endpoint accepted GET, which opens an SSE stream the SDK holds open until `maxDuration` (which we had set to 300s) — every connected client burned 2GB×5min doing nothing. Fix: GET→405, `enableJsonResponse: true`, `maxDuration: 15`. Verified locally (GET 405 + ends; POST JSON, all tools OK). **Deploy is the urgent part** — it's what stops the billing. Needs a fresh Vercel token (or `vercel login` + `npx vercel deploy --prod` from `design-system-mcp/`). If a fresh token still 403s, the Hobby account may be overage-locked; see the plan note in the next-tasks.
+
 ### State as of 2026-07-16
 
 **Everything is pushed and deployed.** `main` is at `3968c09` on GitHub, production `READY` on the same SHA (16/16 live checks incl. regressions). Latest round (first real deck/PDF test): non-web **component recipes** in `brand-values.md` (card anatomy, pill-in-cell, radius/type scales — colours alone made cards 'look off'), **`ds-surface-dark`** + fixed `statement*` tokens (a fixed dark section with theme-token text is INVISIBLE in light mode — mirror of the gold bug; reproduced and fixed), and the **icon spacing** rule (inline-flex/gap:6px — size was pinned earlier but spacing never stated). Also confirmed live: the comparison-direction rule passed its hardest real test (five fewer-is-better metrics + one worsening metric, all coloured correctly). **Figma parity debt:** the four `statement*` fixed variables are not yet in Figma (same follow-up as `badgeSurface*` was).
 
-**Remember: push ≠ deploy.** The Vercel project is not git-connected, so any future change needs BOTH `git push` AND `npx vercel deploy --prod` from `design-system-mcp/`. Credentials at `~/.lsm-design-system/credentials.md` (both tokens filled in and verified). Confirm with the user before a production deploy.
+**Remember: push ≠ deploy.** The Vercel project is not git-connected, so any future change needs BOTH `git push` AND `npx vercel deploy --prod` from `design-system-mcp/`. Credentials at `~/.lsm-design-system/credentials.md` — **⚠️ BOTH TOKENS EXPIRED as of 2026-09-16** (GitHub 401, Vercel 403). Ask the user for fresh ones before any push/deploy. Confirm with the user before a production deploy.
 
 ## How it's actually delivered (important — this evolved)
 
