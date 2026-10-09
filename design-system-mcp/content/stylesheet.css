@@ -995,13 +995,17 @@
 /* Switch — mirrors the Figma `Switch` set (off/on + disabled). */
 
 .ds-switch {
+  position: relative;
   display: inline-flex;
+  align-items: center;
+  gap: 12px;
   cursor: pointer;
 }
 .ds-switch[data-disabled] { opacity: 0.38; pointer-events: none; }
 
 .ds-switch__input {
   position: absolute;
+  pointer-events: none;
   width: 1px;
   height: 1px;
   opacity: 0;
@@ -1043,6 +1047,42 @@
   background: var(--color-on-primary);
 }
 
+.ds-switch__input:focus-visible + .ds-switch__track {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.ds-switch__track { flex: none; }
+
+.ds-switch__label {
+  color: var(--color-on-surface);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.25px;
+  white-space: nowrap;
+}
+
+/* Compact: 40x24 for dense toolbars and section headers (52x32 dominates a
+   32px-high toolbar). Thumb 12px off -> 16px on, same proportions as default. */
+.ds-switch[data-size='compact'] { gap: 8px; }
+.ds-switch[data-size='compact'] .ds-switch__track {
+  width: 40px;
+  height: 24px;
+  border-radius: 12px;
+}
+.ds-switch[data-size='compact'] .ds-switch__thumb {
+  left: 4px;
+  width: 12px;
+  height: 12px;
+}
+.ds-switch[data-size='compact'] .ds-switch__input:checked + .ds-switch__track .ds-switch__thumb {
+  left: auto;
+  right: 2px;
+  width: 16px;
+  height: 16px;
+}
+
 /* src/components/segmented-control/segmented-control.css */
 /* SegmentedControl — single-choice view switch.
    ONE outlined track; segments are flat (no border/radius of their own) and
@@ -1053,8 +1093,11 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  /* Keep its natural width in a flex row (let the ROW wrap instead) — a
+     shrinkable track silently clips segments ("Mor…"). It only scrolls when
+     it is wider than its container. */
+  flex: none;
   max-width: 100%;
-  min-width: 0;
 }
 
 .ds-segmented__label {
@@ -1139,6 +1182,95 @@
   flex: none;
 }
 .ds-segmented__icon > svg { width: 100%; height: 100%; }
+
+/* src/components/select/select.css */
+/* Select — filter dropdown on a native <select>.
+   The wrapper draws the field (8px radius = a selection, not an action) and
+   holds an optional prefix label; the real <select> is borderless inside it,
+   so the open list is the platform's own picker. */
+
+.ds-select {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 32px;
+  /* Natural width in a flex row: a shrinkable select truncates its value
+     ("Las…") instead of letting the row wrap. */
+  flex: none;
+  max-width: 100%;
+  padding: 0 0 0 12px;
+  border: 1px solid var(--color-outline);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--color-on-surface);
+  box-sizing: border-box;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.1px;
+  font-weight: 500;
+  transition: background-color 0.15s ease;
+}
+.ds-select[data-size='md'] { height: 40px; padding-left: 16px; }
+
+.ds-select:hover:not([data-disabled]) {
+  background: color-mix(in srgb, var(--color-on-surface) 8%, transparent);
+}
+.ds-select:focus-within {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+}
+.ds-select[data-disabled] { opacity: 0.38; cursor: default; }
+
+.ds-select__label {
+  flex: none;
+  color: var(--color-on-surface-variant);
+  white-space: nowrap;
+}
+
+.ds-select__input {
+  appearance: none;
+  -webkit-appearance: none;
+  min-width: 0;
+  height: 100%;
+  margin: 0;
+  /* Room for the chevron; the field's right padding lives here so the whole
+     area up to the border opens the picker. */
+  padding: 0 32px 0 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  cursor: inherit;
+  text-overflow: ellipsis;
+}
+.ds-select[data-size='md'] .ds-select__input { padding-right: 36px; }
+.ds-select__input:focus { outline: none; }
+
+/* The open list takes the theme's colours where the platform allows it. */
+.ds-select__input option {
+  background: var(--color-surface-container-lowest);
+  color: var(--color-on-surface);
+}
+
+.ds-select__chevron {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+  color: var(--color-on-surface-variant);
+  pointer-events: none;
+}
+.ds-select[data-size='md'] .ds-select__chevron { right: 12px; }
+.ds-select__chevron > svg { width: 100%; height: 100%; }
+[data-theme='dark'] .ds-select__input { color-scheme: dark; }
 
 /* src/components/data-table/data-table.css */
 /* Data Table — bordered dashboard table with alternating token surfaces for easier scanning. */

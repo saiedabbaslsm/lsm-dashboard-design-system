@@ -134,8 +134,8 @@ Button *emphasis* (one filled primary per view) is not enough. When every contro
 | Secondary action | go somewhere / change something | `Button variant="outlined"` |
 | Utility | act on what is shown (export, expand, copy link) | `Button variant="text"` + Lucide icon |
 | View switch | pick ONE way of showing the same data ("By week / By month") | **`SegmentedControl`** (spec below) |
-| Filter | narrow which data is included | a **dropdown / select field**; `Chip type="filter"` only for multi-select |
-| Setting | on / off | `Switch` with a visible label |
+| Filter | narrow which data is included | **`Select`** (a dropdown field, optional "Supplier:" prefix); `Chip type="filter"` only for multi-select |
+| Setting | on / off | `Switch` with a visible `label`; `size="compact"` (40×24) in toolbars and section headers |
 | Navigation | jump within the page | jump links / contents block (see Structure & navigation) |
 
 - **Never use Chips as a single-choice view switch.** That's what a segmented control is for.

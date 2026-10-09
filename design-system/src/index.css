@@ -11,6 +11,7 @@
 @import './components/checkbox/checkbox.css';
 @import './components/switch/switch.css';
 @import './components/segmented-control/segmented-control.css';
+@import './components/select/select.css';
 @import './components/data-table/data-table.css';
 @import './components/line-chart/line-chart.css';
 @import './components/bar-chart/bar-chart.css';

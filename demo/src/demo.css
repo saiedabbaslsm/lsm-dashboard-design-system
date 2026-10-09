@@ -614,3 +614,6 @@
   gap: 8px;
   margin-top: 12px;
 }
+
+.demo-toolbar-tools { display: inline-flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.demo-control-strip--wrap { flex-wrap: wrap; justify-content: flex-start; row-gap: 16px; column-gap: 24px; }

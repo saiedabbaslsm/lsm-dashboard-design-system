@@ -1,13 +1,17 @@
 /* Switch — mirrors the Figma `Switch` set (off/on + disabled). */
 
 .ds-switch {
+  position: relative;
   display: inline-flex;
+  align-items: center;
+  gap: 12px;
   cursor: pointer;
 }
 .ds-switch[data-disabled] { opacity: 0.38; pointer-events: none; }
 
 .ds-switch__input {
   position: absolute;
+  pointer-events: none;
   width: 1px;
   height: 1px;
   opacity: 0;
@@ -47,4 +51,40 @@
   width: 24px;
   height: 24px;
   background: var(--color-on-primary);
+}
+
+.ds-switch__input:focus-visible + .ds-switch__track {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.ds-switch__track { flex: none; }
+
+.ds-switch__label {
+  color: var(--color-on-surface);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.25px;
+  white-space: nowrap;
+}
+
+/* Compact: 40x24 for dense toolbars and section headers (52x32 dominates a
+   32px-high toolbar). Thumb 12px off -> 16px on, same proportions as default. */
+.ds-switch[data-size='compact'] { gap: 8px; }
+.ds-switch[data-size='compact'] .ds-switch__track {
+  width: 40px;
+  height: 24px;
+  border-radius: 12px;
+}
+.ds-switch[data-size='compact'] .ds-switch__thumb {
+  left: 4px;
+  width: 12px;
+  height: 12px;
+}
+.ds-switch[data-size='compact'] .ds-switch__input:checked + .ds-switch__track .ds-switch__thumb {
+  left: auto;
+  right: 2px;
+  width: 16px;
+  height: 16px;
 }

@@ -50,8 +50,8 @@
       "name": "Switch",
       "status": "available",
       "import": "import { Switch } from '@lsm/design-system'",
-      "props": "checked?; disabled?; onChange?; + native input attrs (role=switch)",
-      "summary": "On/off toggle. Compose with your own label for settings rows."
+      "props": "checked/defaultChecked/onChange (native checkbox attrs); label?: ReactNode — visible label after the track (a setting must say what it sets); size?: default (52x32, forms/settings pages) | compact (40x24, toolbars and section headers)",
+      "summary": "SETTING — on/off. Always with a visible label. Use size=\"compact\" inside toolbars and section headers so it sits with 32px controls. Not for choosing between views (SegmentedControl) or filtering (Select)."
     },
     {
       "name": "SegmentedControl",
@@ -59,6 +59,13 @@
       "import": "import { SegmentedControl } from '@lsm/design-system'",
       "props": "options: {value, label, icon?, href?, disabled?}[]; value; onChange?(value); label?: visible leading label e.g. \"Group by\"; aria-label? (when no label)",
       "summary": "VIEW SWITCH — pick ONE way of showing the same data (Week / Month / Quarter, Chart / Table). One outlined 32px track, flat segments with 1px dividers, selected = secondary-container. Arrow keys move the selection. Options with href render as links (URL-held views, aria-current). NOT for filters (use a select) and NOT chips. Past ~5 options use a select. HTML report: <div class=\"ds-segmented\"><span class=\"ds-segmented__label\">Group by</span><div class=\"ds-segmented__track\" role=\"radiogroup\"><button class=\"ds-segmented__item\" role=\"radio\" aria-checked=\"true\" data-selected=\"true\">Week</button>…</div></div>"
+    },
+    {
+      "name": "Select",
+      "status": "available",
+      "import": "import { Select } from '@lsm/design-system'",
+      "props": "options: (string | {value, label?, disabled?})[]; value; onChange?(value); label?: visible prefix inside the field e.g. \"Supplier:\"; size?: sm (32px, toolbars — default) | md (40px, forms); + native select attrs",
+      "summary": "FILTER — narrows which data is included (Supplier: All / Snapchat / Meta). Native <select> inside a 32px outlined 8px-radius field with an optional muted prefix label and a chevron; the open list is the platform picker (dark color-scheme in dark mode). NOT for view switches (SegmentedControl). For multi-select use Chip type=\"filter\". HTML report: <label class=\"ds-select\"><span class=\"ds-select__label\">Supplier:</span><select class=\"ds-select__input\">…</select><span class=\"ds-select__chevron\"><i data-lucide=\"chevron-down\"></i></span></label>"
     },
     {
       "name": "DataTable",

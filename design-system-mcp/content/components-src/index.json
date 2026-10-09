@@ -10,6 +10,7 @@
     "kpi-card",
     "line-chart",
     "segmented-control",
+    "select",
     "source-flow-map",
     "switch",
     "text-field"

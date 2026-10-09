@@ -1,0 +1,87 @@
+/* Select — filter dropdown on a native <select>.
+   The wrapper draws the field (8px radius = a selection, not an action) and
+   holds an optional prefix label; the real <select> is borderless inside it,
+   so the open list is the platform's own picker. */
+
+.ds-select {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 32px;
+  /* Natural width in a flex row: a shrinkable select truncates its value
+     ("Las…") instead of letting the row wrap. */
+  flex: none;
+  max-width: 100%;
+  padding: 0 0 0 12px;
+  border: 1px solid var(--color-outline);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--color-on-surface);
+  box-sizing: border-box;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.1px;
+  font-weight: 500;
+  transition: background-color 0.15s ease;
+}
+.ds-select[data-size='md'] { height: 40px; padding-left: 16px; }
+
+.ds-select:hover:not([data-disabled]) {
+  background: color-mix(in srgb, var(--color-on-surface) 8%, transparent);
+}
+.ds-select:focus-within {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+}
+.ds-select[data-disabled] { opacity: 0.38; cursor: default; }
+
+.ds-select__label {
+  flex: none;
+  color: var(--color-on-surface-variant);
+  white-space: nowrap;
+}
+
+.ds-select__input {
+  appearance: none;
+  -webkit-appearance: none;
+  min-width: 0;
+  height: 100%;
+  margin: 0;
+  /* Room for the chevron; the field's right padding lives here so the whole
+     area up to the border opens the picker. */
+  padding: 0 32px 0 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  cursor: inherit;
+  text-overflow: ellipsis;
+}
+.ds-select[data-size='md'] .ds-select__input { padding-right: 36px; }
+.ds-select__input:focus { outline: none; }
+
+/* The open list takes the theme's colours where the platform allows it. */
+.ds-select__input option {
+  background: var(--color-surface-container-lowest);
+  color: var(--color-on-surface);
+}
+
+.ds-select__chevron {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+  color: var(--color-on-surface-variant);
+  pointer-events: none;
+}
+.ds-select[data-size='md'] .ds-select__chevron { right: 12px; }
+.ds-select__chevron > svg { width: 100%; height: 100%; }
+[data-theme='dark'] .ds-select__input { color-scheme: dark; }

@@ -19,7 +19,10 @@ export { SegmentedControl } from './components/segmented-control/segmented-contr
 export type { SegmentedControlOption, SegmentedControlProps } from './components/segmented-control/segmented-control';
 
 export { Switch } from './components/switch/switch';
-export type { SwitchProps } from './components/switch/switch';
+export type { SwitchProps, SwitchSize } from './components/switch/switch';
+
+export { Select } from './components/select/select';
+export type { SelectOption, SelectProps, SelectSize } from './components/select/select';
 
 export { DataTable } from './components/data-table/data-table';
 export type { DataTableColumn, DataTableProps, DataTableTone } from './components/data-table/data-table';

@@ -7,8 +7,11 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  /* Keep its natural width in a flex row (let the ROW wrap instead) — a
+     shrinkable track silently clips segments ("Mor…"). It only scrolls when
+     it is wider than its container. */
+  flex: none;
   max-width: 100%;
-  min-width: 0;
 }
 
 .ds-segmented__label {

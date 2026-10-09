@@ -12,6 +12,7 @@ import {
   type DataTableColumn,
   KpiCard,
   SegmentedControl,
+  Select,
   LineChart as DsLineChart,
   type LineChartSeries,
   SourceFlowMap,
@@ -357,6 +358,8 @@ export default function App() {
   const [groupBy, setGroupBy] = useState('Partner');
   const [grain, setGrain] = useState('week');
   const [viewAs, setViewAs] = useState('chart');
+  const [supplier, setSupplier] = useState('all');
+  const [smooth, setSmooth] = useState(true);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
   useEffect(() => {
@@ -400,7 +403,7 @@ export default function App() {
         <Chip type="assist" leadingIcon={<Sparkles size={16} />}>Suggest view</Chip>
         <div className="demo-toolbar__spacer" />
         <TextField variant="outlined" placeholder="Search partners" leadingIcon={<Search size={18} />} aria-label="Search partners" />
-        <Dropdown label="Group by:" value={groupBy} options={['Partner', 'Owner', 'Region', 'Risk level']} onChange={setGroupBy} />
+        <Select label="Group by:" value={groupBy} options={['Partner', 'Owner', 'Region', 'Risk level']} onChange={setGroupBy} />
       </div>
 
       <section className="demo-control-strip">
@@ -408,14 +411,11 @@ export default function App() {
           <div className="text-label-large demo-text-strong">Automation</div>
           <div className="text-body-small demo-text-muted">Alert on compliance risk and missed partner SLAs</div>
         </div>
-        <label className="demo-switch-row text-body-medium">
-          <Switch defaultChecked aria-label="Risk alerts enabled" />
-          Risk alerts
-        </label>
+        <Switch defaultChecked label="Risk alerts" />
         <Checkbox label="Include archived partners" />
       </section>
 
-      <section className="demo-control-strip" data-testid="segmented-demo">
+      <section className="demo-control-strip demo-control-strip--wrap" data-testid="segmented-demo">
         <SegmentedControl
           label="Group by"
           value={grain}
@@ -426,6 +426,14 @@ export default function App() {
             { value: 'quarter', label: 'Quarter' },
           ]}
         />
+        <div className="demo-toolbar-tools" data-testid="toolbar-tools">
+          <Select label="Supplier:" value={supplier} onChange={setSupplier} options={[
+            { value: 'all', label: 'All' }, { value: 'snapchat', label: 'Snapchat' }, { value: 'meta', label: 'Meta' }, { value: 'tiktok', label: 'TikTok', disabled: true },
+          ]} />
+          <Switch size="compact" label="7-day smoothing" checked={smooth} onChange={(e) => setSmooth(e.currentTarget.checked)} />
+          <Button variant="text" size="sm" icon={<Download size={16} />}>Export to Excel</Button>
+        </div>
+        <Select size="md" aria-label="Period" value="28d" options={[{ value: '28d', label: 'Last 28 days' }, { value: '90d', label: 'Last 90 days' }]} disabled />
         <SegmentedControl
           aria-label="View as"
           value={viewAs}

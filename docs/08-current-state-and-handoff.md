@@ -121,7 +121,9 @@ Source: `~/Desktop/marketing-dashboard/docs/design-system-feedback.md` — writt
 
 **Dark-mode bug 3.5, diagnosed:** not the icon (white on `#3f2a00` is 13.6:1) but the **tile**: `primary-container` in dark is a deep brown only **1.54:1** against the page, and the white icon drops the gold — it reads as a muddy blob. `ds-icon-tile` uses a gold icon (8:1) + a 30% gold outline in dark. Verified by computed styles in both themes.
 
-**Batch A is live** (deployed 2026-10-09, 10/10 live checks). **Batch B started:** `SegmentedControl` built (radiogroup with arrow keys, link variant with `aria-current`, optional visible label, icons, disabled; scrolls inside the track on narrow screens; past ~5 options use a select). Demo renders all variants. **Figma is out of scope for this round, per the user.** Next: `Select`, compact `Switch`, `SummaryCard`, `ArrivalBanner`, `Tooltip`.
+**Batch A is live** (deployed 2026-10-09, 10/10 live checks). **Batch B started:** `SegmentedControl` built (radiogroup with arrow keys, link variant with `aria-current`, optional visible label, icons, disabled; scrolls inside the track on narrow screens; past ~5 options use a select). Demo renders all variants. **Figma is out of scope for this round, per the user.** Then `Select` (native `<select>` in a 32/40px outlined field, optional prefix label, dark `color-scheme`) and `Switch` gained `label` + `size="compact"` (40×24). Both `SegmentedControl` and `Select` are `flex: none` — when they could shrink, a crowded flex row clipped segments ("Mor…") and truncated values ("Las…") instead of wrapping. Next: `SummaryCard`, `ArrivalBanner`, `Tooltip`.
+
+**Mobile lead (not yet chased):** at a 375px viewport the demo page measured **828px wide** — something in the demo overflows horizontally. The new toolbar controls were not it (all inside their 351px section). Start the mobile diagnosis there.
 
 **Not yet:** Figma mirror of `ds-few` / `ds-icon-tile` (skipped by user decision); 3.4 was resolved as a *rule* (radius encodes role), not a code change.
 
