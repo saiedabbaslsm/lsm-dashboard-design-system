@@ -49,8 +49,8 @@ Coworker feedback: dashboards came out **bland** when there was no trend/chart t
 - **Change a rule the AI follows** (colour balance, icons, etc.) → edit `design-system-mcp/content/*.md` → redeploy the connector. No code.
 - **Change a token (colour/type)** → edit in Figma → re-export `design-system/tokens/tokens.json` → `npm run build` in `design-system/` → `npm run sync-assets` in `design-system-mcp/` → commit → redeploy.
 - **Change/add a component** → edit `design-system/src/components/…` → `npm run build` → `npm run sync-assets` → update `content/components.json` → commit → redeploy. Mirror it in Figma.
-- **Redeploy the connector** → from `design-system-mcp/`: `npx vercel deploy --prod` (needs the Vercel token — see credentials). It is **CLI-deploy, not git-auto-deploy** — pushing to GitHub alone does NOT update the live connector.
-- **Credentials** (GitHub PAT for push, Vercel token for deploy) are kept PRIVATE at `~/.lsm-design-system/credentials.md` (outside the repo, never committed). Fill it with fresh tokens. If it's missing, ask the user.
+- **Redeploy the connector** → from `design-system-mcp/`: `npx vercel deploy --prod --yes` (the Vercel CLI is logged in; no token). It is **CLI-deploy, not git-auto-deploy** — pushing to GitHub alone does NOT update the live connector.
+- **Credentials:** none needed — push via the keychain, deploy via the logged-in CLI (see the 2026-09-16 state note). The old `~/.lsm-design-system/credentials.md` tokens are dead.
 
 ## What real usage taught us (don't re-learn these)
 - Guidance only works if the AI reads it → put must-haves in `get_stylesheet`'s output, not just onboarding.
@@ -111,6 +111,18 @@ Shipped three connector changes (no Skill authoring):
 
 Also this round, per user: **removed the "calm / restraint" language** from `visual-language.md` and `AGENTS.md`. It was making output bland — Claude read "be calm/restrained" as "hold back on colour". **Colour is now governed by 60/30/10 alone**; "flat/bordered/no-shadow" stays (that's structure, not colour suppression), and gold stays the 10% accent. Explicit new line: *bland/grey that should carry meaning is a failure, the same as garish.*
 
+## Marketing dashboard feedback round (2026-10-09)
+
+Source: `~/Desktop/marketing-dashboard/docs/design-system-feedback.md` — written from five desk tests with the marketing team. Triaged into: **A** rules (done this round) · **B** components (next) · **C** generic house conventions · **Phase 2** marketing-specific thresholds/targets/icon map (held — they belong in `kpis.json` once KPIs are signed off).
+
+**Batch A shipped to `design-rules.md`:** Control roles (role → component table, shape-encodes-role: pill = action, 8px = selection/state, fixed header order) · Comparisons (green/red = one comparison per view; secondary comparisons neutral + in words, "cheaper/dearer"; tint follows own figure; name previous-period dates; spend has no verdict) · Low-confidence values (show + `ds-few`, no RAG; `No data` / `—` / `few`; sort column always visible; still-arriving data greyed) · Summary cards name their question · Clicks that move the reader (drawer over jump, arrival banner + Back, filter chips). Compact `REQUIRED_HEADER` item 6 (header now ~5.6k chars — watch for older mandates slipping).
+
+**New classes in `layout.css`:** `ds-low-confidence`, `ds-few`, `ds-icon-tile` (+ `--sm`).
+
+**Dark-mode bug 3.5, diagnosed:** not the icon (white on `#3f2a00` is 13.6:1) but the **tile**: `primary-container` in dark is a deep brown only **1.54:1** against the page, and the white icon drops the gold — it reads as a muddy blob. `ds-icon-tile` uses a gold icon (8:1) + a 30% gold outline in dark. Verified by computed styles in both themes.
+
+**Not yet:** Figma mirror of `ds-few` / `ds-icon-tile`; 3.4 was resolved as a *rule* (radius encodes role), not a code change.
+
 ## Open issue — mobile (raised, NOT yet diagnosed)
 
 The user reported: **"not working on mobile"**. This was raised at the very end of the last session and **no diagnosis or fix was done** — do not assume the cause. Before touching anything, establish *what* is broken and *where*:
@@ -129,12 +141,12 @@ Figma now matches code for the Badge work — verified by reading the variables 
 - Badge type is **pinned** to label-large (14/500/20). Before this it set no `font-size` and inherited — the same component rendered at 16px in a tile and 14px in a table, which Figma could not have mirrored.
 
 ## Next tasks (suggested)
-0. **Push + deploy the local commits** (see the uncommitted-state warning at the top). Nothing after `e8eb075` is live.
+0. **Batch B from the marketing-dashboard feedback** (see "Marketing dashboard feedback round" below): SegmentedControl, Select, Tooltip first — the control-roles rule already points at them.
 1. **Diagnose the mobile issue above** — live user feedback, still undiagnosed. Get a screenshot first; don't assume the cause.
 2. **Figma: remap `ActionInsightList`'s `watch` tone.** Code now uses `--color-warning`; Figma may still imply gold. Small, but it's live drift.
 3. **Figma consolidation (the pending polish):** fold `Surface` into the main `KPI Card` set → one set with `Size × Trend × Surface` (18 variants). On toned surfaces the chart is always the dark tonal treatment (trend still sets the arrow/delta direction). Then delete the separate `KPI Card Tone` set. Build via the `figma-console` bridge (`figma_execute`) — reuse the tone build logic already in this project's history.
 4. **Consider connecting Vercel to GitHub** so `main` auto-deploys. The user already *believes* this is how it works (it isn't — see [docs/02](02-architecture.md)), which makes "pushed but forgot to deploy" a standing trap. Wiring it up would make the mental model true.
-5. **Narrow the GitHub PAT.** It currently carries `admin:org`, `user`, `write:packages`, `codespace`, `project` and repo `admin` when it only needs `repo`. Blast radius is the whole org if it leaks.
+5. ~~Narrow the GitHub PAT~~ — moot since 2026-09-16: the PAT expired and push now uses the keychain. Revoke it on GitHub if it still appears in token settings.
 6. **Publish the npm package** to a registry (for engineers building real apps) — optional; the connector-served code covers non-technical use.
 7. **Phase 2 — per-team KPIs:** only after the boss signs off on the look. Add teams to `content/kpis.json` with `confirmed:true`; `get_team_kpis` returns them automatically.
 

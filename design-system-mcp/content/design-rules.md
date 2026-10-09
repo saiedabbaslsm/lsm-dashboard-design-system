@@ -47,6 +47,27 @@ Whichever you use:
 
 **Never add navigation to a single-screen dashboard.** If everything is visible at once, navigation is decoration.
 
+### Summary cards name their question
+
+A collapsed or summary card that reads "● Yes · £16.6k profit…" fails — yes to *what*? Every summary/collapsed card carries:
+
+- an **icon tile** (`class="ds-icon-tile"` with a Lucide icon),
+- the **question as its title** ("Are we making money?"),
+- the **answer line** beneath it,
+- a **toned left edge** (`--color-success` / `--color-error` / `--color-warning` / `--color-info`) for the verdict, and
+- "Show more" if it expands.
+
+Use the **same words** in any link that points to it: a jump link "Are we making money?" lands on a card titled "Are we making money?".
+
+### Clicks that move the reader must say so
+
+Users who are silently taken to another tab, or whose whole page quietly re-filters, "feel they clicked something wrong".
+
+- **Clicking a name or figure opens a drawer/panel over the current page** (details + an explicit "See all …" link) — not a jump to a different page.
+- **If an action does move the reader or change page-wide state** (another tab, a new filter, a new date range), show an **arrival banner** at the top: "Showing only Snapchat campaigns — you opened them from the Overview", with **← Back** that restores exactly where they were.
+- **An active filter shows as a filter chip with a clear (×)** — never only as a breadcrumb or a highlighted tab.
+- A click that changes the **whole page's** date range from inside a table (e.g. clicking a week header) needs the same banner and Back. Better: don't make table headers do that.
+
 ## Line length (long-form text)
 
 Cap body text at **65–75 characters** per line — use `class="ds-prose"` (`max-width: 68ch`). A paragraph running the full width of a 27" monitor is physically hard to read; the eye loses the line on the return sweep.
@@ -63,6 +84,20 @@ Real exports have gaps. **Never render a blank box.**
 - **A filtered table with no matches** echoes the filter back ("No partners match 'acme'") and offers a way out — a clear-filter link.
 - **A partially missing series** shows a gap in the line, not a drop to zero.
 - Use `class="ds-empty"` for the block. Empty-state text is `--color-on-surface-variant`, **not** the error colour — missing data is not an error.
+
+## Low-confidence values — show them, mark them
+
+*No data* is covered above. *Little data* is different, and hiding it is worse: replacing a figure with "Too few" left users unable to tell whether it was good or bad, or why.
+
+- **Always show the figure.** Style it `class="ds-low-confidence"` (muted) and follow it with a small tag: `<span class="ds-few" title="Based on only 12 registrations — under 30, so one more can swing it a lot.">few</span>`. The tooltip **names the base** and the threshold.
+- **No green/red on a low-confidence value** — it hasn't earned a verdict.
+- **Keep three states apart** — they are easy to conflate and mean different things:
+  - `No data` — nothing was recorded.
+  - `—` — the figure can't exist: a ratio with no denominator, or a cost with £0 spend ("not bought" — never "£0.00", which reads as cheapest).
+  - `£23.90` + `few` — real, but unsteady.
+- **Ranking:** rows below the confidence floor are listed **apart**, under a line saying why ("Not ranked — fewer than 30 registrations"), with their values still shown.
+- **The figure a list is sorted by must always be a visible column.** Ranking by something the reader can't see is the fastest way to lose their trust.
+- **Still-arriving data** (the last days of a feed that's still filling in) is shown but **greyed and never coloured** — dashed on a chart, muted in a table.
 
 ## Spacing — base-8 scale
 
@@ -88,6 +123,24 @@ Labels say what will happen: **"Export CSV"**, "Save changes", "Delete partner".
 
 - In a confirmation, the buttons resolve the question: "Delete this report?" → **"Delete report"** / **"Keep report"**.
 - Destructive styling (`--color-error`) goes only on the **final** confirm button — never on the trigger that opens the dialog.
+
+## Control roles — different jobs look different
+
+Button *emphasis* (one filled primary per view) is not enough. When every control is the same outlined pill, users can't tell a view switch from a filter from an action. **Pick the control by the job it does:**
+
+| Role | What it does | Use |
+|---|---|---|
+| Primary action | the one step forward in this view | `Button variant="filled"` — one per view |
+| Secondary action | go somewhere / change something | `Button variant="outlined"` |
+| Utility | act on what is shown (export, expand, copy link) | `Button variant="text"` + Lucide icon |
+| View switch | pick ONE way of showing the same data ("By week / By month") | a **segmented control**: joined segments, 32px high, 8px outer radius, square inner corners, selected segment `--color-secondary-container` |
+| Filter | narrow which data is included | a **dropdown / select field**; `Chip type="filter"` only for multi-select |
+| Setting | on / off | `Switch` with a visible label |
+| Navigation | jump within the page | jump links / contents block (see Structure & navigation) |
+
+- **Never use Chips as a single-choice view switch.** That's what a segmented control is for.
+- **Shape tells you the role:** pills (fully round) are *actions* — they do something. 8px-radius rectangles (chips, segmented controls, fields, badges) are *selections and states* — they choose or show something. When both sit in one toolbar the difference is deliberate; don't "fix" it by rounding the chips.
+- **Header order is fixed** so people learn it once: **title (+ the date range) on the left → view switches → right-aligned tools in the order filters, settings, utilities.** The primary action, if there is one, sits last on the right.
 
 ## Slides & decks (PowerPoint, Google Slides, PDF export)
 
@@ -154,6 +207,18 @@ Statuses have **real tokens**. Never invent a status colour, and never hand-roll
 - **Badge (inert status) vs Chip (clickable control)** — Chip has a border and a pointer cursor because it *does* something. Don't use a Chip to show a status.
 - Status colours are functional; like trend green/red they are **exempt** from the 60/30/10 balance above.
 
+## Comparisons — green/red means ONE thing per view
+
+When a figure is red and the line under it is green, users ask "is it good or bad?" — every time. So:
+
+- **Pick the primary comparison for the view** (usually: this period vs the previous one). **Only that comparison gets green/red.**
+- **Secondary comparisons** (vs average, vs benchmark, vs another site, vs target when target isn't the primary) are **neutral text** — `--color-on-surface-variant` — and carry their judgement **in words**.
+- **"Good" depends on the metric.** Revenue, profit, conversion: up is good. Cost per X, spend-per-result, churn, refunds, complaints: **down is good, so a decrease is green.** Never colour "increase = green" blindly.
+- **Say lower-is-better in words:** "35% **cheaper** than average", "12% **dearer**" — not "35% below", which reads as bad.
+- **Spend itself carries no verdict** — more or less spend is a decision, not a result. Keep spend changes neutral.
+- **A tinted cell or card follows its OWN figure only.** Never derive a container's tint from a coloured child (e.g. a `:has(.positive)` selector) — that's how a red figure ends up on a green cell.
+- **Every "previous period" names its dates:** "vs 12 Aug – 8 Sep 2026", not "vs previous period". Users always ask "previous to what?".
+
 ## Icons (Lucide — always include them)
 - The system uses **Lucide** icons. Never mix icon families, and don't skip icons — they're part of the look.
 - **KPI cards MUST have a top-right icon** relevant to the metric: revenue → `dollar-sign` or `wallet`; ROAS / growth → `trending-up`; CAC / cost → `user-plus` or `wallet`; conversion → `target` or `percent`; users → `users`; orders → `shopping-cart`.
@@ -172,6 +237,7 @@ Statuses have **real tokens**. Never invent a status colour, and never hand-roll
   Then override per context (KPI card icons 18px). **Every icon in the same list must be the same size** — set it in CSS, not per-icon, so they can't drift. Icons inherit `currentColor`, so set the container's `color` to a token (usually `var(--color-on-surface-variant)`; on a gold surface, `--ds-on-muted`).
 - **Never butt an icon directly against text.** Wrap icon + label in `display:inline-flex; align-items:center; gap:6px` — a bare icon glued to a number (delta cells are the classic case) reads cramped and vertically misaligned.
 - **An icon wrapper inside a flex row needs `flex: none`.** Without it the label shrinks the icon horizontally: it renders *squashed* (roughly half width) rather than smaller, which is easy to misread as "the icon is too small". Any `icon + label` row — buttons, pills, list items — needs it.
+- **Icon on a soft gold square** (summary cards, jump tiles, section headers): use `class="ds-icon-tile"` (40px) or `ds-icon-tile ds-icon-tile--sm` (32px). Don't hand-roll it with `--color-primary-container` + `--color-on-primary-container`: in dark mode that pair renders a white icon on a deep-brown tile barely distinguishable from the page — the gold disappears. The class switches the icon to gold and adds a faint gold edge in dark.
 - **In a React app:** use `lucide-react` and pass the icon via the component's `icon` / `leadingIcon` prop.
 
 ## Charts & data-viz
@@ -197,7 +263,8 @@ Statuses have **real tokens**. Never invent a status colour, and never hand-roll
 - A rigid card-grid source diagram is acceptable as a secondary/fallback view, not the default.
 
 ## Building components not yet in the package
-- Compose from tokens + type classes + existing components. Match the density and radius of what's there (button radius = pill; card radius = 14px; control radius = 8px).
+- Compose from tokens + type classes + existing components. Match the density and radius of what's there (button radius = pill; card radius = 14px; control radius = 8px). Pill = an action; 8px = a selection or state (see Control roles).
+- Common ones not in the package yet — build them from tokens to the role table above: segmented control (view switch), select/dropdown (filter), date-range picker (presets + "Custom range…", and show the selected dates, not just the preset name), drawer (right-hand panel, Esc to close), tooltip (hover AND focus — `title=` alone is slow and invisible on touch).
 - Reuse `Button` etc. rather than re-implementing them.
 
 ## KPIs (Phase 1: presentation, not mandate)

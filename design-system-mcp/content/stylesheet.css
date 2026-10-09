@@ -508,6 +508,69 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* Low-confidence value: a real figure on a small base (e.g. CPR on 12
+   registrations). Show the number, mark it, and drop the RAG colour —
+   replacing it with words like "Too few" left users unable to tell good
+   from bad. Pair with a tooltip/title naming the base. */
+.ds-low-confidence {
+  color: var(--color-on-surface-variant);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The small "few" tag that sits after a low-confidence figure. Inert, so no
+   border (a border reads as clickable — same rule as Badge). Explicit
+   height, horizontal padding only. */
+.ds-few {
+  display: inline-flex;
+  align-items: center;
+  height: 16px;
+  padding: 0 6px;
+  margin-left: var(--space-1);
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--color-on-surface) 8%, transparent);
+  color: var(--color-on-surface-variant);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+/* Icon tile: a Lucide icon on a soft gold square (disclosure cards, jump
+   tiles, section headers). In dark mode primary-container is a deep brown
+   (#3f2a00) that sits only ~1.5:1 against the page, and the white
+   on-primary-container icon drops the gold — the tile reads as a muddy
+   blob. Dark mode therefore takes a gold icon and a faint gold edge. */
+.ds-icon-tile {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: var(--color-primary-container);
+  color: var(--color-on-primary-container);
+}
+.ds-icon-tile--sm {
+  width: 32px;
+  height: 32px;
+}
+.ds-icon-tile > svg {
+  width: 20px;
+  height: 20px;
+}
+.ds-icon-tile--sm > svg {
+  width: 16px;
+  height: 16px;
+}
+[data-theme='dark'] .ds-icon-tile {
+  color: var(--color-primary);
+  outline: 1px solid color-mix(in srgb, var(--color-primary) 30%, transparent);
+  outline-offset: -1px;
+}
+
 /* src/components/button/button.css */
 /* Button — mirrors the Figma `Button` component set. Token-driven; no hardcoded colors. */
 

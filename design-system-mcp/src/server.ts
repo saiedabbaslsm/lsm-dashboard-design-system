@@ -80,6 +80,14 @@ const REQUIRED_HEADER = `/* ====================================================
       And never render a blank box: no data shows "No data" + why (class
       ds-empty / ds-no-data), never 0 or NaN. Detail: get_design_rules.
 
+   6) MAKE MEANING UNAMBIGUOUS — green/red belongs to ONE comparison per view
+      (usually vs previous period, naming its dates); vs average/benchmark is
+      neutral text in words ("35% cheaper", not "35% below"). A small-base
+      figure is still SHOWN, muted (ds-low-confidence) + <span class="ds-few">
+      few</span>, no RAG colour — never "Too few". Different jobs, different
+      controls: view switch = segmented control, filter = dropdown, action =
+      button, never chips for everything. Detail: get_design_rules.
+
    Also load Roboto: <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
    Then put ALL the CSS below into a <style> tag (or a .css file).
    ============================================================== */
