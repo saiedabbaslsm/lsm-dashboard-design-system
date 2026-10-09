@@ -11,6 +11,7 @@ import {
   DataTable,
   type DataTableColumn,
   KpiCard,
+  SegmentedControl,
   LineChart as DsLineChart,
   type LineChartSeries,
   SourceFlowMap,
@@ -30,6 +31,7 @@ import {
   Plus,
   RefreshCw,
   Search,
+  Table2,
   ShieldCheck,
   Sparkles,
   Target,
@@ -353,6 +355,8 @@ function SignalDashboardPreview() {
 export default function App() {
   const [sel, setSel] = useState<number | null>(0);
   const [groupBy, setGroupBy] = useState('Partner');
+  const [grain, setGrain] = useState('week');
+  const [viewAs, setViewAs] = useState('chart');
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
   useEffect(() => {
@@ -409,6 +413,37 @@ export default function App() {
           Risk alerts
         </label>
         <Checkbox label="Include archived partners" />
+      </section>
+
+      <section className="demo-control-strip" data-testid="segmented-demo">
+        <SegmentedControl
+          label="Group by"
+          value={grain}
+          onChange={setGrain}
+          options={[
+            { value: 'week', label: 'Week' },
+            { value: 'month', label: 'Month' },
+            { value: 'quarter', label: 'Quarter' },
+          ]}
+        />
+        <SegmentedControl
+          aria-label="View as"
+          value={viewAs}
+          onChange={setViewAs}
+          options={[
+            { value: 'chart', label: 'Chart', icon: <LineChartIcon size={16} /> },
+            { value: 'table', label: 'Table', icon: <Table2 size={16} /> },
+          ]}
+        />
+        <SegmentedControl
+          label="Lens"
+          value="cost"
+          options={[
+            { value: 'cost', label: 'Cost', href: '#lens=cost' },
+            { value: 'volume', label: 'Volume', href: '#lens=volume' },
+            { value: 'quality', label: 'Quality', href: '#lens=quality', disabled: true },
+          ]}
+        />
       </section>
 
       <SignalDashboardPreview />

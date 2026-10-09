@@ -9,6 +9,7 @@
     "data-table",
     "kpi-card",
     "line-chart",
+    "segmented-control",
     "source-flow-map",
     "switch",
     "text-field"

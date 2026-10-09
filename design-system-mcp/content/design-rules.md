@@ -133,13 +133,13 @@ Button *emphasis* (one filled primary per view) is not enough. When every contro
 | Primary action | the one step forward in this view | `Button variant="filled"` — one per view |
 | Secondary action | go somewhere / change something | `Button variant="outlined"` |
 | Utility | act on what is shown (export, expand, copy link) | `Button variant="text"` + Lucide icon |
-| View switch | pick ONE way of showing the same data ("By week / By month") | a **segmented control** (spec below) |
+| View switch | pick ONE way of showing the same data ("By week / By month") | **`SegmentedControl`** (spec below) |
 | Filter | narrow which data is included | a **dropdown / select field**; `Chip type="filter"` only for multi-select |
 | Setting | on / off | `Switch` with a visible label |
 | Navigation | jump within the page | jump links / contents block (see Structure & navigation) |
 
 - **Never use Chips as a single-choice view switch.** That's what a segmented control is for.
-- **Segmented control = ONE outlined track, not a row of buttons.** A single 32px-high container with a 1px `--color-outline` border, 8px radius and `overflow:hidden`; segments inside are flat (no border, no radius of their own, `padding: 0 16px`), separated by a 1px `--color-outline-variant` divider; the selected one fills `--color-secondary-container`. Separately bordered segments read as "three buttons cramped together".
+- **Segmented control = ONE outlined track, not a row of buttons.** Use `SegmentedControl` (or mirror its `ds-segmented` markup via `get_component_code`). Hand-rolling, the spec is: A single 32px-high container with a 1px `--color-outline` border, 8px radius and `overflow:hidden`; segments inside are flat (no border, no radius of their own, `padding: 0 16px`), separated by a 1px `--color-outline-variant` divider; the selected one fills `--color-secondary-container`. Separately bordered segments read as "three buttons cramped together".
 - **Shape tells you the role:** pills (fully round) are *actions* — they do something. 8px-radius rectangles (chips, segmented controls, fields, badges) are *selections and states* — they choose or show something. When both sit in one toolbar the difference is deliberate; don't "fix" it by rounding the chips.
 - **Header order is fixed** so people learn it once: **title (+ the date range) on the left → view switches → right-aligned tools in the order filters, settings, utilities.** The primary action, if there is one, sits last on the right.
 

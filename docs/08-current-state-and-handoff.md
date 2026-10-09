@@ -121,7 +121,9 @@ Source: `~/Desktop/marketing-dashboard/docs/design-system-feedback.md` — writt
 
 **Dark-mode bug 3.5, diagnosed:** not the icon (white on `#3f2a00` is 13.6:1) but the **tile**: `primary-container` in dark is a deep brown only **1.54:1** against the page, and the white icon drops the gold — it reads as a muddy blob. `ds-icon-tile` uses a gold icon (8:1) + a 30% gold outline in dark. Verified by computed styles in both themes.
 
-**Not yet:** Figma mirror of `ds-few` / `ds-icon-tile`; 3.4 was resolved as a *rule* (radius encodes role), not a code change.
+**Batch A is live** (deployed 2026-10-09, 10/10 live checks). **Batch B started:** `SegmentedControl` built (radiogroup with arrow keys, link variant with `aria-current`, optional visible label, icons, disabled; scrolls inside the track on narrow screens; past ~5 options use a select). Demo renders all variants. **Figma is out of scope for this round, per the user.** Next: `Select`, compact `Switch`, `SummaryCard`, `ArrivalBanner`, `Tooltip`.
+
+**Not yet:** Figma mirror of `ds-few` / `ds-icon-tile` (skipped by user decision); 3.4 was resolved as a *rule* (radius encodes role), not a code change.
 
 ## Open issue — mobile (raised, NOT yet diagnosed)
 
@@ -157,6 +159,7 @@ The visual work in this project is easy to get wrong and easy to *believe* is ri
 - **Read computed styles, not screenshots.** `getComputedStyle` in the demo caught the squashed icons (8.6 × 17.5, not "small"), the three different Badge font sizes, and the `DataTable` selector collision. A screenshot would have shown none of them clearly.
 - **Assert on both themes programmatically.** Toggle `data-theme` and diff — that's how the gold-surface bug was proven (`rgb(12,1,0)` in light vs `rgb(242,220,172)` in dark from the *same* CSS).
 - **Diff Figma against `tokens.json` by reading Figma back.** Writing the same value twice isn't proof.
+- **A hidden browser pane freezes CSS transitions.** `getComputedStyle` right after a theme toggle returns the *old* colours for anything with a `transition` — it looks exactly like a dark-mode bug. Inject `*{transition:none!important}` before measuring.
 - **Verify the live connector, not the local file.** `design-system-mcp/` content is only live after a CLI deploy. There's a working script pattern in the session history: POST JSON-RPC to `/mcp`, `initialize`, then `tools/call`, and regex the returned text.
   - ⚠️ **JSON-RPC ids must be an integer or string.** A `Math.random()` id gets rejected with `Parse error: Invalid JSON-RPC message`, and if your code reads `result.content[0].text` with a fallback it will silently report the error text as tool output — i.e. a green deploy looks like a total failure. This cost real time; use `++counter`.
 

@@ -1,0 +1,95 @@
+/* SegmentedControl — single-choice view switch.
+   ONE outlined track; segments are flat (no border/radius of their own) and
+   separated by 1px dividers. Separately bordered segments read as "three
+   buttons cramped together" — that was the first draft, rejected in review. */
+
+.ds-segmented {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.ds-segmented__label {
+  flex: none;
+  color: var(--color-on-surface-variant);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.ds-segmented__track {
+  display: inline-flex;
+  height: 32px;
+  min-width: 0;
+  max-width: 100%;
+  border: 1px solid var(--color-outline);
+  border-radius: 8px;
+  /* Narrow screens: scroll inside the track rather than wrapping (a wrapped
+     track breaks the single outline). Past ~5 options, use a select instead. */
+  overflow-x: auto;
+  scrollbar-width: none;
+  box-sizing: border-box;
+}
+.ds-segmented__track::-webkit-scrollbar { display: none; }
+
+.ds-segmented__item {
+  /* Reset native button/link styles so hosts can't restyle the segments. */
+  appearance: none;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  text-decoration: none;
+  font: inherit;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  height: 100%;
+  padding: 0 16px;
+  color: var(--color-on-surface-variant);
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.1px;
+  font-weight: 500;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.ds-segmented__item + .ds-segmented__item {
+  border-left: 1px solid var(--color-outline-variant);
+}
+
+.ds-segmented__item:hover:not([data-selected='true']):not(:disabled):not([aria-disabled='true']) {
+  background: color-mix(in srgb, var(--color-on-surface) 8%, transparent);
+}
+
+.ds-segmented__item[data-selected='true'] {
+  background: var(--color-secondary-container);
+  color: var(--color-on-secondary-container);
+}
+
+.ds-segmented__item:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+}
+
+.ds-segmented__item:disabled,
+.ds-segmented__item[aria-disabled='true'] {
+  opacity: 0.38;
+  cursor: default;
+}
+
+.ds-segmented__icon {
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+.ds-segmented__icon > svg { width: 100%; height: 100%; }

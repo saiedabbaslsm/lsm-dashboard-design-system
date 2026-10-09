@@ -15,6 +15,9 @@ export type { BadgeProps, BadgeTone } from './components/badge/badge';
 export { Checkbox } from './components/checkbox/checkbox';
 export type { CheckboxProps } from './components/checkbox/checkbox';
 
+export { SegmentedControl } from './components/segmented-control/segmented-control';
+export type { SegmentedControlOption, SegmentedControlProps } from './components/segmented-control/segmented-control';
+
 export { Switch } from './components/switch/switch';
 export type { SwitchProps } from './components/switch/switch';
 

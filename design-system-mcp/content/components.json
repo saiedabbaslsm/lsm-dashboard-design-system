@@ -54,6 +54,13 @@
       "summary": "On/off toggle. Compose with your own label for settings rows."
     },
     {
+      "name": "SegmentedControl",
+      "status": "available",
+      "import": "import { SegmentedControl } from '@lsm/design-system'",
+      "props": "options: {value, label, icon?, href?, disabled?}[]; value; onChange?(value); label?: visible leading label e.g. \"Group by\"; aria-label? (when no label)",
+      "summary": "VIEW SWITCH — pick ONE way of showing the same data (Week / Month / Quarter, Chart / Table). One outlined 32px track, flat segments with 1px dividers, selected = secondary-container. Arrow keys move the selection. Options with href render as links (URL-held views, aria-current). NOT for filters (use a select) and NOT chips. Past ~5 options use a select. HTML report: <div class=\"ds-segmented\"><span class=\"ds-segmented__label\">Group by</span><div class=\"ds-segmented__track\" role=\"radiogroup\"><button class=\"ds-segmented__item\" role=\"radio\" aria-checked=\"true\" data-selected=\"true\">Week</button>…</div></div>"
+    },
+    {
       "name": "DataTable",
       "status": "available",
       "import": "import { DataTable, type DataTableColumn } from '@lsm/design-system'",
