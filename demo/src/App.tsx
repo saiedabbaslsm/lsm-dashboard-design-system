@@ -28,6 +28,9 @@ import {
   Download,
   Eye,
   Gauge,
+  PiggyBank,
+  PoundSterling,
+  Wallet,
   LineChart as LineChartIcon,
   Plus,
   RefreshCw,
@@ -499,6 +502,24 @@ export default function App() {
           trend="up"
           icon={<Users size={18} />}
         />
+      </section>
+
+      <section className="demo-kpi-polish" data-testid="kpi-polish">
+        <KpiCard label="Gross profit" value="£16.6k" delta="+12%" trend="up" caption="vs 18 Aug – 14 Sep"
+          deltaStyle="pill" endMarker verdictStrip icon={<PiggyBank size={18} />}
+          data={[9, 10, 9.5, 11, 12, 11.5, 13, 14, 13.5, 15, 16.6]} />
+        <KpiCard label="Registrations" value="685" delta="−35" trend="down" caption="vs 720"
+          deltaStyle="pill" endMarker={8} verdictStrip icon={<Users size={18} />}
+          data={[190, 186, 188, 180, 183, 175, 172, 169, 166, 140, 120]} />
+        <KpiCard label="CPR" value="£14.20" delta="+8% dearer" trend="down" caption="vs £13.15"
+          deltaStyle="pill" endMarker verdictStrip icon={<PoundSterling size={18} />}
+          data={[12.5, 12.9, 12.7, 13.2, 13.6, 13.4, 13.9, 14.2, 14.6, 15.1, 16.1]} />
+        <KpiCard label="Spend" value="£9.7k" delta="+3%" trend="flat" caption="vs £9.4k"
+          deltaStyle="pill" endMarker verdictStrip icon={<Wallet size={18} />}
+          data={[2.2, 2.3, 2.4, 2.3, 2.5, 2.4, 2.4, 2.5, 2.4, 2.5, 2.5]} />
+        <KpiCard label="ROAS" value="1.32×" delta="+0.08" trend="up" caption="vs 1.24×" tone="gradient"
+          deltaStyle="pill" endMarker verdictStrip icon={<TrendingUp size={18} />}
+          data={[1.1, 1.15, 1.2, 1.18, 1.22, 1.25, 1.24, 1.28, 1.3, 1.31, 1.32]} />
       </section>
 
       <div className="demo-kpi-grid">

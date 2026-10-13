@@ -122,7 +122,8 @@ Source: `~/Desktop/marketing-dashboard/docs/design-system/polish-proposal-2026-1
 - **New CSS** in `design-system/src/styles/polish.css` (imported LAST in index.css): `ds-card`(`--interactive`), `ds-floating`, `ds-sticky-glass`, `ds-summary-card`, `ds-delta-pill`, `ds-share-bar`, `ds-section-title`, `ds-chart-label-halo`, `ds-page-wash`, `ds-bar-gold`, `ds-enter`/`ds-pop`/`ds-draw`/`ds-grow`, press scale.
 - **Components changed:** `KpiCard` (elev-1, hover lift, fade sparkline, softer border), `DataTable` (gold row hover, tabular-nums on every cell).
 - **Rules:** visual-language (Personality, Separation & elevation, Gradients, Motion), design-rules (new sections: elevation/motion, tables & dense grids incl. crosshair, headline-above-explanation, KPI rows of 5+, contribution bars, header polish; chart reference-line/halo/legend rules), `REQUIRED_HEADER` item 7, AGENTS.md conventions.
-- **Not built yet (proposal Q3/Q4):** `KpiCard` props `deltaStyle="pill"`, `endMarker`, `animateValue` (value glide); contribution-bar and reference-rule bar chart as React components. The rules + classes cover hand-built versions meanwhile.
+- **`KpiCard` polish props built (2026-10-13):** `deltaStyle="pill"`, `endMarker` (true | settled index; line insets 10px so the dot isn't clipped), `verdictStrip` (never on flat/toned). Line draws in + marker lands once per mount. Demo row `kpi-polish` renders all five cases. Caveat: with the pill, `trend` = verdict colour, not direction.
+- **Not built yet (proposal Q3/Q4):** `KpiCard` `animateValue` (value glide); still-arriving tail styling after `endMarker`; contribution-bar and reference-rule bar chart as React components. The rules + classes cover hand-built versions meanwhile.
 
 ## Marketing dashboard feedback round (2026-10-09)
 

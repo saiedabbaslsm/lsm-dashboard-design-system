@@ -275,7 +275,9 @@ A figure, its move as a pill, then what it is against — one line:
 The figure is `text-headline-small-emphasized`; the move is `<span class="ds-delta-pill" data-tone="success|danger|neutral">` (neutral inside the threshold); the comparison is muted text that names its dates.
 
 ## KPI rows of 5 or more
-At 5+ cards in a row, the delta arrow icon makes captions wrap. Show the delta as a **tinted pill** (`ds-delta-pill`) with no arrow: the pill's colour plus the figure's sign carry the direction. A card with a verdict may carry a 3px verdict strip across its top (green/red); a neutral card has none.
+At 5+ cards in a row, the delta arrow icon makes captions wrap. Show the delta as a **tinted pill** with no arrow: the pill's colour plus the figure's sign carry the direction. A card with a verdict may carry a 3px verdict strip across its top (green/red); a neutral card has none. A dot marks where the data ends.
+- **React:** `<KpiCard deltaStyle="pill" endMarker verdictStrip … />`. With the pill, `trend` is the **verdict colour**, not the direction — a CPR that got dearer is `trend="down"` (red) with `delta="+8% dearer"`. `endMarker={n}` marks the last *settled* point when the tail is still arriving.
+- **HTML report:** mirror the classes via `get_component_code("KpiCard")` — `ds-kpi__delta-pill`, `ds-kpi__marker` (an HTML dot positioned in % over the chart; never an SVG circle, which stretches), `ds-kpi__strip`.
 
 ## Contribution bars ("what moved it?")
 For any attribution table (a change split by supplier / campaign / operator), put a **share bar** beside each row's percentage:

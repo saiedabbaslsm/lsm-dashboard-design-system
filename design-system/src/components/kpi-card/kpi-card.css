@@ -24,7 +24,7 @@
   box-shadow: var(--elev-1);
   overflow: hidden;
   box-sizing: border-box;
-  transition: box-shadow var(--dur-2) var(--ease-out), transform var(--dur-2) var(--ease-out);
+  transition: box-shadow var(--dur-2, 200ms) var(--ease-out, ease-out), transform var(--dur-2, 200ms) var(--ease-out, ease-out);
 }
 .ds-kpi--compact {
   padding-bottom: 24px;
@@ -68,7 +68,8 @@
   --ds-chart: color-mix(in srgb, var(--color-on-primary-fixed) 55%, transparent);
 }
 .ds-kpi[data-tone='brand'] { --ds-surface: var(--color-primary-fixed); }
-.ds-kpi[data-tone='gradient'] { background: var(--gradient-tonal); }
+/* --ds-surface also feeds the end-marker ring, so give it the gold too. */
+.ds-kpi[data-tone='gradient'] { --ds-surface: var(--color-primary-fixed); background: var(--gradient-tonal); }
 
 .ds-kpi__header {
   display: flex;
@@ -102,9 +103,72 @@
 .ds-kpi__delta-value { color: var(--ds-delta); }
 .ds-kpi__caption { color: var(--ds-on-muted); }
 
-.ds-kpi__chart {
-  display: block;
+/* The wrap bleeds the chart to the card edges and anchors HTML overlays. */
+.ds-kpi__chart-wrap {
+  position: relative;
   width: calc(100% + 48px);
   margin: 4px -24px 0;
   color: var(--ds-chart);
+}
+.ds-kpi__chart {
+  display: block;
+  width: 100%;
+}
+
+/* End marker: an HTML dot, not an SVG circle — the chart is drawn with
+   preserveAspectRatio="none", so a circle would stretch into an ellipse.
+   Ring in the card surface, then a soft 20% halo. */
+.ds-kpi__marker {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 0 3px var(--ds-surface), 0 0 0 6px color-mix(in srgb, currentColor 20%, transparent);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* Delta as a tinted pill (deltaStyle="pill"): no arrow; colour + sign carry direction. */
+.ds-kpi__delta-pill {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  height: 24px;
+  padding: 0 8px;
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--ds-delta) 12%, transparent);
+  color: var(--ds-delta);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.ds-kpi[data-trend='flat'] .ds-kpi__delta-pill {
+  background: color-mix(in srgb, var(--ds-on) 6%, transparent);
+  color: var(--ds-on-muted);
+}
+.ds-kpi__delta[data-style='pill'] { gap: 8px; }
+
+/* Verdict strip: 3px across the top, inside the card's radius (overflow: hidden). */
+.ds-kpi__strip {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: var(--ds-trend);
+}
+
+.ds-kpi__value { font-variant-numeric: tabular-nums; }
+
+/* Entrance, once per mount: the line draws left to right (the way time runs),
+   then the end marker lands. */
+@media (prefers-reduced-motion: no-preference) {
+  .ds-kpi__chart { animation: ds-draw 700ms var(--ease-in-out, cubic-bezier(0.4, 0, 0.2, 1)) both; }
+  .ds-kpi__marker { animation: ds-kpi-land 260ms var(--ease-out, cubic-bezier(0.2, 0.8, 0.2, 1)) 760ms both; }
+  @keyframes ds-kpi-land {
+    from { opacity: 0; transform: translate(-50%, -50%) scale(0); }
+    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  }
 }

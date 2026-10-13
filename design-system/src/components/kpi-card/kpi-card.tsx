@@ -5,6 +5,7 @@ import './kpi-card.css';
 export type KpiTrend = 'up' | 'down' | 'flat';
 export type KpiSize = 'default' | 'compact';
 export type KpiTone = 'neutral' | 'brand' | 'gradient';
+export type KpiDeltaStyle = 'arrow' | 'pill';
 
 export interface KpiCardProps extends HTMLAttributes<HTMLDivElement> {
   label: string;
@@ -22,6 +23,19 @@ export interface KpiCardProps extends HTMLAttributes<HTMLDivElement> {
   icon?: ReactNode;
   /** Sparkline data — renders a bottom area chart (Default size only). */
   data?: number[];
+  /**
+   * `arrow` (default): trend icon + delta text. `pill`: the delta in a tinted pill, no
+   * arrow — the pill's colour (from `trend`) plus the figure's sign carry direction.
+   * Use `pill` in rows of 5+ cards, where the arrow makes captions wrap.
+   */
+  deltaStyle?: KpiDeltaStyle;
+  /**
+   * Dot where the data ends on the sparkline. `true` = the last point; a number = the
+   * index of the last SETTLED point (before a still-arriving tail).
+   */
+  endMarker?: boolean | number;
+  /** 3px strip across the top in the verdict colour. Not shown for `flat` or on toned cards. */
+  verdictStrip?: boolean;
 }
 
 const CHART_W = 340;
@@ -54,7 +68,10 @@ function TrendIcon({ trend }: { trend: KpiTrend }) {
   );
 }
 
-function chartPaths(data: number[]) {
+// With an end marker, stop the line short of the card edge so the dot isn't clipped.
+const MARKER_INSET = 10;
+
+function chartPaths(data: number[], inset = 0) {
   const n = data.length;
   const min = Math.min(...data);
   const max = Math.max(...data);
@@ -62,13 +79,18 @@ function chartPaths(data: number[]) {
   const top = 12;
   const plot = CHART_H - 22;
   const pts = data.map((v, i) => {
-    const x = (i / (n - 1)) * CHART_W;
+    const x = (i / (n - 1)) * (CHART_W - inset);
     const y = top + (1 - (v - min) / span) * plot;
     return `${x.toFixed(1)} ${y.toFixed(1)}`;
   });
   const line = 'M ' + pts.join(' L ');
-  const area = `${line} L ${CHART_W} ${CHART_H} L 0 ${CHART_H} Z`;
-  return { line, area };
+  const area = `${line} L ${CHART_W - inset} ${CHART_H} L 0 ${CHART_H} Z`;
+  // Points as % of the chart box, for HTML overlays (the SVG is non-uniformly scaled).
+  const pct = data.map((v, i) => ({
+    x: ((i / (n - 1)) * (CHART_W - inset) / CHART_W) * 100,
+    y: ((top + (1 - (v - min) / span) * plot) / CHART_H) * 100,
+  }));
+  return { line, area, pct };
 }
 
 export function KpiCard({
@@ -82,6 +104,9 @@ export function KpiCard({
   selected = false,
   icon,
   data,
+  deltaStyle = 'arrow',
+  endMarker,
+  verdictStrip = false,
   className,
   ...rest
 }: KpiCardProps) {
@@ -94,11 +119,19 @@ export function KpiCard({
     .filter(Boolean)
     .join(' ');
   const showChart = size === 'default' && data && data.length > 1;
-  const paths = showChart ? chartPaths(data!) : null;
+  const hasMarker = endMarker !== undefined && endMarker !== false;
+  const paths = showChart ? chartPaths(data!, hasMarker ? MARKER_INSET : 0) : null;
   const gradId = `ds-kpi-area-${useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
+  const markerIndex =
+    paths && hasMarker
+      ? Math.max(0, Math.min(data!.length - 1, endMarker === true ? data!.length - 1 : endMarker))
+      : null;
+  const marker = markerIndex !== null ? paths!.pct[markerIndex] : null;
+  const showStrip = verdictStrip && trend !== 'flat' && tone === 'neutral';
 
   return (
     <div className={cls} data-trend={trend} data-tone={tone} {...rest}>
+      {showStrip ? <span className="ds-kpi__strip" aria-hidden="true" /> : null}
       <div className="ds-kpi__header">
         <span className="ds-kpi__label text-title-small">{label}</span>
         {icon ? (
@@ -111,16 +144,23 @@ export function KpiCard({
       <span className="ds-kpi__value text-display-small-emphasized">{value}</span>
 
       {delta ? (
-        <div className="ds-kpi__delta">
-          <span className="ds-kpi__delta-icon">
-            <TrendIcon trend={trend} />
-          </span>
-          <span className="ds-kpi__delta-value text-label-large">{delta}</span>
+        <div className="ds-kpi__delta" data-style={deltaStyle}>
+          {deltaStyle === 'pill' ? (
+            <span className="ds-kpi__delta-pill">{delta}</span>
+          ) : (
+            <>
+              <span className="ds-kpi__delta-icon">
+                <TrendIcon trend={trend} />
+              </span>
+              <span className="ds-kpi__delta-value text-label-large">{delta}</span>
+            </>
+          )}
           <span className="ds-kpi__caption text-body-medium">{caption}</span>
         </div>
       ) : null}
 
       {paths ? (
+        <div className="ds-kpi__chart-wrap">
         <svg
           className="ds-kpi__chart"
           viewBox={`0 0 ${CHART_W} ${CHART_H}`}
@@ -145,6 +185,10 @@ export function KpiCard({
             strokeLinejoin="round"
           />
         </svg>
+        {marker ? (
+          <span className="ds-kpi__marker" style={{ left: `${marker.x}%`, top: `${marker.y}%` }} aria-hidden="true" />
+        ) : null}
+        </div>
       ) : null}
     </div>
   );
