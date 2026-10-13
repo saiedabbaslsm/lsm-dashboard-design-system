@@ -42,7 +42,8 @@ The **distribution model**: coworkers `npm install @lsm/design-system` (versione
 
 - **Never hardcode a color, font size, line-height, or radius.** Use a token (`var(--color-*)`) or a type class (`.text-*`). This is the whole point of the system.
 - **Gold is the one accent.** Primary = gold; use it for a single primary action / hero / selected state. Everything else is neutral.
-- **Flat and bordered.** No shadows in dashboards; separate surfaces with a 1px `--color-outline-variant` border (also required for dark mode). This is structure, not a reason to hold back on colour.
+- **Bordered AND softly lifted (since 2026-10-13 — the old "flat, no shadows" rule is gone).** Cards keep the 1px border (required for dark mode) *and* take `--elev-1`; hover response `--elev-2`; the one floating layer `--elev-3`. Never a shadow instead of the border. Tokens + utilities live in `design-system/src/styles/polish.css`.
+- **Motion: responses ≤ 200ms, entrances ≤ 700ms once per mount.** Never on a loop/timer/at rest; transform/opacity only; always inside `prefers-reduced-motion: no-preference`.
 - **Colour is governed by 60/30/10, not "restraint".** Gold is the 10% accent; semantic colours (success/error/warning/info) are functional and should be used to encode meaning. Bland/grey output is a failure, not a safe default. Full personality spec: `design-system-mcp/content/visual-language.md`.
 - **Actionable insights are not tables.** Default to `ActionInsightList` with ranked impact tiles; the left-edge colored rail is only a secondary variant.
 - **Source flows should feel like flows.** Default to `SourceFlowMap` with curved connectors and line thickness for contribution strength; rigid source grids are secondary/fallback.

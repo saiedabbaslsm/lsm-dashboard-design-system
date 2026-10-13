@@ -17,3 +17,5 @@
 @import './components/bar-chart/bar-chart.css';
 @import './components/action-insight-list/action-insight-list.css';
 @import './components/source-flow-map/source-flow-map.css';
+/* Last: elevation + motion layer (tokens are read by the components above). */
+@import './styles/polish.css';

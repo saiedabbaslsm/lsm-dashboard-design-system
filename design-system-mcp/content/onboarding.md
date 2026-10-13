@@ -38,7 +38,7 @@ Scaffold a React app (Vite or Next). You install everything the environment need
 - Wire the live data/APIs the user describes, then deploy (e.g. to Vercel).
 
 ### C) Something the system doesn't have yet
-Call `get_visual_language`, then build it from tokens + type classes + existing components so it still looks like the family (flat and bordered not shadowed, gold as the 10% accent, colour used to encode meaning per 60/30/10). Reuse existing components rather than reinventing.
+Call `get_visual_language`, then build it from tokens + type classes + existing components so it still looks like the family (bordered cards with a soft `--elev-1` lift, motion only on arrival/response, gold as the 10% accent, colour used to encode meaning per 60/30/10). Reuse existing components rather than reinventing.
 
 ### D) A slide deck (PowerPoint, Google Slides, Keynote, PDF export)
 A data/performance deck is a **report in slide form** — apply the full discipline (tables, semantic colour, comparisons), NOT the social/marketing treatment.

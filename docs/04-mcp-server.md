@@ -51,7 +51,7 @@ design-system-mcp/
 
 - **`onboarding.md`** — the 3-step start-here (install → follow rules → present KPIs well; call `get_visual_language` before building anything new).
 - **`design-rules.md`** — the hard rules (never hardcode; use `.text-*`; color usage; how to build unlisted components). KPI section is Phase-1 soft ("present well", not mandated).
-- **`visual-language.md`** — the personality: flat/bordered-not-shadowed, **colour governed by 60/30/10 (not "restraint" — that framing was removed; it made output bland)**, gold as the 10% accent, radius language (pill/8px/14px), data-viz, icons, states, motion, copy, and a "when inventing a new component" checklist. Keeps novel components on-system.
+- **`visual-language.md`** — the personality: bordered + soft elevation (flat/no-shadow was replaced 2026-10-13), motion budgets, gradients, **colour governed by 60/30/10 (not "restraint" — that framing was removed; it made output bland)**, gold as the 10% accent, radius language (pill/8px/14px), data-viz, icons, states, motion, copy, and a "when inventing a new component" checklist. Keeps novel components on-system.
 - **`brand-values.md`** — the palette as **raw hex** for non-web files (PowerPoint/Word/PDF). A `.pptx` has no CSS, so `get_stylesheet` doesn't apply there; this serves fills + the deck table/comparison recipe. Served by `get_brand_values`.
 - **`components.json`** — the package version, install line, and each component's import + props + summary. **Keep in sync when the package changes.**
 - **`kpis.json`** — currently `{ _status, _guidance }` only (Phase 1: generic presentation guidance). **Phase 2:** add team keys, e.g.

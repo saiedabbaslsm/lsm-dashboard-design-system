@@ -88,6 +88,13 @@ const REQUIRED_HEADER = `/* ====================================================
       controls: view switch = segmented control, filter = dropdown, action =
       button, never chips for everything. Detail: get_design_rules.
 
+   7) CARDS ARE BORDERED *AND* SOFTLY LIFTED — class ds-card = 1px border +
+      --elev-1 (the old "flat, no shadows" rule is gone; never a shadow WITHOUT
+      the border). Hover response --elev-2, the one floating layer --elev-3.
+      Motion: responses <=200ms, entrances <=700ms ONCE (ds-enter); never on a
+      loop or at rest; transform/opacity only; reduced-motion = still.
+      Sparkline areas fade 24%->0. Detail: get_visual_language.
+
    Also load Roboto: <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
    Then put ALL the CSS below into a <style> tag (or a .css file).
    ============================================================== */

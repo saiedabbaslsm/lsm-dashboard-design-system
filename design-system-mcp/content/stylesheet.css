@@ -671,7 +671,7 @@
 
 .ds-kpi {
   --ds-surface: var(--color-surface-container-lowest);
-  --ds-border: var(--color-outline-variant);
+  --ds-border: var(--card-line);
   --ds-on: var(--color-on-surface);
   --ds-on-muted: var(--color-on-surface-variant);
   --ds-delta: var(--ds-trend);
@@ -687,8 +687,11 @@
   border-radius: 14px;
   background: var(--ds-surface);
   border: 1px solid var(--ds-border);
+  /* Elevation sits WITH the border, never instead of it (dark mode needs both). */
+  box-shadow: var(--elev-1);
   overflow: hidden;
   box-sizing: border-box;
+  transition: box-shadow var(--dur-2) var(--ease-out), transform var(--dur-2) var(--ease-out);
 }
 .ds-kpi--compact {
   padding-bottom: 24px;
@@ -704,7 +707,18 @@
 .ds-kpi[role='button']:focus-visible,
 .ds-kpi[tabindex]:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px var(--color-surface), 0 0 0 4px var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-surface), 0 0 0 4px var(--color-primary), var(--elev-2);
+}
+/* A clickable card lifts on hover. */
+.ds-kpi[role='button']:hover:not(:focus-visible),
+.ds-kpi[tabindex]:hover:not(:focus-visible) {
+  box-shadow: var(--elev-2);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ds-kpi[role='button']:hover,
+  .ds-kpi[tabindex]:hover {
+    transform: translateY(-2px);
+  }
 }
 
 .ds-kpi[data-trend='up'] { --ds-trend: var(--color-success); }
@@ -1316,8 +1330,14 @@
   background: color-mix(in srgb, var(--color-on-surface) 2%, var(--color-surface-container-lowest));
 }
 
+/* Row hover warms to a gold tint rather than a grey state layer. */
 .ds-table tbody tr:hover {
-  background: color-mix(in srgb, var(--color-on-surface) 4%, var(--color-surface-container-lowest));
+  background: color-mix(in srgb, var(--color-primary) 6%, var(--color-surface-container-lowest));
+}
+
+/* Every figure cell, not only end-aligned ones — the card jitters otherwise. */
+.ds-table td {
+  font-variant-numeric: tabular-nums;
 }
 
 .ds-table [data-align='end'] {
@@ -1821,4 +1841,232 @@
   .ds-source-flow {
     min-width: 760px;
   }
+}
+
+/* src/styles/polish.css */
+/* Polish layer: elevation, motion, and the small patterns that came with them.
+   Hand-written (not generated). Adopted 2026-10-13 from the marketing
+   dashboard's polish proposal, which REPLACED the old "flat, no shadows" rule.
+
+   Two invariants keep it safe on a data-heavy product:
+   - Elevation is always WITH the 1px border, never instead of it — the border
+     is what separates cards in dark mode.
+   - Every animation sits inside prefers-reduced-motion: no-preference and uses
+     transform/opacity only, so with reduced motion the page is identical, just
+     still, and nothing ever shifts layout. */
+
+:root {
+  /* Motion */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-1: 120ms; /* hover, colour, press */
+  --dur-2: 200ms; /* open, lift, popover */
+  --dur-3: 320ms; /* entrances, dialog */
+
+  /* Elevation: 1 = card at rest, 2 = hover response, 3 = the one floating layer */
+  --elev-1: 0 1px 2px color-mix(in srgb, var(--color-scrim) 6%, transparent),
+    0 1px 1px color-mix(in srgb, var(--color-scrim) 3%, transparent);
+  --elev-2: 0 6px 16px -6px color-mix(in srgb, var(--color-scrim) 16%, transparent),
+    0 2px 4px color-mix(in srgb, var(--color-scrim) 5%, transparent);
+  --elev-3: 0 18px 48px -12px color-mix(in srgb, var(--color-scrim) 28%, transparent),
+    0 4px 12px color-mix(in srgb, var(--color-scrim) 8%, transparent);
+
+  /* A softer card hairline */
+  --card-line: color-mix(in srgb, var(--color-outline-variant) 70%, transparent);
+
+  /* The one glow per view: the selected item only (a chart bar, a chosen tile). */
+  --glow-selected: drop-shadow(0 0 6px color-mix(in srgb, var(--color-primary) 55%, transparent));
+}
+
+/* Dark pages need heavier shadows to read at all; scrim is black in both themes. */
+[data-theme='dark'] {
+  --elev-1: 0 1px 2px color-mix(in srgb, var(--color-scrim) 35%, transparent);
+  --elev-2: 0 8px 20px -8px color-mix(in srgb, var(--color-scrim) 60%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--color-on-surface) 3%, transparent);
+  --elev-3: 0 24px 56px -12px color-mix(in srgb, var(--color-scrim) 70%, transparent);
+}
+
+/* ---- Card ------------------------------------------------------------- */
+
+.ds-card {
+  background: var(--color-surface-container-lowest);
+  border: 1px solid var(--card-line);
+  border-radius: 14px;
+  padding: var(--space-5, 24px);
+  box-shadow: var(--elev-1);
+  box-sizing: border-box;
+}
+/* Interactive cards lift on hover. */
+.ds-card--interactive {
+  cursor: pointer;
+  transition: box-shadow var(--dur-2) var(--ease-out), transform var(--dur-2) var(--ease-out);
+}
+.ds-card--interactive:hover { box-shadow: var(--elev-2); }
+.ds-card--interactive:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* The one floating layer: menu, popover, dialog, drawer. */
+.ds-floating {
+  background: var(--color-surface-container-lowest);
+  border: 1px solid var(--card-line);
+  border-radius: 14px;
+  box-shadow: var(--elev-3);
+}
+
+/* Sticky chrome only (filter bar, pinned jump links): frosted so figures stay
+   legible as they scroll underneath. Never on cards. */
+.ds-sticky-glass {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: color-mix(in srgb, var(--color-surface) 86%, transparent);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--card-line);
+}
+
+/* ---- Summary (fold) card: the toned left edge, quieter ------------------ */
+/* Set --tone to a status token: success / error / warning / info. */
+.ds-summary-card {
+  --tone: var(--color-outline);
+  box-shadow: inset 3px 0 0 var(--tone), var(--elev-1);
+  background-image: linear-gradient(90deg, color-mix(in srgb, var(--tone) 7%, transparent), transparent 45%);
+}
+.ds-summary-card[data-tone='success'] { --tone: var(--color-success); }
+.ds-summary-card[data-tone='danger'] { --tone: var(--color-error); }
+.ds-summary-card[data-tone='warning'] { --tone: var(--color-warning); }
+.ds-summary-card[data-tone='info'] { --tone: var(--color-info); }
+
+/* ---- Delta pill: a move as a tinted pill (headlines, KPI rows of 5+) ----- */
+.ds-delta-pill {
+  --tone: var(--color-on-surface);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 24px;
+  padding: 0 8px;
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--tone) 12%, transparent);
+  color: var(--tone);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.ds-delta-pill[data-tone='neutral'],
+.ds-delta-pill:not([data-tone]) {
+  background: color-mix(in srgb, var(--color-on-surface) 6%, transparent);
+  color: var(--color-on-surface-variant);
+}
+.ds-delta-pill[data-tone='success'] { --tone: var(--color-success); }
+.ds-delta-pill[data-tone='danger'] { --tone: var(--color-error); }
+
+/* ---- Contribution ("share of the move") bar ---------------------------- */
+/* Width = |row's move| / gross move, one scale for every row. Set color to the
+   row's verdict tone; data-offset hatches a row moving against the total. */
+.ds-share-bar {
+  position: relative;
+  width: 100%;
+  min-width: 48px;
+  height: 8px;
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--color-on-surface) 6%, transparent);
+  overflow: hidden;
+}
+.ds-share-bar__fill {
+  height: 100%;
+  border-radius: inherit;
+  background: currentColor;
+  transform-origin: left;
+}
+.ds-share-bar[data-offset] .ds-share-bar__fill {
+  background: repeating-linear-gradient(
+    -45deg,
+    currentColor 0 3px,
+    color-mix(in srgb, currentColor 35%, transparent) 3px 6px
+  );
+}
+
+/* ---- Section question heading: a gold accent bar on the left ------------ */
+.ds-section-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.ds-section-title::before {
+  content: '';
+  flex: none;
+  width: 4px;
+  height: 1.1em;
+  border-radius: 2px;
+  background: var(--color-primary);
+}
+
+/* ---- Chart text over a reference line ----------------------------------- */
+/* SVG value labels drawn after a reference line get a halo, so the dashed line
+   passes BEHIND the numbers instead of striking through them. */
+.ds-chart-label-halo {
+  paint-order: stroke;
+  stroke: var(--color-surface-container-lowest);
+  stroke-width: 6px;
+  stroke-linejoin: round;
+}
+
+::selection { background: color-mix(in srgb, var(--color-primary) 40%, transparent); }
+
+/* ---- Motion -------------------------------------------------------------- */
+/* Responses <= 200ms (hover, press, open). Entrances <= 700ms, once per mount,
+   never on a loop or timer. Transform/opacity only. */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes ds-rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  @keyframes ds-fade { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes ds-pop { from { opacity: 0; transform: translateY(-4px) scale(0.985); } to { opacity: 1; transform: none; } }
+  @keyframes ds-draw { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+  @keyframes ds-grow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+  @keyframes ds-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  @keyframes ds-land { from { opacity: 0; transform: scale(0); } to { opacity: 1; transform: scale(1); } }
+
+  /* Entrance: add .ds-enter; set style="--i: n" for a 40ms reading-order stagger. */
+  .ds-enter {
+    animation: ds-rise var(--dur-3) var(--ease-out) both;
+    animation-delay: calc(var(--i, 0) * 40ms);
+  }
+  .ds-pop { animation: ds-pop var(--dur-2) var(--ease-out) both; transform-origin: top right; }
+  .ds-share-bar__fill { animation: ds-fill 600ms var(--ease-out) both; }
+  .ds-draw { animation: ds-draw 700ms var(--ease-in-out) both; }
+  .ds-grow { transform-box: fill-box; transform-origin: 50% 100%; animation: ds-grow 520ms var(--ease-out) both; }
+
+  .ds-card--interactive:hover { transform: translateY(-2px); }
+
+  /* Press feedback on controls. */
+  .ds-btn:active:not(:disabled),
+  .ds-chip:active:not(:disabled),
+  .ds-segmented__item:active:not(:disabled) {
+    transform: scale(0.97);
+    transition: transform var(--dur-1) var(--ease-out);
+  }
+}
+
+/* ---- Gradients beyond the gold hero (adopted 2026-10-13) ----------------- */
+/* Faint gold wash at the top of the page: 9% primary, gone by 70%. Put it on
+   the page background element (body or the app root), never on cards. */
+.ds-page-wash {
+  background-color: var(--color-surface);
+  background-image: radial-gradient(
+    ellipse 120% 60% at 50% 0%,
+    color-mix(in srgb, var(--color-primary) 9%, transparent),
+    transparent 70%
+  );
+  background-repeat: no-repeat;
+}
+
+/* Gold bars (the accent series in a bar chart): light at the base, gold at
+   the top. HTML bars use the class; SVG bars use the same two stops in a
+   <linearGradient> (x1=0 y1=1 x2=0 y2=0): primary-container -> primary. */
+.ds-bar-gold {
+  background-image: linear-gradient(to top, var(--color-primary-container), var(--color-primary));
 }

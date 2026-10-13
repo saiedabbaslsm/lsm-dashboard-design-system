@@ -41,8 +41,14 @@
   background: color-mix(in srgb, var(--color-on-surface) 2%, var(--color-surface-container-lowest));
 }
 
+/* Row hover warms to a gold tint rather than a grey state layer. */
 .ds-table tbody tr:hover {
-  background: color-mix(in srgb, var(--color-on-surface) 4%, var(--color-surface-container-lowest));
+  background: color-mix(in srgb, var(--color-primary) 6%, var(--color-surface-container-lowest));
+}
+
+/* Every figure cell, not only end-aligned ones — the card jitters otherwise. */
+.ds-table td {
+  font-variant-numeric: tabular-nums;
 }
 
 .ds-table [data-align='end'] {

@@ -111,6 +111,19 @@ Shipped three connector changes (no Skill authoring):
 
 Also this round, per user: **removed the "calm / restraint" language** from `visual-language.md` and `AGENTS.md`. It was making output bland — Claude read "be calm/restrained" as "hold back on colour". **Colour is now governed by 60/30/10 alone**; "flat/bordered/no-shadow" stays (that's structure, not colour suppression), and gold stays the 10% accent. Explicit new line: *bland/grey that should carry meaning is a failure, the same as garish.*
 
+## Polish round — elevation, motion, gradients (2026-10-13)
+
+Source: `~/Desktop/marketing-dashboard/docs/design-system/polish-proposal-2026-10-13.md` (live on the marketing dashboard). **The user overrode the "flat, no shadows" rule** and adopted the motion timing and gradients too.
+
+- **Elevation:** `--elev-1` (every card, WITH the border) · `--elev-2` (hover response) · `--elev-3` (the one floating layer). `--card-line` softens card borders. Dark values use `color-mix` on `--color-scrim`, not raw rgb.
+- **Motion:** responses ≤ 200ms, entrances ≤ 700ms once per mount; never loop/timer/at rest; transform/opacity only; all inside `prefers-reduced-motion: no-preference`. The count "nudge" was **dropped** (no bounce); the circular theme reveal is **allowed, optional**.
+- **Gradients:** sparkline area fades 24%→0 (now in `KpiCard`, per-card `useId` gradient); gold accent bars light-to-gold; faint page wash (`ds-page-wash`). Nothing else.
+- **Glow:** one per view, selected item only (`--glow-selected`). **Frosted glass:** sticky chrome only.
+- **New CSS** in `design-system/src/styles/polish.css` (imported LAST in index.css): `ds-card`(`--interactive`), `ds-floating`, `ds-sticky-glass`, `ds-summary-card`, `ds-delta-pill`, `ds-share-bar`, `ds-section-title`, `ds-chart-label-halo`, `ds-page-wash`, `ds-bar-gold`, `ds-enter`/`ds-pop`/`ds-draw`/`ds-grow`, press scale.
+- **Components changed:** `KpiCard` (elev-1, hover lift, fade sparkline, softer border), `DataTable` (gold row hover, tabular-nums on every cell).
+- **Rules:** visual-language (Personality, Separation & elevation, Gradients, Motion), design-rules (new sections: elevation/motion, tables & dense grids incl. crosshair, headline-above-explanation, KPI rows of 5+, contribution bars, header polish; chart reference-line/halo/legend rules), `REQUIRED_HEADER` item 7, AGENTS.md conventions.
+- **Not built yet (proposal Q3/Q4):** `KpiCard` props `deltaStyle="pill"`, `endMarker`, `animateValue` (value glide); contribution-bar and reference-rule bar chart as React components. The rules + classes cover hand-built versions meanwhile.
+
 ## Marketing dashboard feedback round (2026-10-09)
 
 Source: `~/Desktop/marketing-dashboard/docs/design-system-feedback.md` — written from five desk tests with the marketing team. Triaged into: **A** rules (done this round) · **B** components (next) · **C** generic house conventions · **Phase 2** marketing-specific thresholds/targets/icon map (held — they belong in `kpis.json` once KPIs are signed off).

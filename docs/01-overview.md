@@ -28,7 +28,7 @@ Implication for agents: **do not build KPI enforcement or hardcode team KPIs now
 ## Design identity (short version)
 
 - **Material 3 (M3) expressive** foundation, with **gold as the primary/brand accent** (`#f5bf2d`), warm-tinted neutrals, light + dark themes.
-- **Flat, calm, restrained.** One accent per view; separation via hairline borders, not shadows; minimal data-viz.
+- **Bordered and softly lifted; colour by 60/30/10.** One gold accent per view; hairline borders plus soft elevation (`--elev-1/2/3`, adopted 2026-10-13 — the old flat/no-shadow rule is gone); motion only when something arrives or responds; minimal data-viz.
 - Full personality spec lives in `design-system-mcp/content/visual-language.md` (served to agents by the `get_visual_language` MCP tool). Read it before building any new/unlisted component.
 
 ## Glossary

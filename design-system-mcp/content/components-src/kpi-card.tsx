@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import type { HTMLAttributes, ReactNode } from 'react';
 import './kpi-card.css';
 
@@ -94,6 +95,7 @@ export function KpiCard({
     .join(' ');
   const showChart = size === 'default' && data && data.length > 1;
   const paths = showChart ? chartPaths(data!) : null;
+  const gradId = `ds-kpi-area-${useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
 
   return (
     <div className={cls} data-trend={trend} data-tone={tone} {...rest}>
@@ -126,7 +128,14 @@ export function KpiCard({
           preserveAspectRatio="none"
           aria-hidden="true"
         >
-          <path d={paths.area} fill="currentColor" fillOpacity={0.13} />
+          {/* Area as a fade (24% -> 0), not a flat slab. Per-card id so cards never share a gradient. */}
+          <defs>
+            <linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="currentColor" stopOpacity={0.24} />
+              <stop offset="1" stopColor="currentColor" stopOpacity={0} />
+            </linearGradient>
+          </defs>
+          <path d={paths.area} fill={`url(#${gradId})`} />
           <path
             d={paths.line}
             fill="none"

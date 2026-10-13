@@ -16,7 +16,7 @@
       "status": "available",
       "import": "import { KpiCard } from '@lsm/design-system'",
       "props": "label: string; value: string; delta?: string; caption?='vs last month'; trend?: up|down|flat; size?: default|compact; tone?: neutral|brand|gradient; selected?: boolean; icon?: ReactNode; data?: number[] (renders bottom area chart, Default size); + native div attrs",
-      "summary": "Metric card. `tone`: neutral (default, white + green/red chart) | brand (gold `primaryFixed`) | gradient (gold gradient) — use a toned card for ONE hero metric per screen (the 10% gold accent, see 60/30/10 in get_design_rules); on toned cards the chart + text auto-go dark to stay legible. ALWAYS pass a Lucide `icon` — the card shows it top-right (see get_design_rules → Icons). Responsive/fill-container by default. Default + data renders a chart; compact is the no-chart version. Native div props allow onClick/role/tabIndex/ARIA for interactive cards. Lead dashboards with these."
+      "summary": "Metric card. `tone`: neutral (default, white + green/red chart) | brand (gold `primaryFixed`) | gradient (gold gradient) — use a toned card for ONE hero metric per screen (the 10% gold accent, see 60/30/10 in get_design_rules); on toned cards the chart + text auto-go dark to stay legible. ALWAYS pass a Lucide `icon` — the card shows it top-right (see get_design_rules → Icons). Responsive/fill-container by default. Default + data renders a chart; compact is the no-chart version. Native div props allow onClick/role/tabIndex/ARIA for interactive cards. Lead dashboards with these. Sits on --elev-1 with its border; a clickable card lifts to --elev-2 on hover. The sparkline area fades (24% -> 0). In rows of 5+, show the delta as a ds-delta-pill (no arrow)."
     },
     {
       "name": "TextField",
@@ -72,7 +72,7 @@
       "status": "available",
       "import": "import { DataTable, type DataTableColumn } from '@lsm/design-system'",
       "props": "columns: { key; label; numeric?; tone?: (value,row)=> default|muted|success|error|primary }[]; rows: Record<string, ReactNode>[]; className?",
-      "summary": "Dashboard table with alternating token-surface rows for readability, right-aligned tabular numeric columns, horizontal overflow containment, and semantic tone states."
+      "summary": "Dashboard table with alternating token-surface rows for readability, right-aligned tabular numeric columns, horizontal overflow containment, and semantic tone states. Every figure cell is tabular-nums; row hover is a 6% gold tint."
     },
     {
       "name": "LineChart",
@@ -86,7 +86,7 @@
       "status": "available",
       "import": "import { BarChart, type BarChartBarSeries, type BarChartLineSeries } from '@lsm/design-system'",
       "props": "labels: string[]; bars: { id; label; data; tone? }[]; lines?: { id; label; data; tone?; stroke? }[]; referenceLines?: { label?; value; tone? }[]; yFormatter?; showLegend?; className?",
-      "summary": "Grouped vertical bar chart with optional line overlays and dashed reference lines. Use for spend/revenue/comparison charts while staying flat, bordered, and token-colored."
+      "summary": "Grouped vertical bar chart with optional line overlays and dashed reference lines. Use for spend/revenue/comparison charts bordered, token-coloured, inside a ds-card. Accent (gold) series may run light-to-gold; reference lines label themselves and value labels sit on top with a halo (ds-chart-label-halo)."
     },
     {
       "name": "ActionInsightList",

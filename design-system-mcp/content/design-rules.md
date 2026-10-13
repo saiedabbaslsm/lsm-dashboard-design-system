@@ -14,7 +14,7 @@ The Figma "unified AI design system" and the `@lsm/design-system` package are th
 ## Color usage
 - Primary (gold) is the brand accent — **one primary action per view**; everything else is secondary/outlined/text.
 - Positive trend = `--color-success` (green), negative = `--color-error` (red), neutral = `--color-on-surface-variant`.
-- Cards: `--color-surface-container-lowest` background with a `--color-outline-variant` border (needed so cards separate from the page in dark mode).
+- Cards: `class="ds-card"` — `--color-surface-container-lowest` background, a 1px `--card-line` border (needed so cards separate in dark mode) **and** the soft `--elev-1` shadow. Border and shadow together, never the shadow alone.
 - The gold bold surface (`--color-primary-fixed`) is for a single hero/emphasis element, not for every card.
 - For subtle neutral greys, derive them from existing tokens using opacity or `color-mix()` (for example, mixing `--color-on-surface` into a surface token). Do not introduce raw grey hex values.
 - Table/header emphasis can use a very light gold tint made from `--color-primary` mixed into a surface token; keep it subtle so gold still reads as the single accent.
@@ -54,7 +54,7 @@ A collapsed or summary card that reads "● Yes · £16.6k profit…" fails — 
 - an **icon tile** (`class="ds-icon-tile"` with a Lucide icon),
 - the **question as its title** ("Are we making money?"),
 - the **answer line** beneath it,
-- a **toned left edge** (`--color-success` / `--color-error` / `--color-warning` / `--color-info`) for the verdict, and
+- a **quiet toned left edge** for the verdict: `class="ds-card ds-summary-card" data-tone="success|danger|warning|info"` — a 3px inset edge plus a soft tint from the left that fades out by 45%. Not a heavy 4px coloured border (that reads as a generic status rail), and
 - "Show more" if it expands.
 
 Use the **same words** in any link that points to it: a jump link "Are we making money?" lands on a card titled "Are we making money?".
@@ -244,9 +244,51 @@ When a figure is red and the line under it is green, users ask "is it good or ba
 - **In a React app:** use `lucide-react` and pass the icon via the component's `icon` / `leadingIcon` prop.
 
 ## Charts & data-viz
-- **Single-series trend** (one metric over time, and KPI-card sparklines): a thin line with a **soft area fill** (~12% of the line colour) underneath.
+- **Single-series trend** (one metric over time, and KPI-card sparklines): a thin line with an **area that fades** from ~24% of the line colour at the line to 0 at the base — a vertical `<linearGradient>`, with a unique id per chart so charts never share one. Not a flat slab.
 - **Multi-series** (e.g. actual vs target, channel comparisons): **plain lines only — NO area fill.** Tell series apart by colour and by making the secondary/target line **dashed**, with a small legend. Shading a multi-line chart is wrong; the area fill is reserved for single-series charts. (The `LineChart` component already defaults `showArea` to single-only — match that.)
 - Keep charts minimal: thin lines (~1.5–2px), faint gridlines (low opacity), no gridline/axis clutter. Encode trend by colour (success / error / neutral).
+- **Reference lines label themselves** ("avg 180", "target £20") at their right end, dashed.
+- **Value labels go ON TOP of reference lines, with a halo** — draw them after the line and give them `class="ds-chart-label-halo"` (a stroke in the card colour, `paint-order: stroke`), so the dashed line passes *behind* the numbers instead of striking through them.
+- **A legend in HTML above the chart** (current, comparison, still arriving, the reference line), plus a right-aligned hint when bars are clickable ("Choose a bar to see what moved it").
+- **Chosen bar:** the others drop to 60% opacity, the chosen one gets a bold value and may take the view's one glow (`filter: var(--glow-selected)`).
+- **Gold bars** (the accent series) run light-to-gold: `--color-primary-container` at the base → `--color-primary` at the top. Only the accent series.
+
+## Elevation, motion and polish (adopted 2026-10-13 — replaces "flat, no shadows")
+
+Full spec: `get_visual_language` → Separation & elevation, Gradients, Motion. The musts:
+
+- **Elevation by role:** `--elev-1` every card at rest (`ds-card`) · `--elev-2` hover response on interactive cards (`ds-card--interactive`) · `--elev-3` the one floating layer (`ds-floating`: menu, popover, dialog, drawer). **Always with the 1px border.**
+- **Motion budgets:** responses (hover, press, open) **≤ 200ms**; entrances **≤ 700ms, once per mount**. Never on a loop, a timer or at rest. Transform/opacity only. Everything inside `@media (prefers-reduced-motion: no-preference)`. No bounce, pulse or nudge.
+- **Utilities in the stylesheet:** `ds-enter` (rise in; `style="--i:n"` staggers 40ms in reading order), `ds-pop` (popover from its trigger), `ds-draw` (a line draws left to right), `ds-grow` (an SVG bar grows from the axis), press `scale(.97)` on buttons/chips/segments is built in.
+- **Sticky chrome** may be frosted (`ds-sticky-glass`). Never cards.
+- **Page:** `ds-page-wash` on the page background for the faint gold wash at the top. `::selection` is gold.
+- **Never** put a shadow on a figure, a table cell or text; never animate a figure that is already on screen unless the reader changed what it measures.
+
+## Tables & dense grids
+- Every figure cell is `tabular-nums` (built into `ds-table`), so columns line up and nothing jitters.
+- Row hover warms to a 6% gold tint (built into `ds-table`), not a grey layer.
+- **Dense grids** (e.g. KPI × week, 6+ columns): a **crosshair** helps reading — the hovered cell lights its row and its column (7% gold), the cell itself 16% with a 1.5px gold ring. One document-level `pointerover` listener toggling a class, so the table can stay server-rendered. Not for short tables.
+
+## Headline above an explanation
+A figure, its move as a pill, then what it is against — one line:
+`685  [−35]  against 719 for the previous period (17 Aug – 13 Sep 2026)`.
+The figure is `text-headline-small-emphasized`; the move is `<span class="ds-delta-pill" data-tone="success|danger|neutral">` (neutral inside the threshold); the comparison is muted text that names its dates.
+
+## KPI rows of 5 or more
+At 5+ cards in a row, the delta arrow icon makes captions wrap. Show the delta as a **tinted pill** (`ds-delta-pill`) with no arrow: the pill's colour plus the figure's sign carry the direction. A card with a verdict may carry a 3px verdict strip across its top (green/red); a neutral card has none.
+
+## Contribution bars ("what moved it?")
+For any attribution table (a change split by supplier / campaign / operator), put a **share bar** beside each row's percentage:
+- **One scale for every row:** bar width = |row's move| ÷ gross move. `<div class="ds-share-bar" style="color: var(--color-success)"><div class="ds-share-bar__fill" style="width: 42%"></div></div>`.
+- A row moving **against** the total (an offset) is drawn on the same scale, **hatched** in the other tone (`data-offset`) and labelled "offset".
+- Nested rows (campaigns inside a supplier) use their **parent's** gross, matching their percentages.
+- The shares of the gross move add up to 100%.
+
+## Header & navigation polish
+- **Section question headings** get a 4px gold accent bar on their left (`class="ds-section-title"`) — the page's spine.
+- **Data freshness** sits in the header as a `Badge` with a dot: success when current ("Complete days to 11 Oct 2026"), `warning` when late.
+- **Tabs** take a Lucide icon and an underline that slides in from the centre (`scaleX`, ≤ 200ms).
+- Popover chevrons rotate 180° when open. Search fields show focus as a gold border plus a soft gold ring.
 
 ## Theme toggle
 - Every dashboard must include a visible light/dark mode toggle, usually in the top toolbar/header.
@@ -262,7 +304,7 @@ When a figure is red and the line under it is green, users ask "is it good or ba
 ## Source flows
 - For source-to-order-to-goal views, default to `SourceFlowMap`: curved connectors should make the direction of flow obvious at a glance.
 - Use connector thickness to encode source contribution/strength. This is easier to understand than equal-width arrows or a rigid process grid.
-- Keep node cards quiet and flat; the flow line weight is the main visual signal. Avoid decorative gradients, shadows, or many colors.
+- Keep node cards quiet (`ds-card`, `--elev-1` like any card); the flow line weight is the main visual signal. Avoid decorative gradients or many colors.
 - A rigid card-grid source diagram is acceptable as a secondary/fallback view, not the default.
 
 ## Building components not yet in the package
